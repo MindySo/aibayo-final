@@ -19,6 +19,8 @@ public class ScheduleDto {
     private LocalDateTime boardRegDate;
     private LocalDateTime scheduleStartDate;
     private LocalDateTime scheduleEndDate;
+    private Double mapLat;
+    private Double mapLng;
     private Long boardNo;
     private Long scheduleNo;
     private Long kinderNo;
@@ -44,7 +46,8 @@ public class ScheduleDto {
 
     public ScheduleDto(Long boardNo, Long scheduleNo, Long kinderNo,
                        String boardTitle, Long writer, String boardContents,
-                       LocalDateTime scheduleStartDate, LocalDateTime scheduleEndDate, List<ScheduleClassDto>classList){
+                       LocalDateTime scheduleStartDate, LocalDateTime scheduleEndDate, List<ScheduleClassDto>classList,
+                       Double mapLat, Double mapLng){
         this.boardNo = boardNo;
         this.scheduleNo = scheduleNo;
         this.kinderNo = kinderNo;
@@ -54,11 +57,14 @@ public class ScheduleDto {
         this.scheduleStartDate = scheduleStartDate;
         this.scheduleEndDate = scheduleEndDate;
         this.classList = classList;
+        this.mapLat = mapLat;
+        this.mapLng = mapLng;
     }
 
     public ScheduleDto(Long boardNo, Long scheduleNo, Long kinderNo,
                        String boardTitle, Long writer, String boardContents,
-                       LocalDateTime scheduleStartDate, LocalDateTime scheduleEndDate, Long classNo){
+                       LocalDateTime scheduleStartDate, LocalDateTime scheduleEndDate,
+                       Double mapLat, Double mapLng){
         this.boardNo = boardNo;
         this.scheduleNo = scheduleNo;
         this.kinderNo = kinderNo;
@@ -67,6 +73,8 @@ public class ScheduleDto {
         this.boardContents = boardContents;
         this.scheduleStartDate = scheduleStartDate;
         this.scheduleEndDate = scheduleEndDate;
+        this.mapLat = mapLat;
+        this.mapLng = mapLng;
     }
 
 }

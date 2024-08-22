@@ -158,6 +158,6 @@ public class ScheduleController {
             schedule.setClassList(scheduledClass);
         }
         model.addAttribute("daySchedules", daySchedules);
-        return "admin/schedule/scheduleMain";
+        return "user/schedule/scheduleMain";
     }
 }

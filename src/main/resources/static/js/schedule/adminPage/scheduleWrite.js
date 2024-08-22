@@ -1,3 +1,88 @@
+// textarea 사이즈 자동조절
+function autoResize(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+}
+
+// textarea 글자수 제한
+function chkword(obj, maxWord) {
+
+    var strValue = obj.value;
+    var strLen = strValue.length;
+    var totalByte = 0;
+    var len = 0;
+    var oneChar = "";
+    var str2 = "";
+
+    for (var i = 0; i < strLen; i++) {
+        oneChar = strValue.charAt(i);
+        if (escape(oneChar).length > 4) {
+            totalByte += 2;
+        } else {
+            totalByte++;
+        }
+
+        // 입력한 문자 길이보다 넘치면 잘라내기 위해 저장
+        if (totalByte <= maxWord) {
+            // len = i + 1;
+            len = maxWord;
+        }
+    }
+
+    // 넘어가는 글자는 자른다.
+    if (strLen > maxWord) {
+        alert(maxWord + "자를 초과 입력 할 수 없습니다.");
+        str2 = strValue.substr(0, len);
+        obj.value = str2;
+        strLen = maxWord
+        chkword(obj, maxWord);
+    }
+
+    $('#textcnt').html("( " + strLen + " / " + maxWord + " )");
+}
+
+// 체크 개수 세기
+function checkCnt(){
+    var checked = $("input[class='form-check-input']:checked").length;
+
+    if($("#checkAll").is(":checked")){
+        checked--
+    }
+
+    if ($("input[class='form-check-input']").length - 1 != checked){
+        $("input[id='checkAll']").prop("checked", false)
+    }
+
+    document.getElementById('checkboxCnt').innerText
+        = '(' + checked + '개)';
+}
+
+var mapLng = null;
+var mapLat = null;
+
+function hideMap(){
+    $(".set-loc").show();
+    $(".map_wrap").hide();
+}
+
+function showMap(){
+    $(".set-loc").hide();
+    $(".map_wrap").show();
+    map.relayout();
+    map.setCenter(new kakao.maps.LatLng(mapLat, mapLng));
+}
+
+function hideOrShowMap(){
+    var ifLatlngExist = typeof $(".input-loc").attr('data-map-lat') !== 'undefined';
+    if (ifLatlngExist) {
+        mapLat = $(".input-loc").attr('data-map-lat');
+        mapLng = $(".input-loc").attr('data-map-lng');
+        showMap();
+    } else{
+        hideMap();
+    }
+}
+
 $(document).ready(function() {
 
     // modify에서 기존 classList 받아와서 체크하기
@@ -20,6 +105,14 @@ $(document).ready(function() {
 
         checkCnt();
     }
+
+    $(".set-loc").click(function () {
+        showMap();
+    });
+
+    $(".cancel-loc").click(function (){
+        hideMap();
+    })
 
     // checkbox 전체 선택 + 체크된 개수 표시
     $("#checkAll").click(function() {
@@ -131,6 +224,11 @@ $(document).ready(function() {
             }
             // console.log(endDate);
 
+            if($('.map_wrap').css("display") === "none"){
+                mapLat = null;
+                mapLng = null;
+            }
+
             var classList = $('.form-check-input:checked').map(function() {
                 if(this.id !== 'checkAll')
                     return this.id;
@@ -149,7 +247,9 @@ $(document).ready(function() {
                     endDate: endDate,
                     classList : classList,
                     boardTitle : $('.default-wrapper').val(),
-                    boardContents : $('.calendar-textarea').val()
+                    boardContents : $('.calendar-textarea').val(),
+                    mapLng : mapLng,
+                    mapLat : mapLat
                 };
                 console.log("param:" + JSON.stringify(param));
 
@@ -180,7 +280,9 @@ $(document).ready(function() {
                     originClassList: originClassList,
                     classList : classList,
                     boardTitle : $('.default-wrapper').val(),
-                    boardContents : $('.calendar-textarea').val()
+                    boardContents : $('.calendar-textarea').val(),
+                    mapLng : mapLng,
+                    mapLat : mapLat
                 };
                 console.log("param:" + JSON.stringify(param));
 
@@ -191,68 +293,133 @@ $(document).ready(function() {
     });
 });
 
-// textarea 사이즈 자동조절
-function autoResize(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
-}
+var map = null;
 
-// textarea 글자수 제한
-function chkword(obj, maxWord) {
+// 카카오지도 api
+document.addEventListener('DOMContentLoaded', function() {
+    mapLat = mapLat !== null ? mapLat : 37.566826;
+    mapLng = mapLng !== null ? mapLng : 126.9786567;
+    console.log('latlng : ' + mapLat + ',' + mapLng);
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(mapLat, mapLng), // 지도의 중심좌표
+            level: 1 // 지도의 확대 레벨
+        };
 
-    var strValue = obj.value;
-    var strLen = strValue.length;
-    var totalByte = 0;
-    var len = 0;
-    var oneChar = "";
-    var str2 = "";
+    map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    hideOrShowMap();
 
-    for (var i = 0; i < strLen; i++) {
-        oneChar = strValue.charAt(i);
-        if (escape(oneChar).length > 4) {
-            totalByte += 2;
-        } else {
-            totalByte++;
-        }
+    // 주소-좌표 변환 객체를 생성합니다
+    var geocoder = new kakao.maps.services.Geocoder();
 
-        // 입력한 문자 길이보다 넘치면 잘라내기 위해 저장
-        if (totalByte <= maxWord) {
-            // len = i + 1;
-            len = maxWord;
-        }
+    // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+    var infowindow = new kakao.maps.InfoWindow({zindex:1});
+    var iwPosition = new kakao.maps.LatLng(mapLat, mapLng);
+
+    // 마커의 기본 주소를 설정하여 생성합니다
+    var markerPosition = new kakao.maps.LatLng(mapLat, mapLng);
+    var marker = new kakao.maps.Marker({
+        position: markerPosition
+    });
+    // 마커와 인포윈도우가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
+    searchDetailAddrFromCoords(mapLat, mapLng).then((infoContent) => {
+        var iwContent = infoContent;
+
+        infowindow = new kakao.maps.InfoWindow({
+            position: iwPosition,
+            content: iwContent
+        });
+
+        infowindow.open(map, marker);
+
+        $('.iwcontent_div').parent().parent().css({
+            'width': '0',
+            'height': '0'
+        });
+
+    }).catch((error) => {
+        console.error(error);
+    });
+
+    // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+
+        // 마커를 클릭한 위치에 표시합니다
+        marker.setPosition(mouseEvent.latLng);
+
+        mapLat = mouseEvent.latLng.getLat();
+        mapLng = mouseEvent.latLng.getLng();
+
+        searchDetailAddrFromCoords(mapLat, mapLng).then((infoContent) => {
+            infowindow.close();
+
+            var iwContent = infoContent;
+
+            iwPosition = new kakao.maps.LatLng(mapLat, mapLng);
+
+            infowindow = new kakao.maps.InfoWindow({
+                position: iwPosition,
+                content: iwContent
+            });
+
+            infowindow.open(map, marker);
+
+            $('.iwcontent_div').parent().parent().css({
+                'width': '0',
+                'height': '0'
+            });
+
+        }).catch((error) => {
+            console.error(error);
+        });
+    });
+
+
+    function searchDetailAddrFromCoords(mapLat, mapLng) {
+        return new Promise((resolve, reject) => {
+
+            // 좌표로 법정동 상세 주소 정보를 요청합니다
+            geocoder.coord2Address(mapLng, mapLat, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+
+                    var searchAddr = !!result[0].road_address ? result[0].road_address.address_name : result[0].address.address_name;
+
+                    var detailAddr = !!result[0].road_address ?
+                        '<div><div class="addrtitle">도로명주소</div><div>' + result[0].road_address.address_name + '</div></div>' : '';
+                    detailAddr += '<div><div class="addrtitle">지번</div><div>' + result[0].address.address_name + '</div></div>';
+
+                    var addrString =
+                        '<div class="bAddr">' +
+                        detailAddr +
+                        '</div>';
+
+                    var infoContent =
+                        '<div class="iwcontent_div">' +
+                        '<div>' + addrString + '</div>' +
+                        '<div class="iwcontent_adiv">' +
+                        '<a href="https://map.kakao.com/link/map/' + searchAddr+ ',' + mapLat + ',' + mapLng + '" target="_blank">큰지도보기</a>' +
+                        '<a href="https://map.kakao.com/link/to/' + searchAddr+ ',' + mapLat + ',' + mapLng + '" target="_blank">길찾기</a>' +
+                        '</div>' +
+                        '</div>';
+
+                    resolve(infoContent);
+                }else{
+                    reject('주소를 찾을 수 없습니다.');
+                }
+            });
+        });
     }
 
-    // 넘어가는 글자는 자른다.
-    if (strLen > maxWord) {
-        alert(maxWord + "자를 초과 입력 할 수 없습니다.");
-        str2 = strValue.substr(0, len);
-        obj.value = str2;
-        strLen = maxWord
-        chkword(obj, maxWord);
-    }
 
-    $('#textcnt').html("( " + strLen + " / " + maxWord + " )");
-}
 
-// 체크 개수 세기
-function checkCnt(){
-    var checked = $("input[class='form-check-input']:checked").length;
 
-    if($("#checkAll").is(":checked")){
-        checked--
-    }
+});
 
-    if ($("input[class='form-check-input']").length - 1 != checked){
-        $("input[id='checkAll']").prop("checked", false)
-    }
-
-    document.getElementById('checkboxCnt').innerText
-        = '(' + checked + '개)';
-}
 
 function afterSuccess(response) {
     // 추가 수정 구분해서 처리
-    if(!$('#checked_class_div')){
+    if($('#checked_class_div')){
         Swal.fire({
             title: "수정 완료",
             text: "창을 닫으면 일정표 화면으로 돌아갑니다.",

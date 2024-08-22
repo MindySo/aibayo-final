@@ -58,7 +58,7 @@ public class AnnounceController {
         Page<AnnounceDto>announces= announceService.findAllByKinderNoCard(condition,hashMap);
         log.info("announces!!!{}",announces);
 
-        return getPageInfoAndGoView(model, announces, "/admin/announce/card");
+        return getPageInfoAndGoView(model, announces, "admin/announce/card");
     }
     private String getPageInfoAndGoView(Model model, Page<AnnounceDto> announces, String view) {
         int totalPages = announces.getTotalPages();

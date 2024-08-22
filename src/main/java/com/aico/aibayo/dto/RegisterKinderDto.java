@@ -32,7 +32,30 @@ public class RegisterKinderDto {
     private String sidoList; // API 시도 리스트
     private String sggList; // API 시군구 리스트
     private String deleteFlag;
+    private String principalName;
 
+    public RegisterKinderDto(Long kinderNo, LocalTime kinderOpenTime, LocalTime kinderCloseTime, String kinderName,
+                             String kinderPostCode, String kinderLocNo, String kinderMidNo, String kinderEndNo,
+                             String kinderAddr, String kinderAddrDetail, LocalDateTime kinderRegDate,
+                             LocalDateTime kinderModifyDate, LocalDateTime kinderDeleteDate,
+                             String sidoList, String sggList, String deleteFlag) {
+        this.kinderNo = kinderNo;
+        this.kinderOpenTime = kinderOpenTime;
+        this.kinderCloseTime = kinderCloseTime;
+        this.kinderName = kinderName;
+        this.kinderPostCode = kinderPostCode;
+        this.kinderLocNo = kinderLocNo;
+        this.kinderMidNo = kinderMidNo;
+        this.kinderEndNo = kinderEndNo;
+        this.kinderAddr = kinderAddr;
+        this.kinderAddrDetail = kinderAddrDetail;
+        this.kinderRegDate = kinderRegDate;
+        this.kinderModifyDate = kinderModifyDate;
+        this.kinderDeleteDate = kinderDeleteDate;
+        this.sidoList = sidoList;
+        this.sggList = sggList;
+        this.deleteFlag = deleteFlag;
+    }
 
     public static RegisterKinderDto toDto(RegisterKinderEntity entity) {
         if (entity == null) { return null; }

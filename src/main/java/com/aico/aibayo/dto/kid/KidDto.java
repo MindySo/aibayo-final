@@ -29,6 +29,7 @@ public class KidDto {
 
     private Long id;
     private String username;
+    private String name;
 
     private Long classNo;
 
@@ -59,7 +60,7 @@ public class KidDto {
 
     public KidDto(Long kidNo, Long kinderNo, String kidName, LocalDate kidBirth, Integer kidGender,
                   LocalDateTime admissionDate, LocalDateTime modifyDate, LocalDateTime dischargeDate,
-                  String dischargeFlag, String username, Long parentKidAcceptNo) {
+                  String dischargeFlag, String username, String name, Long id, Long parentKidAcceptNo) {
         this.kidNo = kidNo;
         this.kinderNo = kinderNo;
         this.kidName = kidName;
@@ -70,6 +71,8 @@ public class KidDto {
         this.dischargeDate = dischargeDate;
         this.dischargeFlag = dischargeFlag;
         this.username = username;
+        this.name = name;
+        this.id = id;
         this.parentKidAcceptNo = parentKidAcceptNo;
     }
 

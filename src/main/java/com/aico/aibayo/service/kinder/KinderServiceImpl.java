@@ -1,13 +1,18 @@
 package com.aico.aibayo.service.kinder;
 
 import com.aico.aibayo.common.BooleanEnum;
+import com.aico.aibayo.common.MemberRoleEnum;
+import com.aico.aibayo.common.MemberStatusEnum;
 import com.aico.aibayo.dto.RegisterKinderDto;
 import com.aico.aibayo.dto.kinder.KinderDto;
+import com.aico.aibayo.entity.MemberEntity;
 import com.aico.aibayo.entity.RegisterKinderEntity;
+import com.aico.aibayo.repository.member.MemberRepository;
 import com.aico.aibayo.repository.settingKinder.KinderRepository;
 import com.aico.aibayo.repository.settingKinder.SettingMenuRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class KinderServiceImpl implements KinderService {
     private final KinderRepository kinderRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Optional<RegisterKinderEntity> findByKinderNo(Long kinderNo) {
@@ -35,8 +41,16 @@ public class KinderServiceImpl implements KinderService {
     }
 
     @Override
-    public Optional<RegisterKinderEntity> getKinderById(Long kinderNo) {
-        return kinderRepository.findById(kinderNo);
+    public RegisterKinderDto getKinderById(Long kinderNo) {
+        return
+        kinderRepository.findById(kinderNo).map(target->{
+            RegisterKinderDto dto = RegisterKinderDto.toDto(target);
+            memberRepository.findByKinderNoAndRoleNoAndStatus(
+                    dto.getKinderNo(), MemberRoleEnum.PRINCIPAL.getRole(), MemberStatusEnum.ACTIVE.getStatus())
+                    .ifPresent(member -> dto.setPrincipalName(member.getName()));
+
+            return dto;
+        }).orElse(null);
     }
 
     @Override

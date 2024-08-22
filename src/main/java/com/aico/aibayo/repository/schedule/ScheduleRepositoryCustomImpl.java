@@ -57,7 +57,9 @@ public class ScheduleRepositoryCustomImpl implements ScheduleRepositoryCustom {
                         board.writer,
                         board.boardContents,
                         schedule.scheduleStartDate,
-                        schedule.scheduleEndDate
+                        schedule.scheduleEndDate,
+                        schedule.mapLat,
+                        schedule.mapLng
                 )).distinct()
                 .from(board)
                 .join(schedule).on(board.boardNo.eq(schedule.boardNo))
@@ -106,7 +108,9 @@ public class ScheduleRepositoryCustomImpl implements ScheduleRepositoryCustom {
                         board.writer,
                         board.boardContents,
                         schedule.scheduleStartDate,
-                        schedule.scheduleEndDate
+                        schedule.scheduleEndDate,
+                        schedule.mapLat,
+                        schedule.mapLng
                 )).distinct()
                 .from(board)
                 .join(schedule).on(board.boardNo.eq(schedule.boardNo))

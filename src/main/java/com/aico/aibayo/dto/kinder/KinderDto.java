@@ -27,4 +27,5 @@ public class KinderDto {
     private LocalDateTime kinderDeleteDate; // 유치원 삭제일자
     private String sidoList; // API 시도 리스트
     private String sggList; // API 시군구 리스트
+
 }

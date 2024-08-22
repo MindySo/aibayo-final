@@ -92,6 +92,43 @@
             classSelect.addEventListener('change', toggleStudentField);
         });
 
+
+        function submitForm() {
+            var formData = {
+                username: $("#username").val(),
+                password: $("#password").val(),
+                phone: $("#phone").val(),
+                name: $("#name").val(),
+                role: $("#role").val(),
+                invite: $("#invite").val(),
+                kidBirth: $("#birth-input").val(),     // 원생 생일
+                kidGender: $("#gender-input").val(),   // 원생 성별
+                kidName: $("#name-input").val(),       // 원생 이름
+                relationship: $("#relationship-input").val(), // 원생과의 관계
+                kinderNo: $("#kindergarten-input").val(),  // 유치원 번호
+                classNo: $("#class-input").val()       // 반 번호
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/member/finalSignUp",
+                contentType: "application/json",
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    // 성공 시 처리
+                    console.log("회원가입 성공");
+                    alert('회원가입이 성공적으로 완료되었습니다.');
+                    window.location.href = "/member/signIn"; // 성공 페이지로 리다이렉트
+                },
+                error: function(error) {
+                    // 에러 시 처리
+                    console.log("회원가입 실패");
+                    alert('회원가입 중 오류가 발생했습니다.');
+                }
+            });
+        }
+
+
     </script>
 </head>
 <body>

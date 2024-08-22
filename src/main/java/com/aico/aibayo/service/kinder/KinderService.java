@@ -16,7 +16,7 @@ public interface KinderService {
 
     List<RegisterKinderDto> getAllKinder();
 
-    Optional<RegisterKinderEntity> getKinderById(Long kinderNo);
+    RegisterKinderDto getKinderById(Long kinderNo);
 
     RegisterKinderDto getKinderDtoById(Long kinderNo);
 

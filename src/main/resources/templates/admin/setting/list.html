@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
-<title layout:fragment="title">유치원 </title>
+<title layout:fragment="title">유치원 List</title>
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" href="/css/member/list.css" /></th:block>
@@ -15,18 +15,37 @@
 <div class="container main_container" layout:fragment="content">
 
 
-    <div>
-        유치원 선택
+    <div style="font-size: 30px; font-weight: bold;">
+        유치원을 선택해주세요
     </div>
 
 
     <div>
         <select
-                id="selectkinder">
-            <option value selected>유치원 선택 선택</option>
-<!--            <option th:each="kinders : ${allKinder}"-->
-<!--                    th:object="${kinders}" th:value="*{kinderNo}"-->
-<!--                    th:text="*{kinderName}">유치원 이름</option>-->
+                id="selectkinder"
+        style="display: block;
+    width: 100%;
+    padding: .375rem 2.25rem .375rem .75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e);
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;"
+
+        >
+            <option value selected>유치원 선택</option>
+
         </select>
     </div>
 

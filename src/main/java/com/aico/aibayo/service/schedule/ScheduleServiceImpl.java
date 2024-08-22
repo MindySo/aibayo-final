@@ -52,6 +52,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         Long kinderNo = (Long)requestBody.get("kinderNo");
         LocalDateTime startDate = LocalDateTime.parse((String)(requestBody.get("startDate")));
         LocalDateTime endDate = LocalDateTime.parse((String)(requestBody.get("endDate")));
+        Double mapLat = (Double)requestBody.get("mapLat");
+        Double mapLng = (Double)requestBody.get("mapLng");
 
         List<?> classes = (List<?>) requestBody.get("classList");
         List<Long> classList = classes.stream()
@@ -76,6 +78,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .boardNo(savedBoard.getBoardNo())
                 .scheduleStartDate(startDate)
                 .scheduleEndDate(endDate)
+                .mapLat(mapLat)
+                .mapLng(mapLng)
                 .build();
 
         ScheduleEntity savedSchedule = scheduleRepository.save(scheduleEntity);
@@ -104,6 +108,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         String boardContents = (String)requestBody.get("boardContents");
         LocalDateTime startDate = LocalDateTime.parse((String)(requestBody.get("startDate")));
         LocalDateTime endDate = LocalDateTime.parse((String)(requestBody.get("endDate")));
+        Double mapLat = (Double)requestBody.get("mapLat");
+        Double mapLng = (Double)requestBody.get("mapLng");
 
         List<?> classes = (List<?>) requestBody.get("classList");
         List<Long> classList = classes.stream()
@@ -139,6 +145,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleEntity.setScheduleNo(scheduleNo);
         scheduleEntity.setScheduleStartDate(startDate);
         scheduleEntity.setScheduleEndDate(endDate);
+        scheduleEntity.setMapLat(mapLat);
+        scheduleEntity.setMapLng(mapLng);
+
 
         scheduleRepository.save(scheduleEntity);
 

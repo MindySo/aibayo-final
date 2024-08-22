@@ -252,7 +252,7 @@ function setDust() {
         url: url + queryParams,
         success: function (response) {
             let item = response.response.body.items[0];
-            let pm10Grade1h = item.pm10Grade1h;
+            let pm10Grade1h = item.pm10Grade1h  == null ? 1 : item.pm10Grade1h;
             let pm25Grade1h = item.pm25Grade1h == null ? 1 : item.pm25Grade1h;
             // console.log(`item: ${JSON.stringify(response.response.body.items[0])}`);
             // console.log(`pm10Grade1h: ${pm10Grade1h}`)

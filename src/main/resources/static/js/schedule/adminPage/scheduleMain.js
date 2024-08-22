@@ -171,7 +171,6 @@ function getEvents() {
             contents: element.getAttribute('data-board-contents'),
             backgroundColor: classNoMatch !== null ? '#3788d8' : '#ff85aa',
             borderColor : classNoMatch !== null ? '#3788d8' : '#ff85aa',
-            location: '' // location 값이 없으므로 빈 문자열로 설정
         };
 
         events.push(event);
@@ -212,9 +211,23 @@ function showDaySchedule(selectedValue){
         classNo : classNo == null ? null : classNo
     }
     // console.log("param : " + JSON.stringify(param));
+    mapList = [];
 
     commonAjax(url, 'POST', param);
 }
+
+
+$(document).on('show.bs.collapse', '.collapse', function () {
+    console.log('collapsed clicked')
+    mapList.forEach(function (mapInfo){
+        setTimeout(function (){
+            console.log(mapInfo[0]);
+            mapInfo[0].relayout();
+            mapInfo[0].setCenter(new kakao.maps.LatLng(mapInfo[1], mapInfo[2]));
+        }, 10)
+    });
+});
+
 
 function afterSuccess(response, method) {
     $('.schedule-2').replaceWith($(response).find('.schedule-2'));
@@ -230,10 +243,114 @@ function afterSuccess(response, method) {
         showCalendar();
     }
 
+    var singleSchedule = $(".single-schedule");
+    singleSchedule.each(function(index, element) {
+
+        var ifLatlngExist = typeof $("#latlag").attr('data-map-lat') !== 'undefined';
+
+        if (ifLatlngExist) {
+            var scheduleNo = $(element).attr('id');
+            console.log(scheduleNo);
+            //---------카카오지도 api
+            var mapLat = $('#latlag[data-schedule-no="'+ scheduleNo +'"]').attr('data-map-lat');
+            var mapLng = $('#latlag[data-schedule-no="'+ scheduleNo +'"]').attr('data-map-lng');
+
+            var mapContainer = document.querySelector(`.map_div[id="${scheduleNo}"] #map`); // 지도를 표시할 div
+                mapOption = {
+                    center: new kakao.maps.LatLng(mapLat, mapLng), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
+
+            var map = null;
+
+            if(mapContainer){
+                map = new kakao.maps.Map(mapContainer, mapOption);
+            }
+            var mapInfo = [map, mapLat, mapLng];
+            mapList.push(mapInfo);
+
+            // 마커가 표시될 위치입니다
+            var markerPosition = new kakao.maps.LatLng(mapLat, mapLng);
+
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+
+            // 주소-좌표 변환 객체를 생성합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            function searchDetailAddrFromCoords(mapLat, mapLng) {
+                return new Promise((resolve, reject) => {
+                    // 좌표로 법정동 상세 주소 정보를 요청합니다
+                    geocoder.coord2Address(mapLng, mapLat, function(result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+
+                            var searchAddr = !!result[0].road_address ? result[0].road_address.address_name : result[0].address.address_name;
+
+                            var detailAddr = !!result[0].road_address ?
+                                '<div><div class="addrtitle">도로명주소</div><div>' + result[0].road_address.address_name + '</div></div>' : '';
+                            detailAddr += '<div><div class="addrtitle">지번</div><div>' + result[0].address.address_name + '</div></div>';
+
+                            var addrString =
+                                '<div class="bAddr">' +
+                                detailAddr +
+                                '</div>';
+
+                            var infoContent =
+                                '<div class="iwcontent_div">' +
+                                '<div>' + addrString + '</div>' +
+                                '<div class="iwcontent_adiv">' +
+                                '<a href="https://map.kakao.com/link/map/' + searchAddr+ ',' + mapLat + ',' + mapLng + '" target="_blank">큰지도보기</a>' +
+                                '<a href="https://map.kakao.com/link/to/' + searchAddr+ ',' + mapLat + ',' + mapLng + '" target="_blank">길찾기</a>' +
+                                '</div>' +
+                                '</div>';
+
+                            resolve(infoContent);
+                        }else{
+                            reject('주소를 찾을 수 없습니다.');
+                        }
+                    });
+                });
+            }
+
+            searchDetailAddrFromCoords(mapLat, mapLng).then((infoContent) => {
+                var iwContent = infoContent;
+
+                var iwPosition = new kakao.maps.LatLng(mapLat, mapLng);
+
+                var infowindow = new kakao.maps.InfoWindow({
+                    position: iwPosition,
+                    content: iwContent
+                });
+
+                infowindow.open(map, marker);
+
+                $('.iwcontent_div').parent().css({
+                    'width': '0',
+                    'height': '0',
+                });
+                $('.iwcontent_div').parent().parent().css({
+                    'width': '0',
+                    'height': '0'
+                });
+
+            }).catch((error) => {
+                console.error(error);
+            });
+
+            //---------카카오지도 api end
+        }
+    });
+    console.log(mapList);
+
     if(ifdeleted){
         ifdeleted = false;
         Swal.fire({
-            title: "수정 완료",
+            title: "삭제 완료",
             text: "창을 닫으면 일정표 화면으로 돌아갑니다.",
             icon: "success",
             customClass: {

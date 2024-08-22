@@ -149,35 +149,6 @@ $(document).ready(function () {
 
 
 
-
-$('.deleteReply').on('click', function (event) {
-    console.log("대댓글 삭제 버튼 클릭");
-    Swal.fire({
-        title: "정말로 삭제하시겠습니까?",
-        text: "삭제한 댓글은 복구할 수 없습니다.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#dc3545",
-        confirmButtonText: "삭제",
-        cancelButtonText: "취소"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            let commentNo = $(this).closest('.AAA').find('input').val(); // 삭제할 항목의 comment 가져옵니다.
-
-            let param = {
-                commentNo: commentNo
-            };
-
-            console.log(`param: ${JSON.stringify(param)}`);
-
-            let url = "/announce/comment/delete";
-
-            // AJAX 요청을 보내는 함수 호출
-            commonAjax(url, 'DELETE', param);
-        }
-    });
-});
-
 // 댓글 수정 버튼 클릭 이벤트 리스너
 $(document).on('click', '.saveReple', function (event) {
     console.log("대댓글 수정 버튼 클릭");
@@ -216,6 +187,36 @@ $(document).on('click', '.saveReple', function (event) {
     });
 });
 
+
+$(document).ready(function () {
+    $('.deleteReply').on('click', function (event) {
+        console.log("대댓글 삭제 버튼 클릭");
+        Swal.fire({
+            title: "정말로 삭제하시겠습니까?",
+            text: "삭제한 댓글은 복구할 수 없습니다.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let commentNo = $(this).closest('.AAA').find('input').val(); // 삭제할 항목의 comment 가져옵니다.
+
+                let param = {
+                    commentNo: commentNo
+                };
+
+                console.log(`param: ${JSON.stringify(param)}`);
+
+                let url = "/announce/comment/delete";
+
+                // AJAX 요청을 보내는 함수 호출
+                commonAjax(url, 'DELETE', param);
+            }
+        });
+    });
+});
 
 $(document).ready(function () {
     $('.deleteComment').on('click', function (event) {

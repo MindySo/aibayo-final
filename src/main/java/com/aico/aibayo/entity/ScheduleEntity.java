@@ -24,4 +24,8 @@ public class ScheduleEntity {
     private LocalDateTime scheduleStartDate;
     @Column(name = "schedule_end_date")
     private LocalDateTime scheduleEndDate;
+    @Column(name = "map_lat")
+    private Double mapLat;
+    @Column(name = "map_lng")
+    private Double mapLng;
 }

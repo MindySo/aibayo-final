@@ -52,6 +52,7 @@
                 data: JSON.stringify(formData),
                 success: function(response) {
                     console.log("회원가입 성공");
+                    alert('회원가입을 완료했습니다.');
                     window.location.href = "/member/signIn";
                 },
                 error: function(error) {

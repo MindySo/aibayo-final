@@ -711,6 +711,51 @@ flex: 0 0 auto;
 .control-wrapper{
   font-size: 14px;
   color: gray;
+  cursor: pointer;
+}
+
+#map{
+  width:100%;
+  height:300px;
+  border-radius: 10px;
+}
+
+.iwcontent_div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  border-radius: 5px;
+  border: 0.5px solid lightgray;
+  padding: 6px 15px;
+  background-color: white;
+  width: max-content;
+  position: relative;
+  align-self: center;
+  left: -27px;
+  top: -62px;
+}
+
+.iwcontent_adiv{
+  width: fit-content;
+  display: flex;
+  gap: 5px;
+}
+
+.iwcontent_adiv a{
+  color: blue;
+  font-size: 13px;
+}
+
+.bAddr{
+  font-size: 13px;
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+}
+
+.addrtitle{
+  color: grey;
 }
 
 :root {

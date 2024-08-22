@@ -48,9 +48,11 @@
                     contentType: "application/json",
                     data: JSON.stringify(formData),
                     success: function(response) {
+                        alert('회원가입을 완료했습니다.');
                         window.location.href = "/member/signIn";
                     },
                     error: function(error) {
+                        alert('회원가입에 실패했습니다.');
                         console.log("Error during principal sign up:", error);
                     }
                 });

@@ -117,6 +117,8 @@ public class KidRepositoryCustomImpl implements KidRepositoryCustom {
                         kid.dischargeDate,
                         kid.dischargeFlag,
                         member.username,
+                        member.name,
+                        member.id,
 //                        inviteCode.inviteEmail
                         acceptLog1.acceptNo
                 ))

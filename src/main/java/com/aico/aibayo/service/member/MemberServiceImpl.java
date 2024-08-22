@@ -67,6 +67,8 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity newMemberEntity = memberRepository.save(memberEntity);
         log.info("회원 정보 저장 완료: username = {}", username);
 
+
+
         if (memberDto.getRole().equals("ROLE_USER")) {
             processParentSignUp(memberDto, newMemberEntity);
         } else if (memberDto.getRole().equals("ROLE_TEACHER")){

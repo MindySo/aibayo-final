@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
-<title layout:fragment="title">paymentMain</title>
+<title layout:fragment="title">paymentBillingMain</title>
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/CommonContainerPlus.css}" />
@@ -17,9 +17,11 @@
 </th:block>
 
 <th:block layout:fragment="javascript">
+    <script th:src="@{/js/payment/paymentMain.js}"></script>
+    <script th:src="@{/js/payment/userPaymentMain.js}"></script>
+
     <!--datatable-->
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-    <script th:src="@{/js/payment/paymentMain.js}"></script>
 
     <!--datepicker-->
     <th:block th:replace="~{common/datepicker :: js}"/>
@@ -29,7 +31,11 @@
 <div class="container main_container" layout:fragment="content">
 
     <div class="div-2">
-        <div class="title"><div class="text-wrapper-4">청구내역</div></div>
+        <div class="title"><div class="text-wrapper-4">청구 및 수납</div></div>
+        <a class="button-modify" href="/payment/admin/paymentBillingWrite" th:method="get">
+            <img class="icon-pencil" src="/images/common/pencil.png" />
+            <div class="text-modify">청구서 작성</div>
+        </a>
     </div>
     <div class="selectarea">
         <div class="frame-2">
@@ -38,12 +44,12 @@
                 <div class="div-4">
                     <div class="calendar-pick">
                         <img class="calendar-vector" src="/images/common/calendar_gray.png" />
-                        <input type="text" class="datepickerdiv datepicker" placeholder="날짜 선택" readonly>
+                        <input type="text" class="datepickerdiv datepicker" id="inputStartDate" placeholder="날짜 선택" readonly>
                     </div>
                     <div class="text-wrapper-8">-</div>
                     <div class="calendar-pick">
                         <img class="calendar-vector" src="/images/common/calendar_gray.png" />
-                        <input type="text" class="datepickerdiv datepicker" placeholder="날짜 선택" readonly>
+                        <input type="text" class="datepickerdiv datepicker" id="inputEndDate" placeholder="날짜 선택" readonly>
                     </div>
                 </div>
             </div>
@@ -51,52 +57,58 @@
                 <div class="text-class"><div class="text-wrapper-6">검색어</div></div>
                 <div class="keywordarea">
                     <div class="keyword-input">
-                        <img class="vector-1" src="payment/img/search.png" />
+                        <img class="vector-1" src="/images/common/search.png" />
                         <input type="text" class="keyword" placeholder="검색어 입력">
                     </div>
                 </div>
             </div>
         </div>
-        <form class="frame-3" action="user/paymentMain">
+        <div class="frame-3">
             <div class="div-3">
                 <div class="text-class"><div class="text-wrapper-6">수납 상태</div></div>
                 <div class="form-check selectedoption">
 
-                    <input type="checkbox" class="btn-check" id="soonap" autocomplete="off">
-                    <label class="btn optiondiv" for="soonap">
+                    <input type="checkbox" class="btn-check" id="billed" value="0" autocomplete="off">
+                    <label class="btn optiondiv" for="billed">
+                        <div class="text-wrapper-9">청구</div>
+                    </label>
+
+                    <input type="checkbox" class="btn-check" id="paid" value="1" autocomplete="off">
+                    <label class="btn optiondiv" for="paid">
                         <div class="text-wrapper-9">수납</div>
                     </label>
 
-                    <input type="checkbox" class="btn-check" id="minap" autocomplete="off">
-                    <label class="btn optiondiv" for="minap">
+                    <input type="checkbox" class="btn-check" id="overdue" value="2" autocomplete="off">
+                    <label class="btn optiondiv" for="overdue">
                         <div class="text-wrapper-9">미납</div>
                     </label>
 
-                    <input type="checkbox" class="btn-check" id="wanryo" autocomplete="off">
-                    <label class="btn optiondiv" for="wanryo">
-                        <div class="text-wrapper-9">완료</div>
-                    </label>
-
-                    <input type="checkbox" class="btn-check" id="balhangcancel" autocomplete="off">
-                    <label class="btn optiondiv" for="balhangcancel">
+                    <input type="checkbox" class="btn-check" id="cancel" value="3" autocomplete="off">
+                    <label class="btn optiondiv" for="cancel">
                         <div class="text-wrapper-9">발행취소</div>
                     </label>
 
-                    <input type="checkbox" class="btn-check" id="confirmcancel" autocomplete="off">
-                    <label class="btn optiondiv" for="confirmcancel">
+                    <input type="checkbox" class="btn-check" id="refund" value="4" autocomplete="off">
+                    <label class="btn optiondiv" for="refund">
                         <div class="text-wrapper-9">승인취소</div>
                     </label>
 
                 </div>
             </div>
+
+            <select class="dropdown-class">
+                <option class="text-wrapper-5" value="">반 선택</option>
+                <option class="text-wrapper-5" th:each="class:${classList}" th:object="${class}" th:value="${class.classNo}" th:text="${class.className}">반이름</option>
+            </select>
+
             <div class="div-4">
-                <div class="view">
-                    <img class="reset" src="payment/img/reset.png" />
+                <div class="inputReset">
+                    <img class="reset" src="/images/common/reset.png" />
                     <div class="text-wrapper-10">초기화</div>
                 </div>
-                <input type="submit" class="search" value="조회하기" />
+                <input type="button" class="search" value="조회하기" />
             </div>
-        </form>
+        </div>
     </div>
     <div class="payment-content">
         <div class="div-2">
@@ -104,317 +116,65 @@
                 <div class="cnt-all">
                     <div class="text-wrapper-12">전체</div>
                     <div class="cnt-2">
-                        <div class="text-wrapper-13">197</div>
+                        <div class="text-wrapper-13" id="tupleCnt">n</div>
                         <div class="text-wrapper-13">건</div>
                     </div>
                 </div>
-                <select class="dropdown-class">
-                    <option class="text-wrapper-5" value="">반 선택</option>
-                    <option class="text-wrapper-5" value="">1반</option>
-                    <option class="text-wrapper-5" value="">2반</option>
-                    <option class="text-wrapper-5" value="">3반</option>
-                    <option class="text-wrapper-5" value="">4반</option>
-                </select>
             </div>
-            <a class="button-submit" th:href="@{/user/paymentPay}">
-                <div class="text-submit">납부하기</div>
-            </a>
         </div>
 
 
+        <div class="tableDiv">
+            <table class="datatable-payment" id="datatable-payment">
+                <thead>
+                <tr class="column">
+                    <th><input class="form-check-input" type="checkbox" id="checkAll"></th>
+                    <th class="text-wrapper-15" data-orderable="false">수납상태</th>
+                    <th class="text-wrapper-16">수납일</th>
+                    <th class="text-wrapper-16">발송일</th>
+                    <th class="text-wrapper-17">만료일</th>
+                    <th class="text-wrapper-18">원아명</th>
+                    <th class="text-wrapper-19">반정보</th>
+                    <th class="text-wrapper-20">청구항목</th>
+                    <th class="text-wrapper-21">청구금액</th>
+                    <th class="text-wrapper-22">할인</th>
+                    <th class="text-wrapper-21">최종금액</th>
+                </tr>
+                </thead>
+                <tbody class="tuples" th:data-tuple-cnt="${paymentDtoList.size()}">
+                <tr class="tuple" th:each="payment: ${paymentDtoList}" th:object="${payment}" th:value="*{billNo}">
+                    <td><input class="form-check-input" type="checkbox" th:data-bill-no="*{billNo}"></td>
+                    <td class="text-wrapper-23 tuple_payment_status" th:data-payment-status="*{paymentStatus}">수납상태</td>
+                    <td class="text-wrapper-24 tuple_payment_log_reg_date" th:data-reg-date="*{paymentLogRegDate}">수납일</td>
+                    <td class="text-wrapper-24 tuple_payment_start_date" th:data-start-date="*{paymentStartDate}">발송일</td>
+                    <td class="text-wrapper-25 tuple_payment_end_date" th:data-end-date="*{paymentEndDate}">만료일</td>
+                    <td class="text-wrapper-26 tuple_kid_name" th:text="*{kidName}">원아명</td>
+                    <td class="text-wrapper-27 tuple_class_name" th:text="*{className}">반정보</td>
+                    <td class="text-wrapper-28 tuple_payment_title" th:text="*{paymentTitle}">청구항목</td>
+                    <td class="text-wrapper-29 tuple_payment_price" th:data-payment-price="*{paymentPrice}">청구금액</td>
+                    <td class="text-wrapper-30 tuple_discount_rate" th:text="*{discountRate} == 0 ? '-' : *{discountRate} + '%'">할인</td>
+                    <td class="text-wrapper-29 tuple_final_price" th:data-payment-price="*{paymentPrice}" th:data-discount-rate="*{discountRate}">최종금액</td>
+                </tr>
+                </tbody>
 
-        <table class="datatable-payment" id="datatable-payment">
-            <thead>
-            <tr class="column">
-                <th><div class="checkbox"></div></th>
-                <th class="text-wrapper-15">수납상태</th>
-                <th class="text-wrapper-16">수납일</th>
-                <th class="text-wrapper-16">발송일</th>
-                <th class="text-wrapper-17">만료일</th>
-                <th class="text-wrapper-18">학생명</th>
-                <th class="text-wrapper-19">반정보</th>
-                <th class="text-wrapper-20">청구항목</th>
-                <th class="text-wrapper-21">청구금액</th>
-                <th class="text-wrapper-22">할인</th>
-                <th class="text-wrapper-21">최종금액</th>
-            </tr>
-            </thead>
-            <tbody class="tuples">
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">2023.5.11.<br />17:21:47</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">최원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">20%</td>
-                <td class="text-wrapper-29">200,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">김원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">10%</td>
-                <td class="text-wrapper-29">270,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">박원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">수납완료</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">이원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">발행취소</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">마원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">10%</td>
-                <td class="text-wrapper-29">275,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">수납완료</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">고원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">홍원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">승인취소</td>
-                <td class="text-wrapper-24">2023.5.11.<br />17:21:47</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">최원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">20%</td>
-                <td class="text-wrapper-29">200,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">김원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">10%</td>
-                <td class="text-wrapper-29">270,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">박원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">수납완료</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">이원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">수납완료</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">마원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">10%</td>
-                <td class="text-wrapper-29">275,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">수납완료</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">고원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">홍원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">승인취소</td>
-                <td class="text-wrapper-24">2023.5.11.<br />17:21:47</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">최원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">20%</td>
-                <td class="text-wrapper-29">200,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">김원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">10%</td>
-                <td class="text-wrapper-29">270,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">박원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">수납완료</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">이원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">발행취소</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">마원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">10%</td>
-                <td class="text-wrapper-29">275,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">수납완료</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">고원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 상반기 교습비(월 1회)</td>
-                <td class="text-wrapper-29">300,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            <tr class="tuple">
-                <td><div class="checkbox"></div></td>
-                <td class="text-wrapper-23">미수납</td>
-                <td class="text-wrapper-24">-</td>
-                <td class="text-wrapper-24">2023.5.11.<br />20:08:20</td>
-                <td class="text-wrapper-25">2023.5.18.<br />15:00:00</td>
-                <td class="text-wrapper-26">홍원아</td>
-                <td class="text-wrapper-27">브로콜리반</td>
-                <td class="text-wrapper-28">2024 교구비(6개월)</td>
-                <td class="text-wrapper-29">250,000원</td>
-                <td class="text-wrapper-30">-</td>
-                <td class="text-wrapper-29">300,000원</td>
-            </tr>
-            </tbody>
-        </table>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Select all rows within the tbody with the class 'tuple'
+                        const rows = document.querySelectorAll('.tuples .tuple');
+
+                        rows.forEach(row => {
+                            row.addEventListener('click', function() {
+                                // Extract the billNo from the row's value attribute
+                                const billNo = row.getAttribute('value');
+                                // Navigate to /user/paymentPay with the billNo as a parameter
+                                window.location.href = '/payment/user/paymentPay?billNo=' + billNo;
+                            });
+                        });
+                    });
+                </script>
+            </table>
+        </div>
+
     </div>
 
 </div>

@@ -101,14 +101,9 @@ public class SettingController {
             Model model
     ){
         kinderNo = loginInfo.getKinderNo();
-        Optional<RegisterKinderEntity> kinderDtoOptional = kinderService.getKinderById(kinderNo);
+        RegisterKinderDto kinderDto = kinderService.getKinderById(kinderNo);
 
-        if (kinderDtoOptional.isPresent()) {
-            model.addAttribute("kinderDto", kinderDtoOptional.get());
-        } else {
-            // Optional이 비어 있는 경우에 대한 처리 (예: 에러 페이지로 리디렉션)
-            return "error/404";
-        }
+        model.addAttribute("kinderDto", kinderDto);
 
         return "admin/setting/info";
     }

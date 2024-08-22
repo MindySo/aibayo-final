@@ -149,6 +149,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
                 .acceptStatus(AcceptStatusEnum.ACCEPT.getStatus())
                 .acceptDate(LocalDateTime.now())
                 .acceptRegDate(LocalDateTime.now())
+                .acceptDeleteFlag(BooleanEnum.FALSE.getBool())
                 .build();
         AcceptLogEntity savedAcceptLog =
                 acceptLogRepository.save(acceptLogEntity);

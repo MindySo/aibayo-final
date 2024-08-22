@@ -18,7 +18,7 @@
 
 <th:block layout:fragment="javascript">
   <script src="/js/schedule/adminPage/scheduleMain.js"></script>
-
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=57a173f89d865b272a5903af669bf1de&libraries=services"></script>
   <!-- FullCalendar and related modules -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.11/index.global.min.js"></script>
@@ -111,6 +111,18 @@
                   </div>
                 </th:block>
                 <div class="schedule-contents" th:title="*{boardContents}" th:text="*{boardContents}">일정 내용</div>
+
+
+                <th:block th:if="*{mapLng} != null">
+                  <div class="map_div" th:id="*{scheduleNo}">
+                    <!--카카오지도-->
+                    <div class="div_hidden" th:id="latlag" th:data-schedule-no="*{scheduleNo}" th:data-map-lng="*{mapLng}" th:data-map-lat="*{mapLat}"></div>
+                    <div id="map"></div>
+                  </div>
+                </th:block>
+
+
+
                 <div class="control-div">
                   <a class="control-wrapper" th:href="@{'/schedule/admin/scheduleModify/' + *{scheduleNo}}">수정</a>
                   <div class="control-wrapper" > | </div>

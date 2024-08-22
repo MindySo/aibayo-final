@@ -7,11 +7,17 @@
 <!--    <script th:src="@{/js/jquery.min.js}"></script> &lt;!&ndash; jQuery 추가 &ndash;&gt;-->
 <!--    <script th:src="@{/js/login/signUpKid.js}"></script>-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/common.js"></script>
     <script>
         function toggleClassField() {
             const kindergartenSelect = document.getElementById('kindergarten-input');
             const classSelect = document.getElementById('class-input');
 
+            $('#class-input').find('.class_append').each(function () {
+                $(this).remove();
+            });
+
+            
             if (kindergartenSelect.value === "") {
                 classSelect.disabled = true;
             } else {
@@ -26,6 +32,9 @@
                 commonAjax(url,'POST',param)
             }
         }
+
+
+
         function afterSuccess(response){
             console.log('signUpTeacher');
             for(let selectClass of response){
@@ -77,6 +86,7 @@
                 error: function(error) {
                     // 에러 시 처리
                     console.log("회원가입 실패");
+                    alert('회원가입에 실패했습니다.');
                     // window.location.href = "/member/signIn"; // 에러 페이지로 리다이렉트
                 }
             });
