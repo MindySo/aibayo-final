@@ -128,7 +128,7 @@ function registerEventHandlers() {
     // 초대중 처리
     $(document).on('click', '#inviteDelete', function () {
         Swal.fire({
-            title: "정말로 취소하시겠습니까?",
+            title: "정말로 삭제하시겠습니까?",
             showCancelButton: true,
             confirmButtonColor: "#dc3545",
             confirmButtonText: "네",
@@ -143,9 +143,9 @@ function registerEventHandlers() {
                     inviteId: target.data('invite-id'),
                     acceptNo: target.data('invite-code-accept-no')
                 }
-                // console.log(`param : ${JSON.stringify(param)}`);
+                console.log(`param : ${JSON.stringify(param)}`);
 
-                target.remove();
+                target.closest('.profile_invite').remove();
 
                 commonAjax(url, 'DELETE', param);
             }
@@ -218,6 +218,60 @@ function changeByStatus(){
     });
 }
 
+
+// 새롭게 받은 데이터를 이용하여 프로필 리스트 갱신
+function updateProfileLists(response) {
+    $('#teacherStatus1Div .carousel').replaceWith($(response).find('#teacherStatus1Div .carousel'));
+    $('#teacherStatus0Div .carousel_wait').replaceWith($(response).find('#teacherStatus0Div .carousel_wait'));
+    $('#teacherStatus2Div .carousel_invite').replaceWith($(response).find('#teacherStatus2Div .carousel_invite'));
+
+    // 이벤트 핸들러 재등록
+    registerEventHandlers();
+}
+
+function updateStatusCounts() {
+    // 승인 완료 교사 수 업데이트
+    let acceptedCount = $('#teacherStatus1Div .profile').length;
+    $('label[for="teacherStatus1"]').text(`승인 완료 ${acceptedCount}명`);
+    $('#teacherStatus1Div .n-2').text(`${acceptedCount}`);
+
+    // 승인 대기 교사 수 업데이트
+    let waitingCount = $('#teacherStatus0Div .profile_wait').length;
+    $('label[for="teacherStatus0"]').text(`승인 대기 ${waitingCount}명`);
+    $('#teacherStatus0Div .n-2').text(`${waitingCount}`);
+
+    // 초대 중 교사 수 업데이트
+    let invitedCount = $('#teacherStatus2Div .profile_invite').length;
+    $('label[for="teacherStatus2"]').text(`초대 중 ${invitedCount}명`);
+    $('#teacherStatus2Div .n-2').text(`${invitedCount}`);
+}
+
+function ifResultNull(){
+
+    // 모든 상태 div 숨기기
+    $('.ifResultNull').hide();
+
+    // 선택된 값에 따라 해당 div 보이기
+
+    // console.log($('#teacherStatus1Div .profile').find().prevObject.length);
+    // console.log($('#teacherStatus0Div .profile').find().prevObject.length);
+    // console.log($('#teacherStatus2Div .profile').find().prevObject.length);
+
+    if($('#teacherStatus1Div .profile').find().prevObject.length == 0){
+        $('#teacherStatus1Div .ifResultNull').show();
+    }
+    if($('#teacherStatus0Div .profile_wait').find().prevObject.length == 0){
+        $('#teacherStatus0Div .ifResultNull').show();
+    }
+    if($('#teacherStatus2Div .profile_invite').find().prevObject.length == 0){
+        $('#teacherStatus2Div .ifResultNull').show();
+    }
+}
+
+
+
+
+
 function afterSuccess(response, method) {
 
     console.log('AJAX Response:', JSON.stringify(response, null, 2));
@@ -283,57 +337,8 @@ function afterSuccess(response, method) {
     });
 
     initStatus();
-    changeByStatus();
     ifResultNull();
+    changeByStatus();
 
-    registerEventHandlers()
-}
-
-// 새롭게 받은 데이터를 이용하여 프로필 리스트 갱신
-function updateProfileLists(response) {
-    $('#teacherStatus1Div .carousel').replaceWith($(response).find('#teacherStatus1Div .carousel'));
-    $('#teacherStatus0Div .carousel_wait').replaceWith($(response).find('#teacherStatus0Div .carousel_wait'));
-    $('#teacherStatus2Div .carousel_invite').replaceWith($(response).find('#teacherStatus2Div .carousel_invite'));
-
-    // 이벤트 핸들러 재등록
     registerEventHandlers();
-}
-
-function updateStatusCounts() {
-    // 승인 완료 교사 수 업데이트
-    let acceptedCount = $('#teacherStatus1Div .profile').length;
-    $('label[for="teacherStatus1"]').text(`승인 완료 ${acceptedCount}명`);
-    $('#teacherStatus1Div .n-2').text(`${acceptedCount}`);
-
-    // 승인 대기 교사 수 업데이트
-    let waitingCount = $('#teacherStatus0Div .profile_wait').length;
-    $('label[for="teacherStatus0"]').text(`승인 대기 ${waitingCount}명`);
-    $('#teacherStatus0Div .n-2').text(`${waitingCount}`);
-
-    // 초대 중 교사 수 업데이트
-    let invitedCount = $('#teacherStatus2Div .profile_invite').length;
-    $('label[for="teacherStatus2"]').text(`초대 중 ${invitedCount}명`);
-    $('#teacherStatus2Div .n-2').text(`${invitedCount}`);
-}
-
-function ifResultNull(){
-
-    // 모든 상태 div 숨기기
-    $('.ifResultNull').hide();
-
-    // 선택된 값에 따라 해당 div 보이기
-
-    console.log($('#teacherStatus1Div .profile').find().prevObject.length);
-    console.log($('#teacherStatus0Div .profile').find().prevObject.length);
-    console.log($('#teacherStatus2Div .profile').find().prevObject.length);
-
-    if($('#teacherStatus1Div .profile').find().prevObject.length == 0){
-        $('#teacherStatus1Div .ifResultNull').show();
-    }
-    if($('#teacherStatus0Div .profile_wait').find().prevObject.length == 0){
-        $('#teacherStatus0Div .ifResultNull').show();
-    }
-    if($('#teacherStatus2Div .profile_invite').find().prevObject.length == 0){
-        $('#teacherStatus2Div .ifResultNull').show();
-    }
 }

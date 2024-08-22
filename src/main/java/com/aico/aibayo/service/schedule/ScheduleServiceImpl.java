@@ -108,8 +108,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         String boardContents = (String)requestBody.get("boardContents");
         LocalDateTime startDate = LocalDateTime.parse((String)(requestBody.get("startDate")));
         LocalDateTime endDate = LocalDateTime.parse((String)(requestBody.get("endDate")));
-        Double mapLat = (Double)requestBody.get("mapLat");
-        Double mapLng = (Double)requestBody.get("mapLng");
+        Double mapLat = requestBody.get("mapLat") == null ?  null : Double.parseDouble((String)requestBody.get("mapLat"));
+        Double mapLng = requestBody.get("mapLng") == null ?  null : Double.parseDouble((String)requestBody.get("mapLng"));
 
         List<?> classes = (List<?>) requestBody.get("classList");
         List<Long> classList = classes.stream()

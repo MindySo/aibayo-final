@@ -1,4 +1,5 @@
 var ifdeleted = false;
+let calendar;
 
 $(document).ready(function() {
 
@@ -58,9 +59,7 @@ function showCalendar(){
 
     var calendarEl = document.getElementById('calendar');
 
-    var eventsData = getEvents();
-
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
         googleCalendarApiKey: "AIzaSyAKURukCy6rYdcfKAFsNYhY6wpn7XLzRqA",
         height: "700px",
         expandRows: true,
@@ -68,7 +67,13 @@ function showCalendar(){
         events:
             {
                 googleCalendarId : 'ko.south_korea#holiday@group.v.calendar.google.com',
-                backgroundColor: 'red'
+                backgroundColor: 'red',
+                borderColor : 'red',
+                eventDataTransform: function(eventData) {
+                    // URL 속성 제거
+                    delete eventData.url;
+                    return eventData;
+                }
             }
         ,
 
@@ -132,7 +137,7 @@ function showCalendar(){
                 dayGridMonthButton.classList.add('disabled');
             }
         },
-        events: eventsData
+        // events: eventsData
 
     });
 
@@ -147,14 +152,13 @@ function showCalendar(){
         });
     });
 
+    getEvents();
     calendar.render();
     showDaySchedule(initialSelectedValue);
 }
 
 function getEvents() {
     const scheduleElements = document.querySelectorAll('.schedule_values');
-    const events = [];
-
 
     scheduleElements.forEach(element => {
         let endDate = element.getAttribute('data-schedule-end-date');
@@ -173,10 +177,8 @@ function getEvents() {
             borderColor : classNoMatch !== null ? '#3788d8' : '#ff85aa',
         };
 
-        events.push(event);
+        calendar.addEvent(event);
     });
-
-    return events;
 }
 
 function addOneDayAndFormat(dateString) {
