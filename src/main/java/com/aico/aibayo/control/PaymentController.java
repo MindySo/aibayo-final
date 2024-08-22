@@ -157,14 +157,8 @@ public class PaymentController {
         return "user/payment/paymentPay";
     }
 
-    @GetMapping("/user/success")
-    public void paySuccess(@ModelAttribute("loginInfo") MemberDto loginInfo,
-                                  @RequestParam("billNo") Long billNo, Model model){
-        log.info("billNo {}", billNo);
-        PaymentSearchCondition condition = new PaymentSearchCondition();
-        condition.setBillNo(billNo);
-        condition.setMemberId(loginInfo.getId());
 
-        paymentService.insertPaymentSuccess(condition);
-    }
+
+
+
 }

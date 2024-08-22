@@ -41,7 +41,8 @@
 <!--                </div>-->
 <!--            </div>-->
             <div class="div-5">
-                <div class="title-2"><div class="text-wrapper-11 paymentContent" th:value="${payment.billNo}">청구 내역</div></div>
+                <div class="title-2"><div class="text-wrapper-11" >청구 내역</div></div>
+                <input type="hidden" class="paymentContent" th:value="${payment.billNo}">
                 <div class="div-3">
                     <div class="div-2">
                         <div class="text-wrapper-7">청구 항목</div>
