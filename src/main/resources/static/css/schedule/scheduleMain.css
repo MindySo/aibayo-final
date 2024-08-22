@@ -1,25 +1,11 @@
 .container .title {
   display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 10px;
   position: relative;
   flex: 0 0 auto;
 }
-
-/*.container .text-wrapper-4 {*/
-/*  position: relative;*/
-/*  width: 268px;*/
-/*  height: 58px;*/
-/*  !*font-family: var(--font-selected-menu-font-family);*!*/
-/*  font-weight: var(--font-selected-menu-font-weight);*/
-/*  color: #000000;*/
-/*  font-size: var(--font-selected-menu-font-size);*/
-/*  letter-spacing: var(--font-selected-menu-letter-spacing);*/
-/*  line-height: var(--font-selected-menu-line-height);*/
-/*  font-style: var(--font-selected-menu-font-style);*/
-/*}*/
 
 .container .cal-contents {
   display: flex;
@@ -34,10 +20,9 @@
 .container .buttons {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   position: relative;
   align-self: stretch;
-  width: 100%;
+  width: fit-content;
   flex: 0 0 auto;
 }
 
@@ -72,7 +57,6 @@
   position: relative;
   width: 100%;
   height: 70%;
-  /*font-family: var(--presets-body2-font-family);*/
   font-weight: var(--presets-body2-font-weight);
   color: #828282;
   font-size: var(--presets-body2-font-size);
@@ -144,7 +128,6 @@
 .container .text-wrapper-6 {
   position: relative;
   width: fit-content;
-  /*font-family: var(--small-text-font-family);*/
   font-weight: var(--small-text-font-weight);
   color: #ffffff;
   font-size: var(--small-text-font-size);
@@ -173,7 +156,6 @@
 .container .text-wrapper-7 {
   position: relative;
   width: fit-content;
-  /*font-family: var(--small-text-font-family);*/
   font-weight: var(--small-text-font-weight);
   color: #999999;
   font-size: var(--small-text-font-size);
@@ -200,7 +182,6 @@
 .container .text-wrapper-8 {
   position: relative;
   width: fit-content;
-  /*font-family: var(--small-text-font-family);*/
   font-weight: var(--small-text-font-weight);
   color: #000000;
   font-size: var(--small-text-font-size);
@@ -212,7 +193,6 @@
 
 .container .cal-schedule {
   display: flex;
-  height: 964px;
   align-items: center;
   justify-content: center;
   gap: 16px;
@@ -255,18 +235,9 @@
   flex-grow: 1;
 }
 
-.container .div-3 {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  flex: 0 0 auto;
-}
-
 .container .text-wrapper-9 {
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-SemiBold", Helvetica;*/
   font-weight: 600;
   color: #000000;
   font-size: 22px;
@@ -325,7 +296,6 @@
 .container .text-wrapper-10 {
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   color: #cd6969;
   font-size: 15px;
@@ -337,7 +307,6 @@
 .container .text-wrapper-11 {
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   color: #000000;
   font-size: 15px;
@@ -349,7 +318,6 @@
 .container .text-wrapper-12 {
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   color: #61a3f1;
   font-size: 15px;
@@ -398,7 +366,6 @@
   color: #b3b3b3;
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   font-size: 18px;
   text-align: center;
@@ -422,7 +389,6 @@
   color: #61a3f1;
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   font-size: 18px;
   text-align: center;
@@ -449,7 +415,6 @@
   color: #cd6969;
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   font-size: 18px;
   text-align: center;
@@ -462,7 +427,6 @@
   color: #000000;
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   font-size: 18px;
   text-align: center;
@@ -484,7 +448,7 @@
 
 .container .schedule {
   width: 40%;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 11px 32px 32px;
   background-color: #f5f5f5;
   border-radius: 20px;
@@ -533,7 +497,6 @@
 .container .text-wrapper-15 {
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   color: #000000;
   font-size: 20px;
@@ -557,7 +520,6 @@
 .container .text-wrapper-16 {
   position: relative;
   width: fit-content;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   color: #7b7b7b;
   font-size: 18px;
@@ -567,14 +529,13 @@
 }
 
 .container .schedule-2 {
-  height: 828px;
   gap: 15px;
-  width: fill;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   align-self: stretch;
+  height: auto;
 }
 
 .container .accordion-header {
@@ -608,8 +569,16 @@
   box-shadow: none;
 }
 
-.accordion-collapse{
+.accordion_collapse_contents{
   padding-top: 20px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.term {
+  font-size: 14px;
+  color: gray;
 }
 
 .container .single-schedule {
@@ -636,17 +605,25 @@ flex: 0 0 auto;
 }
 
 .container .ellipse {
-position: relative;
-width: 10px;
-height: 10px;
-background-color: #b4ff91;
-border-radius: 5px;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  align-self: flex-start;
+  margin-top: 7px;
+}
+
+.ellipse_all{
+  background-color: #3788d8;
+}
+
+.ellipse_class{
+  background-color: #ff85aa;
 }
 
 .container .text-wrapper-17 {
-position: relative;
-flex: 1;
-/*font-family: "Lato-Medium", Helvetica;*/
+  position: relative;
+  flex: 1;
   font-weight: 500;
   color: #747373;
   font-size: 16px;
@@ -655,10 +632,19 @@ flex: 1;
   width: fit-content;
 }
 
+.span-wrapper-17 {
+  position: relative;
+  font-weight: 500;
+  color: #747373;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 22px;
+  width: 12px;
+}
+
 .container .text-wrapper-18 {
   position: relative;
   width: 321px;
-  /*font-family: "Lato-Medium", Helvetica;*/
   font-weight: 500;
   color: #000000;
   font-size: 18px;
@@ -675,40 +661,123 @@ flex: 1;
   border-radius: 5px;
 }
 
+.schedule-contents {
+  line-height: 20px;
+}
+
 #calendar{
   width:100%;
   /*margin:20px auto;*/
 }
 
-.schedules_div_hidden {
+.div_hidden {
   display: none;
 }
 
+.fc-event-title{
+  font-size: 11px;
+}
+
+[role="row"] {
+  border-bottom: 1px solid #c3c3c3;
+}
+
+.fc th {
+  height: 30px;
+}
+
+.classNamesDiv{
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 16px;
+}
+
+.classNames{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.fc-day-today{
+  border-radius: 15px;
+  background-color: rgba(255, 220, 40, .15) !important;
+}
+
+.control-div{
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.control-wrapper{
+  font-size: 14px;
+  color: gray;
+  cursor: pointer;
+}
+
+#map{
+  width:100%;
+  height:300px;
+  border-radius: 10px;
+}
+
+.iwcontent_div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  border-radius: 5px;
+  border: 0.5px solid lightgray;
+  padding: 6px 15px;
+  background-color: white;
+  width: max-content;
+  position: relative;
+  align-self: center;
+  left: -27px;
+  top: -62px;
+}
+
+.iwcontent_adiv{
+  width: fit-content;
+  display: flex;
+  gap: 5px;
+}
+
+.iwcontent_adiv a{
+  color: blue;
+  font-size: 13px;
+}
+
+.bAddr{
+  font-size: 13px;
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+}
+
+.addrtitle{
+  color: grey;
+}
 
 :root {
   --x-1: rgba(133, 199, 233, 1);
   --x-2: rgba(13, 17, 83, 1);
   --x-3: rgba(255, 255, 255, 1);
   --blue-1: rgba(47, 128, 237, 1);
-  /*---font-family: "Noto Sans", Helvetica;*/
   ---font-weight: 500;
   ---font-size: 100px;
   ---letter-spacing: -5px;
   ---line-height: 89.99999761581421%;
   ---font-style: normal;
-  /*--font-selected-menu-font-family: "Inter", Helvetica;*/
   --font-selected-menu-font-weight: 600;
   --font-selected-menu-font-size: 48px;
   --font-selected-menu-letter-spacing: 0px;
   --font-selected-menu-line-height: normal;
   --font-selected-menu-font-style: normal;
-  /*--presets-body2-font-family: "Inter", Helvetica;*/
   --presets-body2-font-weight: 400;
   --presets-body2-font-size: 16px;
   --presets-body2-letter-spacing: 0px;
   --presets-body2-line-height: 24px;
   --presets-body2-font-style: normal;
-  /*--small-text-font-family: "Inter", Helvetica;*/
   --small-text-font-weight: 500;
   --small-text-font-size: 16px;
   --small-text-letter-spacing: 0px;

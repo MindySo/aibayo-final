@@ -3,6 +3,7 @@ package com.aico.aibayo.control;
 import com.aico.aibayo.common.BooleanEnum;
 import com.aico.aibayo.common.MemberStatusEnum;
 import com.aico.aibayo.dto.member.MemberDto;
+import com.aico.aibayo.dto.member.MemberSearchCondition;
 import com.aico.aibayo.entity.MemberEntity;
 import com.aico.aibayo.jwt.JWTUtil;
 import com.aico.aibayo.repository.member.MemberRepository;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
+    private final HttpSession session;
     private final MemberRepository memberRepository;
 
     @ModelAttribute

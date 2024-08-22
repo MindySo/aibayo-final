@@ -7,6 +7,7 @@ import com.aico.aibayo.dto.member.MemberDto;
 import com.aico.aibayo.dto.member.MemberSearchCondition;
 import com.aico.aibayo.entity.*;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
@@ -129,6 +130,52 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
         return Optional.ofNullable(memberDto);
     }
 
+    @Override
+    public Optional<MemberDto> findByUsernameWithParentKid(MemberSearchCondition condition) {
+        MemberDto memberDto = jpaQueryFactory
+                .select(Projections.constructor(MemberDto.class,
+                        member.id,
+                        member.username,
+                        member.name,
+                        member.password,
+                        member.phone,
+                        member.roleNo,
+                        member.role,
+                        member.status,
+                        member.regDate,
+                        member.modifyDate,
+                        member.inactivateDate,
+                        member.latestLogDate,
+                        member.profilePicture,
+                        kid.kinderNo,
+                        kid.kidNo,
+                        acceptLog1.acceptNo,
+                        acceptLog1.acceptStatus,
+                        parentKid.isMainParent
+                ))
+                .from(member)
+                .join(parentKid).on(member.id.eq(parentKid.id))
+                .join(kid).on(
+                        kid.kidNo.eq(parentKid.kidNo)
+                                .and(kid.dischargeFlag.eq(BooleanEnum.FALSE.getBool()))
+                )
+                .join(acceptLog1).on(
+                        acceptLog1.acceptNo.eq(parentKid.acceptNo)
+                                .and(acceptLog1.acceptStatus.eq(AcceptStatusEnum.ACCEPT.getStatus()))
+                )
+                .where(
+                        member.status.eq(MemberStatusEnum.ACTIVE.getStatus()),
+                        member.username.eq(condition.getUsername()),
+                        getKidNoEq(condition.getKidNo())
+                )
+                .orderBy(acceptLog1.acceptDate.asc())
+                .fetchFirst();
+        return Optional.ofNullable(memberDto);
+    }
+
+    private BooleanExpression getKidNoEq(Long kidNo) {
+        return kidNo == null ? null : kid.kidNo.eq(kidNo);
+    }
 
 
     @Override

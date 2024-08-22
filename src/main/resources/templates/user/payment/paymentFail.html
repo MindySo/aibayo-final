@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
+
+<title layout:fragment="title">paymentDone</title>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/CommonContainerPlus.css}" />
+    <link rel="stylesheet" th:href="@{/css/CommonHoverPlus.css}" />
+    <link rel="stylesheet" th:href="@{/css/globals.css}" />
+    <link rel="stylesheet" th:href="@{/css/payment/paymentDone.css}" />
+
+</th:block>
+
+<th:block layout:fragment="javascript">
+</th:block>
+
+<div class="container main_container" layout:fragment="content">
+
+    <div class="frame-2"></div>
+    <div class="img-2">
+        <div class="component-wrapper">
+            <div class="component"><img class="image" src="/images/common/!.jpg" /></div>
+        </div>
+        <div class="text-wrapper-40">결제 실패</div>
+    </div>
+    <div class="buttonarea">
+        <a class="button-home" th:href="@{/user/main}">
+            <div class="text-wrapper-5">홈으로 이동</div>
+        </a>
+        <a class="button-status" th:href="@{/user/paymentMain}">
+            <div class="text-wrapper-6">청구 현황 보기</div>
+        </a>
+    </div>
+
+</div>
+</html>

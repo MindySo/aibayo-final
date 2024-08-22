@@ -31,8 +31,18 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 command = 'detailAfter';
             }
+            let formattedClickedDate = clickedDate.getFullYear() + '-'
+                + String(clickedDate.getMonth() + 1).padStart(2, '0') + '-'
+                + String(clickedDate.getDate()).padStart(2, '0');
 
-            window.location.href = '/attendance/admin/' + command;
+            // 이동할 페이지를 적절하게 설정
+            if (command === 'detailToday') {
+                window.location.href = '/attendance/detailToday?date=' + formattedClickedDate;
+            } else if (command === 'detailBefore') {
+                window.location.href = '/attendance/detailBefore?date=' + formattedClickedDate;
+            } else if (command === 'detailAfter') {
+                window.location.href = '/attendance/detailAfter?date=' + formattedClickedDate;
+            }
         }
     });
     calendar.render();

@@ -17,7 +17,7 @@
 </th:block>
 
 <th:block layout:fragment="javascript">
-  <script src="/js/schedule/scheduleMain.js"></script>
+  <script src="/js/schedule/userPage/scheduleMain.js"></script>
 
   <!-- FullCalendar and related modules -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
@@ -29,30 +29,8 @@
 <div class="container main_container" layout:fragment="content">
 
 
-  <div class="title"><div class="text-wrapper-4">일정표</div></div>
-  <div class="buttons">
-    <form class="searchoptions" th:action="@{/admin/scheduleMain}" method="post">
-      <select class="dropdown-class">
-        <option class="text-wrapper-5" value="">반 선택</option>
-        <option class="text-wrapper-5" value="">1반</option>
-        <option class="text-wrapper-5" value="">2반</option>
-        <option class="text-wrapper-5" value="">3반</option>
-        <option class="text-wrapper-5" value="">4반</option>
-      </select>
-
-      <div class="div-2">
-        <img class="search" src="/schedule/img/search.png" />
-        <input type="text" class="text-wrapper-5" placeholder="검색어 입력"></input>
-      </div>
-
-      <div class="buttonarea">
-        <input type="submit" class="button-cancel" value="조회하기">
-        <a class="view" th:href="@{/admin/scheduleMain}" th:method="get">
-          <img class="img-3" src="/schedule/img/reset.png" />
-          <div class="text-wrapper-7">초기화</div>
-        </a>
-      </div>
-    </form>
+  <div class="title">
+    <div class="text-wrapper-4">일정표</div>
   </div>
 
 
@@ -64,9 +42,6 @@
 
     <div class="schedule">
       <div class="date-schedulecnt">
-        <a  th:href="@{/admin/scheduleMain}" th:method="get">
-          <img class="img-2" src="/schedule/img/left.png" />
-        </a>
         <div class="text">
           <div class="day-2">
             <div class="div-3">
@@ -74,87 +49,72 @@
             </div>
           </div>
           <div class="schedulecnt">
-            <div class="text-wrapper-16">일정</div>
-            <div class="div-3">
-              <div class="text-wrapper-16">2</div>
-              <div class="text-wrapper-16">개</div>
-            </div>
+            <div class="text-wrapper-16">일정 n개</div>
           </div>
         </div>
-        <a th:href="@{/admin/scheduleMain}" th:method="get">
-          <img class="img-2" src="/schedule/img/right.png" />
-        </a>
       </div>
 
       <div class="schedule-2">
+        <div class="accordion-item single-schedule" th:each="schedule:${daySchedules}" th:object="${schedule}" th:id="${schedule.scheduleNo}">
+          <div th:with="accordionId=${'accordion' + schedule.scheduleNo}">
+            <div class="accordion-header" th:id="'heading' + ${schedule.scheduleNo}">
+              <button class="accordion-button collapsed" type="button"
+                      th:data-bs-toggle="collapse"
+                      th:data-bs-target="'#' + ${accordionId}"
+                      aria-expanded="false"
+                      th:aria-controls="${accordionId}">
+                <div class="accordion-button-item">
+                  <div class="scheduled-class">
 
-        <div class="accordion-item single-schedule 2024-07-15">
-          <div class="accordion-header" id="heading1">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
-              <div class="accordion-button-item">
-                <div class="scheduled-class">
-                  <div class="ellipse"></div>
-                  <div class="text-wrapper-17">전체 반</div>
+                    <!-- classList가 classNo가 0인 class 하나만 가질 경우 -->
+                    <th:block th:if="*{classList.size() == 1 and classList[0].classNo == 0}">
+                      <div class="ellipse ellipse_all"></div>
+                      <div class="classNamesDiv">
+                        <div class="text-wrapper-17 class_name" th:data-class-no="0">전체 반</div>
+                      </div>
+                    </th:block>
+
+                    <!-- classList가 classNo가 0이 아닌 여러 class를 가질 경우 -->
+                    <th:block th:if="*{classList.size() > 1 or (classList.size() == 1 and classList[0].classNo != 0)}">
+                      <div class="ellipse ellipse_class"></div>
+                      <div class="classNamesDiv">
+                        <div class="classNames" th:each="classItem, iterStat : ${schedule.classList}">
+                          <div class="text-wrapper-17 class_name" th:data-class-no="${classItem.classNo}" th:text="${classItem.className}">반 이름</div>
+                          <span class="span-wrapper-17" th:if="!${iterStat.last}">,  </span>
+                        </div>
+                      </div>
+                    </th:block>
+
+                  </div>
+                  <div class="text-wrapper-18" th:title="*{boardTitle}" th:text="*{boardTitle}">일정명</div>
                 </div>
-                <div class="text-wrapper-18">학부모 심폐소생술 교육</div>
+              </button>
+            </div>
+            <div th:id="${accordionId}" class="accordion-collapse collapse" th:aria-labelledby="'heading' + ${schedule.scheduleNo}">
+              <div class="accordion_collapse_contents">
+                <th:block th:if="*{scheduleStartDate} != *{scheduleEndDate}">
+                  <div class="term" th:text="*{#temporals.format(scheduleStartDate, 'yyyy.MM.dd')} + ' ~ ' + *{#temporals.format(scheduleEndDate, 'yyyy.MM.dd')}">
+                    기간 표시
+                  </div>
+                </th:block>
+                <div class="schedule-contents" th:title="*{boardContents}" th:text="*{boardContents}">일정 내용</div>
               </div>
-            </button>
-          </div>
-          <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1">
-            <div class="schedule-contents">
-              유치원 3층 대강당에서 학부모 심폐소생술 교육을 실시합니다.
             </div>
           </div>
         </div>
 
 
-        <div class="accordion-item single-schedule 2024-07-15">
-
-          <div class="accordion-header" id="heading2">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-              <div class="accordion-button-item">
-                <div class="scheduled-class">
-                  <div class="ellipse-2"></div>
-                  <div class="text-wrapper-17">토마토반</div>
-                </div>
-                <div class="text-wrapper-18">여름 피크닉</div>
-              </div>
-            </button>
-          </div>
-
-          <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2">
-            <div class="schedule-contents">
-              종로 3가 탑골공원으로 현장학습 진행 예정입니다.
-            </div>
-          </div>
-        </div>
-
-
-        <div class="accordion-item single-schedule 2024-07-16">
-
-          <div class="accordion-header" id="heading3">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-              <div class="accordion-button-item">
-                <div class="scheduled-class">
-                  <div class="ellipse-2"></div>
-                  <div class="text-wrapper-17">오이반</div>
-                </div>
-                <div class="text-wrapper-18">화채 만들기</div>
-              </div>
-            </button>
-          </div>
-
-          <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3">
-            <!--나중에 end가 있으면 일정의 기간 표시하는 if 삽입-->
-
-            <div class="schedule-contents">
-              각 반마다 화채 만들기 실습이 있을 예정입니다.
-            </div>
-          </div>
-        </div>
       </div>
+    </div>
+  </div>
 
+
+  <div class="schedules_data div_hidden">
+    <div class="schedule_values" th:each="schedule:${schedules}" th:object="${schedule}"
+         th:data-board-no="${schedule.boardNo}" th:data-class-list="${schedule.classList}" th:data-schedule-no="${schedule.scheduleNo}" th:data-kinder-no="${schedule.kinderNo}"
+         th:data-board-title="${schedule.boardTitle}" th:data-writer="${schedule.writer}" th:data-board-contents="${schedule.boardContents}"
+         th:data-schedule-start-date="${schedule.scheduleStartDate}" th:data-schedule-end-date="${schedule.scheduleEndDate}">
     </div>
   </div>
 </div>
-</html>
+

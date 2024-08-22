@@ -111,6 +111,30 @@ $(document).ready(function() {
         $('#mealDetail').remove();
     });
 
+    $(document).on('click', '#deleteMealBtn', function () {
+        // console.log(`삭제 버튼 클릭`);
+
+        Swal.fire({
+            title: "정말로 삭제하시겠습니까?",
+            text: "삭제 후 복구할 수 없습니다.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소"
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                let url = "/meal/deleteOk";
+                let param = {mealNo: $(this).data('meal-no')}
+                // console.log(`param: ${JSON.stringify(param)}`);
+
+                commonAjax(url, 'DELETE', param);
+            }
+        });
+    });
+
 });
 
 function loadEvents(dateInfo) {

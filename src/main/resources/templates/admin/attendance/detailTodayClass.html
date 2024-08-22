@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
+
+<title layout:fragment="title">detailToday</title>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css"/>
+    <link th:href="@{/css/attendance/detailToday.css}">
+</th:block>
+
+<th:block layout:fragment="javascript">
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script th:src="@{/js/attendance/detailToday.js}" src="/js/attendance/detailToday.js"></script>
+</th:block>
+
+
+<div class="container" layout:fragment="content">
+    <h1>일별 출석부</h1>
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <select class="form-select" aria-label="Select Class" name="classDetail" id="classSelect">
+                <option selected>전체 반</option>
+                <th:block th:each="classEntity : ${classList}">
+                    <option th:value="${classEntity.classNo}" th:text="${classEntity.className}">반
+                        ${classEntity.classNo}
+                    </option>
+                </th:block>
+            </select>
+        </div>
+        <div>
+
+            <a id="writeBtn" href="#" class="btn btn-secondary">작성</a>
+            <a th:href="@{/attendance/admin/main}" class="btn btn-warning">홈으로</a>
+        </div>
+    </div>
+
+
+    <div class="text-center mb-3">
+        <h4>오늘날짜 - [[${date}]]</h4>
+    </div>
+
+    <table class="table table-bordered" id="attendanceTable" style="width: 100%">
+        <thead>
+        <tr>
+            <th>이름</th>
+            <th>출결 상태</th>
+            <th>등원 시간</th>
+            <th>하원 시간</th>
+            <th>비고</th>
+        </tr>
+        </thead>
+
+        <tbody id="studentList">
+        <th:block th:each="attendance : ${attendanceList}">
+            <tr>
+                <td th:text="${attendance.kidName}">학생 이름</td>
+                <td th:text="${attendance.status}">출결 상태</td>
+                <td th:text="${attendance.kidDrop}">등원 시간</td>
+                <td th:text="${attendance.kidPickup}">하원 시간</td>
+                <td th:text="${attendance.note}">비고</td>
+            </tr>
+        </th:block>
+        </tbody>
+
+
+    </table>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">출석부 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateForm">
+                        <input type="hidden" name="kidNo" id="kidNo">
+                        <div class="mb-3">
+                            <label for="kidDrop" class="form-label">등원 시간</label>
+                            <input type="time" class="form-control" id="kidDrop" name="kidDrop">
+                        </div>
+                        <div class="mb-3">
+                            <label for="kidPickup" class="form-label">하원 시간</label>
+                            <input type="time" class="form-control" id="kidPickup" name="kidPickup">
+                        </div>
+                        <div class="mb-3">
+                            <label for="note" class="form-label">비고</label>
+                            <input type="text" class="form-control" id="note" name="note">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="applyUpdate">적용</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

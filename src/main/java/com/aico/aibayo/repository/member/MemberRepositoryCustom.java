@@ -10,6 +10,7 @@ public interface MemberRepositoryCustom {
 
     Optional<MemberDto> findByIdAndKidNo(MemberSearchCondition condition);
     Optional<MemberDto> findByUsernameWithParentKid(String username);
+    Optional<MemberDto> findByUsernameWithParentKid(MemberSearchCondition condition);
     Optional<MemberDto> findByUsernameWithClassTeacher(String username);
 
     MemberDto findDtoById(Long id);

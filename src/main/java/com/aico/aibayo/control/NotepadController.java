@@ -3,6 +3,7 @@ package com.aico.aibayo.control;
 import com.aico.aibayo.common.BoardTypeEnum;
 import com.aico.aibayo.dto.ClassDto;
 import com.aico.aibayo.dto.kid.KidDto;
+import com.aico.aibayo.dto.member.MemberDto;
 import com.aico.aibayo.dto.notepad.NotepadDto;
 //import com.aico.aibayo.service.notepad.NotepadService;
 import com.aico.aibayo.dto.notepad.NotepadSearchCondition;
@@ -29,22 +30,15 @@ public class NotepadController {
     private final ClassService classService;
     private final KidService kidService;
 
-    // 나중에는 로그인 사용자 MemberDto 정보에서 가져오기
-    private int roleNo = 1;
-    private Long id = 2L;
-    private Long kinderNo = 1L;
-
-//    private int roleNo = 2;
-//    private Long id = 31L;
-
     @GetMapping("/admin/list")
-    public String adminList(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String adminList(@ModelAttribute("loginInfo") MemberDto loginInfo,
+                            @RequestParam(defaultValue = "1") int page, Model model) {
         // 역할에 따라 사용자/관리자 구분하여 이동
         // 사용자의 유치원번호의 사용자가 등록한 모든 알림장 조회
         NotepadSearchCondition condition = new NotepadSearchCondition();
-        condition.setKinderNo(kinderNo);
+        condition.setKinderNo(loginInfo.getKinderNo());
 
-        model.addAttribute("kinderNo", 1L);
+        model.addAttribute("kinderNo", loginInfo.getKinderNo());
 
         Page<NotepadDto> notepads = notepadService.getAllByKinderNo(condition, page);
 
@@ -54,7 +48,7 @@ public class NotepadController {
 
     @PostMapping("/admin/searchDate")
     public String adminSearchDate(@RequestBody NotepadSearchCondition condition,
-                             Model model) {
+                                  Model model) {
         log.info("{}", condition);
 
         Page<NotepadDto> notepads = notepadService.getAllByKinderNo(condition, 1);
@@ -64,11 +58,12 @@ public class NotepadController {
     }
 
     @GetMapping("/user/list")
-    public String userList(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String userList(@ModelAttribute("loginInfo") MemberDto loginInfo,
+                           @RequestParam(defaultValue = "1") int page, Model model) {
         NotepadSearchCondition condition = new NotepadSearchCondition();
-        condition.setKidNo(kinderNo);
+        condition.setKidNo(loginInfo.getKidNo());
 
-        model.addAttribute("kidNo", 1L);
+        model.addAttribute("kidNo", loginInfo.getKidNo());
 
         Page<NotepadDto> notepads = notepadService.getAllByKidNo(condition, page);
 
@@ -77,7 +72,7 @@ public class NotepadController {
 
     @PostMapping("/user/searchDate")
     public String userSearchDate(@RequestBody NotepadSearchCondition condition,
-                             Model model) {
+                                 Model model) {
         log.info("{}", condition);
 
         Page<NotepadDto> notepads = notepadService.getAllByKidNo(condition, 1);
@@ -90,13 +85,13 @@ public class NotepadController {
     @GetMapping("/admin/{notepadNo}")
     public String adminDetail(@PathVariable Long notepadNo, Model model) {
         // 나중에는 로그인 사용자 MemberDto 정보에서 가져오기
-        HashMap<String, Object> memberDto = new HashMap<>();
-        memberDto.put("roleNo", roleNo);
-        memberDto.put("id", id);
+//        HashMap<String, Object> memberDto = new HashMap<>();
+//        memberDto.put("roleNo", roleNo);
+//        memberDto.put("id", id);
 
         NotepadDto notepadDto = notepadService.getByNotepadNo(notepadNo);
 
-        model.addAttribute("member", memberDto);
+//        model.addAttribute("member", memberDto);
         model.addAttribute("notepad", notepadDto);
 
         return "/admin/notepad/detail";
@@ -112,13 +107,13 @@ public class NotepadController {
     @GetMapping("/admin/modify/{notepadNo}")
     public String modifyForm(@PathVariable Long notepadNo, Model model) {
         // 나중에는 로그인 사용자 MemberDto 정보에서 가져오기
-        HashMap<String, Object> memberDto = new HashMap<>();
-        memberDto.put("roleNo", roleNo);
-        memberDto.put("id", id);
+//        HashMap<String, Object> memberDto = new HashMap<>();
+//        memberDto.put("roleNo", roleNo);
+//        memberDto.put("id", id);
 
         NotepadDto notepadDto = notepadService.getByNotepadNo(notepadNo);
 
-        model.addAttribute("member", memberDto);
+//        model.addAttribute("member", memberDto);
         model.addAttribute("notepad", notepadDto);
 
         return "/admin/notepad/modifyForm";
@@ -132,24 +127,25 @@ public class NotepadController {
     }
 
     @GetMapping("/admin/write")
-    public String writeForm(Model model) {
+    public String writeForm(@ModelAttribute("loginInfo") MemberDto loginInfo,
+                            Model model) {
         // 나중에는 로그인 사용자 MemberDto 정보에서 가져오기
         List<ClassDto> classDtos = new ArrayList<>();
         List<KidDto> kidDtos = new ArrayList<>();
 
-        if (roleNo < 2) { // 사이트 관리자/원장
-            classDtos = classService.getByKinderNo(kinderNo);
-            kidDtos = kidService.getByKinderNo(kinderNo);
+        if (loginInfo.getRoleNo() < 2) { // 사이트 관리자/원장
+            classDtos = classService.getByKinderNo(loginInfo.getKinderNo());
+            kidDtos = kidService.getByKinderNo(loginInfo.getKinderNo());
 
-        } else if (roleNo == 2) { // 교사
-            classDtos = classService.getByMemberId(id);
-            kidDtos = kidService.getByMemberId(id);
+        } else if (loginInfo.getRoleNo() == 2) { // 교사
+            classDtos = classService.getByMemberId(loginInfo.getId());
+            kidDtos = kidService.getByMemberId(loginInfo.getId());
         }
 
         HashMap<String, Object> notepadInfo = new HashMap<>();
         notepadInfo.put("boardType", BoardTypeEnum.NOTEPAD.getNum());
-        notepadInfo.put("writer", id);
-        notepadInfo.put("boardKinderNo", kinderNo);
+        notepadInfo.put("writer", loginInfo.getId());
+        notepadInfo.put("boardKinderNo", loginInfo.getKinderNo());
 
         model.addAttribute("classDtos", classDtos);
         model.addAttribute("kidDtos", kidDtos);

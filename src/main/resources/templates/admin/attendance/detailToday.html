@@ -6,7 +6,7 @@
 <title layout:fragment="title">detailToday</title>
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css"/>
     <link th:href="@{/css/attendance/detailToday.css}">
 </th:block>
 
@@ -18,30 +18,30 @@
 
 <div class="container" layout:fragment="content">
     <h1>일별 출석부</h1>
-    <form action="attendance.do" id="detailForm">
-        <input type="hidden" name="cmd" value="updateAttendance">
-        <input type="hidden" name="date" value="${dateDetail}">
-        <input type="hidden" name="classNo" value="${classNo}">
+    <div class="d-flex justify-content-between mb-3">
 
-        <div class="d-flex justify-content-between mb-3">
-            <div>
-                <select class="form-select" aria-label="Select Class" name="classDetail" id="classSelect">
-                    <option selected>전체 반</option>
-                    <!-- Assuming you will replace the below with dynamic content -->
-                    <option value="1">반 1</option>
-                    <option value="2">반 2</option>
-                </select>
-            </div>
-            <div>
-                <a th:href="@{/attendance/admin/main}" class="btn btn-warning">홈으로</a>
-<!--                <button type="submit" class="btn btn-secondary">작성</button>-->
-                <a th:href="@{/attendance/admin/write}" class="btn btn-secondary">작성</a>
-            </div>
+        <div>
+            <select class="form-select" aria-label="Select Class" name="classDetail" id="classSelect">
+                <option value="">전체 반</option>
+                <th:block th:each="classEntity : ${classList}">
+                    <option th:value="${classEntity.classNo}"
+                            th:selected="${selectedClassNo == classEntity.classNo}"
+                            th:text="${classEntity.className}">반 ${classEntity.classNo}
+                    </option>
+                </th:block>
+            </select>
         </div>
-    </form>
+
+        <div>
+            <a id="writeBtn" href="#" class="btn btn-secondary">작성</a>
+            <a th:href="@{/attendance/admin/main}" class="btn btn-warning">홈으로</a>
+        </div>
+    </div>
+
 
     <div class="text-center mb-3">
-        <h4>오늘날짜 - [[${date}]]</h4>
+<!--        <h4>오늘날짜 - [[${date}]]</h4>-->
+        <h4 id="selectedDate">오늘날짜 - [[${date}]]</h4>
     </div>
 
     <table class="table table-bordered" id="attendanceTable" style="width: 100%">
@@ -49,34 +49,17 @@
         <tr>
             <th>이름</th>
             <th>출결 상태</th>
-            <th>결석 이유</th>
             <th>등원 시간</th>
             <th>하원 시간</th>
             <th>비고</th>
-<!--            <th></th>-->
         </tr>
         </thead>
-        <tbody>
-        <!-- Assuming you will replace the below with dynamic content -->
-        <tr data-kid-no="1">
-            <td>학생 1</td>
-            <td>출석</td>
-            <td></td>
-            <td>09:00</td>
-            <td>16:00</td>
-            <td>비고</td>
-<!--            <td><a href="#" class="btn btn-danger attendance-update-one">수정</a></td>-->
-        </tr>
-        <tr data-kid-no="2">
-            <td>학생 2</td>
-            <td>결석</td>
-            <td>질병,부상</td>
-            <td></td>
-            <td></td>
-            <td>비고</td>
-<!--            <td><a href="#" class="btn btn-danger attendance-update-one">수정</a></td>-->
-        </tr>
+
+
+        <tbody id="studentList">
         </tbody>
+
+
     </table>
 
 
@@ -98,18 +81,6 @@
                                 <option value="출석">출석</option>
                                 <option value="결석">결석</option>
                                 <option value="지각">지각</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="excusedAbsence" class="form-label">결석 이유</label>
-                            <select name="excusedAbsence" id="excusedAbsence" class="form-select">
-                                <option value=" ">-</option>
-                                <option value="질병,부상">질병,부상</option>
-                                <option value="부모의 출산">부모의 출산</option>
-                                <option value="미세먼지">미세먼지</option>
-                                <option value="자연재해">자연재해</option>
-                                <option value="경조사">경조사</option>
-                                <option value="기타">기타</option>
                             </select>
                         </div>
                         <div class="mb-3">

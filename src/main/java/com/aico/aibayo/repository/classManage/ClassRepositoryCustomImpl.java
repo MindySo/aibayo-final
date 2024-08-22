@@ -3,11 +3,8 @@ package com.aico.aibayo.repository.classManage;
 import com.aico.aibayo.common.AcceptStatusEnum;
 import com.aico.aibayo.common.BooleanEnum;
 import com.aico.aibayo.dto.ClassDto;
-import com.aico.aibayo.entity.QAcceptLogEntity;
-import com.aico.aibayo.entity.QClassEntity;
-import com.aico.aibayo.entity.QClassKidEntity;
-import com.aico.aibayo.entity.QClassTeacherEntity;
-import com.aico.aibayo.entity.QMemberEntity;
+import com.aico.aibayo.dto.schedule.ScheduleSearchCondition;
+import com.aico.aibayo.entity.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,6 +20,7 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
     private final QAcceptLogEntity acceptLog = QAcceptLogEntity.acceptLogEntity;
     private final QMemberEntity member = QMemberEntity.memberEntity;
     private final QClassKidEntity classKid = QClassKidEntity.classKidEntity;
+
 
     @Override
     public List<ClassDto> findAllByMemberId(Long id) {
@@ -132,33 +130,4 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 
         return classes;
     }
-
-//    @Override
-//    public List<ClassDto> findAddableClassByTeacherId(Long id, Long kinderNo, List<ClassDto> assignedClasses) {
-//
-//        List<ClassDto> classes = jpaQueryFactory
-//                .select(Projections.constructor(ClassDto.class,
-//                        clazz.classNo,
-//                        clazz.className
-//                        ))
-//                .from(clazz)
-//                .join(classTeacher).on(clazz.classNo.eq(classTeacher.classNo))
-//                .join(acceptLog).on(classTeacher.acceptNo.eq(acceptLog.acceptNo))
-//                .where(clazz.classNo.notIn(
-//                        JPAExpressions.select(clazz.classNo)
-//                                .from(clazz)
-//                                .join(classTeacher).on(clazz.classNo.eq(classTeacher.classNo))
-//                                .join(acceptLog).on(classTeacher.acceptNo.eq(acceptLog.acceptNo))
-//                                .where(acceptLog.acceptStatus.eq(AcceptStatusEnum.ACCEPT.getStatus()),
-//                                        classTeacher.classTeacherId.eq(id))),
-//                        clazz.kinderNo.eq(kinderNo))
-//                .groupBy(clazz.classNo,
-//                        clazz.className
-//                        )
-//                .having(classTeacher.classTeacherId.count().lt(3L))
-//                .fetch();
-//
-//        return classes;
-//    }
-
 }

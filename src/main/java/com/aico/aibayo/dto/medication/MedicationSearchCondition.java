@@ -17,6 +17,7 @@ public class MedicationSearchCondition {
     private Long kinderNo;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderRequestDate;
+    private LocalDateTime runDate;
 
 
 }

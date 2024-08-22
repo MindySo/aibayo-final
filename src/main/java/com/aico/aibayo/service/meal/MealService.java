@@ -13,4 +13,6 @@ public interface MealService {
     MealDto getByMealNo(Long mealNo);
     MealDto insertMeal(MealDto mealDto, List<MultipartFile> files);
     MealDto updateMeal(MealDto mealDto, List<MultipartFile> files);
+    MealDto deleteMeal(MealDto mealDto);
+    MealDto getByToday(MealSearchCondition condition);
 }

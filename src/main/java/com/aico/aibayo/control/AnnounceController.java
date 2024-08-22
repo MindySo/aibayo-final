@@ -43,13 +43,12 @@ public class AnnounceController {
     private final CommentRepository commentRepository;
     private JWTUtil jwtUtil;
 
-    // 나중에는 로그인 사용자 MemberDto 정보에서 가져오기
-//    private int roleNo = 1;
-//    private Long id = 2L;
-//    private Long kinderNo = null;
 
     @GetMapping("/admin/card")
-    public String admincard(@ModelAttribute("loginInfo") MemberDto loginInfo, @RequestParam(defaultValue = "1") int page, Model model){
+    public String admincard(
+            @ModelAttribute("loginInfo") MemberDto loginInfo,
+            @RequestParam(defaultValue = "1") int page, Model model
+    ){
         HashMap<String, Object> hashMap = new HashMap<>();
         AnnounceSearchCondition condition = new AnnounceSearchCondition();
         condition.setKinderNo(loginInfo.getKinderNo());
@@ -57,7 +56,7 @@ public class AnnounceController {
         hashMap.put("page",page);
         hashMap.put("type","card");
         Page<AnnounceDto>announces= announceService.findAllByKinderNoCard(condition,hashMap);
-
+        log.info("announces!!!{}",announces);
 
         return getPageInfoAndGoView(model, announces, "/admin/announce/card");
     }
@@ -79,7 +78,6 @@ public class AnnounceController {
                 }
             }
         }
-
         log.info(">>>>>>>>>>>>>>>>>>>>>>pagination");
         log.info("startPage: {}", startPage);
         log.info("endPage: {}", endPage);
@@ -227,10 +225,6 @@ public class AnnounceController {
     public String usercard(@RequestParam(defaultValue = "1") int page,
                            @ModelAttribute("loginInfo") MemberDto loginInfo,
                            Model model){
-        MemberSearchCondition memberSearchCondition = new MemberSearchCondition();
-        memberSearchCondition.setId(14L);
-        memberSearchCondition.setKidNo(1L);
-//        MemberDto loginInfo=  memberService.getByIdAndKidNo(memberSearchCondition);
         HashMap<String, Object> hashMap = new HashMap<>();
         AnnounceSearchCondition condition = new AnnounceSearchCondition();
         condition.setKinderNo(loginInfo.getKinderNo());

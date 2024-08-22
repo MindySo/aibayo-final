@@ -25,6 +25,8 @@ public class RegisterKinderEntity {
     private LocalTime kinderCloseTime; //유치원 하원시간
     @Column(name="kinder_code")
     private String kinderCode; //유치원 코드
+    @Column(name = "kinder_name")
+    private String kinderName; // 유치원 이름
     @Column(name="kinder_reg_date")
     private LocalDateTime kinderRegDate; //유치원 등록일자
     @Column(name="kinder_modify_date")

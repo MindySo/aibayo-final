@@ -6,74 +6,56 @@
 <title layout:fragment="title">detailBefore</title>
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
-    <link th:href="@{/css/attendance/detailBefore.css}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css"/>
+    <link th:href="@{/css/attendance/detailToday.css}">
 </th:block>
 
 <th:block layout:fragment="javascript">
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-    <script th:src="@{/js/attendance/detailBefore.js}" src="/js/attendance/detailToday.js"></script>
+    <script th:src="@{/js/attendance/detailBefore.js}" src="/js/attendance/detailBefore.js"></script>
 </th:block>
 
 
 <div class="container" layout:fragment="content">
     <h1>일별 출석부</h1>
-    <form action="attendance.do" if="detailForm">
-        <input type="hidden" name="cmd" value="modify">
-        <input type="hidden" name="date" value="${dateDetail}">
-        <input type="hidden" name="classNo" value="${classNo }">
+    <div class="d-flex justify-content-between mb-3">
 
-
-        <div class="d-flex justify-content-between mb-3">
-            <div>
-                <select class="form-select" aria-label="Select Class" name="classDetail" id="classSelect">
-                    <option selected>전체 반</option>
-                    <!-- for statement 반 목록 띄우기 -->
-                    <th:block th:each="class : ${classList}">
-                        <option th:value="${class.class_no}" th:text="${class.class_name}"></option>
-                    </th:block>
-                </select>
-            </div>
-
-            <div>
-                <a th:href="@{/attendance/admin/main}" class="btn btn-warning">홈으로</a>
-            </div>
+        <div>
+            <select class="form-select" aria-label="Select Class" name="classDetail" id="classSelect">
+                <option value="">전체 반</option>
+                <th:block th:each="classEntity : ${classList}">
+                    <option th:value="${classEntity.classNo}"
+                            th:selected="${selectedClassNo == classEntity.classNo}"
+                            th:text="${classEntity.className}">반 ${classEntity.classNo}
+                    </option>
+                </th:block>
+            </select>
         </div>
 
-    </form>
-
-    <div class="text-center mb-3">
-        <h4>오늘날짜 - [[${date}]]</h4>
+        <div>
+            <a th:href="@{/attendance/main}" class="btn btn-warning">홈으로</a>
+        </div>
     </div>
 
 
+    <div class="text-center mb-3">
+        <h4 id="selectedDate">오늘날짜 - [[${date}]]</h4>
+    </div>
 
     <table class="table table-bordered" id="attendanceTable" style="width: 100%">
         <thead>
         <tr>
             <th>이름</th>
             <th>출결 상태</th>
-            <th>인정 결석</th>
             <th>등원 시간</th>
             <th>하원 시간</th>
             <th>비고</th>
         </tr>
         </thead>
-        <tbody>
 
-        <th:block th:each="attendance : ${attendanceListOK}">
-            <tr>
-                <td th:text="${attendance.kid_name}"></td>
-                <td th:text="${attendance.attendance_status}"></td> <!-- 출결 상태 -->
-                <td th:text="${attendance.excused_absence}"></td> <!-- 인정 결석 -->
-                <td th:text="${attendance.kid_drop}"></td> <!-- 등원 시간 -->
-                <td th:text="${attendance.kid_pickup}"></td> <!-- 하원 시간 -->
-                <td th:text="${attendance.note}"></td> <!-- 비고 -->
-            </tr>
-        </th:block>
+        <tbody id="studentList">
         </tbody>
     </table>
-
 </div>
 
 </html>

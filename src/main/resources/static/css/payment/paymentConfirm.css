@@ -170,6 +170,12 @@
     align-self: stretch;
     width: 100%;
     flex: 0 0 auto;
+    padding: 40px 0px;
+    border-top-width: 5px;
+    border-bottom-width: 5px;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-color: #cacaca;
 }
 
 .container .text-wrapper-7 {
@@ -366,11 +372,8 @@
     position: relative;
     align-self: stretch;
     width: 100%;
-    padding-top: 40px;
+    padding-top: 15px;
     flex: 0 0 auto;
-    border-top-width: 5px;
-    border-top-style: solid;
-    border-color: #000000;
 }
 
 .text-wrapper-finalprice {
@@ -465,3 +468,13 @@
     --small-text-line-height: 150%;
     --small-text-font-style: normal;
 }
+
+
+
+
+
+
+
+
+
+

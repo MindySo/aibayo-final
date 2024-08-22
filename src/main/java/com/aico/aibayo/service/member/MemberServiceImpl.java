@@ -10,12 +10,14 @@ import com.aico.aibayo.dto.member.MemberSearchCondition;
 import com.aico.aibayo.entity.*;
 import com.aico.aibayo.exception.MemberNotFoundException;
 import com.aico.aibayo.repository.AcceptLogRepository;
+import com.aico.aibayo.repository.RegisterKinderRepository;
 import com.aico.aibayo.repository.TeacherKinderRepository;
 import com.aico.aibayo.repository.classKid.ClassKidRepository;
 import com.aico.aibayo.repository.ParentKidRepository;
 import com.aico.aibayo.repository.kid.KidRepository;
 import com.aico.aibayo.repository.member.MemberRepository;
 import groovy.util.logging.Slf4j;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,7 @@ public class MemberServiceImpl implements MemberService {
     private final ClassKidRepository classKidRepository;
     private final AcceptLogRepository acceptLogRepository;
     private final TeacherKinderRepository teacherKinderRepository;
+    private final RegisterKinderRepository registerKinderRepository;
 
 
     @Transactional
@@ -202,9 +205,15 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByUsernameWithParentKid(username).orElse(null);
     }
 
+    @Override
+    public MemberDto getByUsernameWithParentKid(MemberSearchCondition condition) {
+        return memberRepository.findByUsernameWithParentKid(condition).orElse(null);
+    }
+
     // 계정 삭제
     // ROLE_USER : PARENT_KID 엔티티와 엮어서 ACCEPT_LOG 가져와서 MEMBER와 같이 상태값 변경
     // ROLE_TEACHER : CLASS_TEACHER 엔티티와 엮어서 ACCEPT_LOG 가져와서 MEMBER와 같이 상태값 변경
+
     @Override
     public void deleteMember(String username, String role) {
         if (role.equals("ROLE_USER")) {

@@ -11,34 +11,36 @@
     <link rel="stylesheet" th:href="@{/css/globals.css}" />
     <link rel="stylesheet" th:href="@{/css/payment/paymentWrite.css}" />
     <link rel="stylesheet" th:href="@{/css/payment/paymentWriteModal.css}" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
 </th:block>
 
 <th:block layout:fragment="javascript">
     <script src="/js/payment/paymentWrite.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <th:block th:replace="~{/common/datepicker :: js}"/>
     <th:block th:replace="~{/common/datepicker :: css}"/>
 </th:block>
 
 <div class="container main_container" layout:fragment="content">
 
-    <div class="title">
+    <div class="title" th:value="${kinderNo}">
         <div class="title-flow2">
             <a class="icon-back" th:href="@{/admin/paymentBillingMain}">
-                <img src="/payment/img/back.png" alt=""/>
+                <img src="/images/common/back.png" alt=""/>
             </a>
             <div class="div-wrapper"><div class="text-wrapper-title">청구서 작성하기</div></div>
         </div>
-        <a type="submit" class="button-submit" value="청구서 발송" th:href="@{/admin/paymentBillingConfirm}">청구서 발송</a>
+        <button type="submit" class="button-submit" id="send_bill" value="청구서 발송">청구서 발송</button>
     </div>
     <div class="inputbox">
         <div class="div-3">
             <div class="title-3">
                 <div class="text-wrapper-6">청구 대상</div>
-                <a class="btn button-cancel" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    <img class="img-2" src="/payment/img/pencil-white.png" />
+                <button class="btn button-cancel" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="selectClassAndKid">
+                    <img class="img-2" src="/images/common/pencil-white.png" />
                     <div class="text-cancel">편집</div>
-                </a>
+                </button>
 
 
 
@@ -50,110 +52,59 @@
                                 <div class="textarea">
                                     <div class="text-wrapper">소속 반 수정</div>
                                 </div>
-                                <button class="button-x" href="" data-bs-dismiss="modal" aria-label="Close">
-                                    <img src="/schedule/img/x.png" alt=""/>
-                                </button>
+                                <a class="button-x" data-bs-dismiss="modal" aria-label="Close">
+                                    <img src="/images/common/x.png" alt=""/>
+                                </a>
                             </div>
+
                             <div class="modalform">
                                 <div class="row-input">
-                                    <div class="text-addable">
-                                        <select class="selectoption-child">
-                                            <option class="text-wrapper-5" value="">반 선택</option>
-                                            <option class="text-wrapper-5" value="">브로콜리반</option>
-                                            <option class="text-wrapper-5" value="">오이반</option>
-                                            <option class="text-wrapper-5" value="">당근반</option>
-                                            <option class="text-wrapper-5" value="">파프리카반</option>
-                                        </select>
-                                        <div class="modal-div-2">
-                                            <input type="checkbox" class="form-check-input" id="checkAll">
-                                            <div class="text-wrapper-2" for="checkAll">반 전체 선택</div>
+                                    <select class="selectoption-child selectClass" id="classSelect">
+                                        <option class="text-wrapper-5" value="-1000">반 선택</option>
+                                        <option class="text-wrapper-5" th:each="class:${classList}" th:object="${class}"
+                                                th:value="${class.classNo}" th:text="${class.className}">반이름</option>
+                                    </select>
+
+                                        <div class="noList" id="noClass">
+                                            <div class="icon">
+                                                <img src="/images/common/!.jpg" alt=""/>
+                                            </div>
+                                            <div class="defaulttext">반을 선택해주세요.</div>
                                         </div>
-                                    </div>
+                                        <div class="text-addable" id="selectAllClass">
+<!--                                            <div class="noList">-->
+<!--                                                <div class="icon">-->
+<!--                                                    <img src="/images/common/!.jpg" alt=""/>-->
+<!--                                                </div>-->
+<!--                                                <div class="defaulttext">해당 반에 학생이 없습니다.</div>-->
+<!--                                            </div>-->
+
+                                            <div class="modal-div-2">
+                                                <input type="checkbox" class="form-check-input class_checkbox" id="checkAll">
+                                                <div class="text-wrapper-2" for="checkAll">반 전체 선택</div>
+                                            </div>
+                                        </div>
+
                                     <div class="form-check carousel">
 
-                                        <label class="modal-child" for="child_1">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_1" id="child_1">
+                                        <label class="modal-child" th:each="kid, iterStat : ${kidDtoList}" th:object="${kid}" th:for="'kid' + ${iterStat.index}">
+                                            <input class="form-check-input class_checkbox" type="checkbox" name="classCheckedCb"
+                                                   th:value="${kid.id}" th:id="'kid' + ${iterStat.index}"
+                                                   th:data-member-name="*{name}" th:data-kid-name="*{kidName}" th:data-kid-no="*{kidNo}">
                                             <div class="profile">
-                                                <img src="/payment/img/profile.png" alt=""/>
+                                                <img src="/images/common/default-yellow.png" alt=""/>
                                             </div>
                                             <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
+                                                <div class="text-wrapper-10" th:text="*{kidName}">원아명</div>
+                                                <div class="text-wrapper-10-1" th:text="'(보호자 : ' + *{name} + ')'">보호자명</div>
                                             </div>
                                         </label>
-
-                                        <label class="modal-child" for="child_2">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_2" id="child_2">
-                                            <div class="profile">
-                                                <img src="/payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_3">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_3" id="child_3">
-                                            <div class="profile">
-                                                <img src="/payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_4">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_4" id="child_4">
-                                            <div class="profile">
-                                                <img src="/payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_5">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_5" id="child_5">
-                                            <div class="profile">
-                                                <img src="/payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_6">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_6" id="child_6">
-                                            <div class="profile">
-                                                <img src="/payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_7">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_7" id="child_7">
-                                            <div class="profile">
-                                                <img src="/payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
 
 
                                     </div>
                                 </div>
                                 <div class="buttonarea">
-                                    <button class="btn btn-ab button-send" data-bs-dismiss="modal">적용</button>
+                                    <button class="btn btn-ab button-send" id="setIdList" data-bs-dismiss="modal">적용</button>
                                 </div>
                             </div>
                         </div>
@@ -165,40 +116,49 @@
             </div>
             <div class="inputarea">
                 <div class="div-2">
-                    <div class="div-5">
-                        <div class="text-wrapper-8">브로콜리반</div>
-                        <div class="n">
-                            <div class="text-wrapper-9">3명</div>
-                        </div>
+                    <div class="div-classname">
+                        <th:block th:if="${selectedClassNo == null}">
+                            <div class="noList">
+                                <div class="icon">
+                                    <img src="/images/common/!.jpg" alt=""/>
+                                </div>
+                                <div class="defaulttext">'편집'을 눌러 청구 대상을 추가해주세요.</div>
+                            </div>
+                        </th:block>
+
+                        <th:block th:if="${selectedClassNo != null}">
+                            <th:block th:if="${selectedKidList.size() == 0}">
+                                <div class="noList">
+                                    <div class="icon">
+                                        <img src="/images/common/!.jpg" alt=""/>
+                                    </div>
+                                    <div class="defaulttext">'편집'을 눌러 청구 대상을 추가해주세요.</div>
+                                </div>
+                            </th:block>
+
+                            <th:block th:if="${selectedKidList.size() != 0}">
+                                <div class="text-wrapper-8 selectedClassName" th:value="${selectedClassNo}"
+                                     th:text="${selectedClassName != null ? selectedClassName : '대상'}"></div>
+                                <div class="n">
+                                    <div class="text-wrapper-9"
+                                         th:text="${selectedKidList != null ? selectedKidList.size() : 0} + '명'"></div>
+                                </div>
+                            </th:block>
+
+                        </th:block>
+
                     </div>
                     <div class="selectedchild">
-                        <div class="child">
+                        <div class="child" th:each="kid: ${selectedKidList}" th:object="${kid}" th:id="${kid.id}">
                             <div class="profile">
-                                <img src="/payment/img/profile.png" alt=""/>
+                                <img src="/images/common/default-yellow.png" alt=""/>
                             </div>
                             <div class="textarea">
-                                <div class="text-wrapper-10">김원아</div>
-                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
+                                <div class="text-wrapper-10 kidNameBox" th:id="${kid.kidNo}" th:text="${kid.kidName}">원아명</div>
+                                <div class="text-wrapper-10-1 parentNameBox" th:data-parent-name="${kid.memberName}" th:text="'(보호자 : ' + ${kid.memberName} + ')'">학부모</div>
                             </div>
                         </div>
-                        <div class="child">
-                            <div class="profile">
-                                <img src="/payment/img/profile.png" alt=""/>
-                            </div>
-                            <div class="textarea">
-                                <div class="text-wrapper-10">박원아</div>
-                                <div class="text-wrapper-10-1">(부모 : 박부모)</div>
-                            </div>
-                        </div>
-                        <div class="child">
-                            <div class="profile">
-                                <img src="/payment/img/profile.png" alt=""/>
-                            </div>
-                            <div class="textarea">
-                                <div class="text-wrapper-10">이원아</div>
-                                <div class="text-wrapper-10-1">(부모 : 이부모)</div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -206,19 +166,17 @@
         <div class="div-3">
             <div class="title-4">
                 <div class="text-wrapper-8">청구 항목</div>
-                <p class="detail">자주 쓰는 청구 항목은 ‘청구 항목 관리’에서 추가할 수 있습니다.</p>
+<!--                <p class="detail">자주 쓰는 청구 항목은 ‘청구 항목 관리’에서 추가할 수 있습니다.</p>-->
             </div>
             <div class="inputarea-2">
                 <div class="div-6">
                     <div class="text-wrapper-11">항목</div>
-                    <select class="selectoption">
-                        <option class="selected-class">항목 선택</option>
-                    </select>
+                    <input type="text" class="selectoption" id="paymentTitle" placeholder="항목 입력">
                 </div>
                 <div class="div-6">
                     <div class="text-wrapper-11">금액(원)</div>
                     <div class="input-charge">
-                        <input type="text" class="inputtext" placeholder="-">
+                        <input type="text" class="inputtext" id="payment_price" placeholder="-">
                         <div class="text-wrapper-13">원</div>
                     </div>
                 </div>
@@ -233,107 +191,90 @@
                 <div class="div-9">
                     <div class="inputarea-3">
                         <div class="inputarea-2-1">
-                            <div class="div-6">
-                                <div class="text-wrapper-11">항목</div>
-                                <select class="selectoption">
-                                    <option class="selected-class">항목 선택</option>
-                                </select>
-                            </div>
+
                             <div class="div-6">
                                 <div class="text-wrapper-11">대상</div>
-                                <select class="selectoption-child">
-                                    <option class="selectedchild-2">김원아</option>
+                                <select class="selectoption-child discountForSelectedKids">
+                                    <option class="selectedchild-2">원아 선택</option>
+                                    <option class="selectedchild-2" th:each="kid: ${selectedKidList}" th:object="${kid}"
+                                            th:id="${kid.id}" th:data-kid-no="${kid.kidNo}" th:text="${kid.kidName}">김원아</option>
                                 </select>
                             </div>
+                            <div class="div-6">
+                                <div class="text-wrapper-11">할인</div>
+                                <div class="input-charge">
+                                    <input type="text" class="inputtext" id="discount_rate" placeholder="-">
+                                    <div class="text-wrapper-13">%</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <a class="button-cancel" href="">
+                    <button class="button-cancel" id="add_discount">
                         <div class="text-cancel">+ 할인 추가</div>
-                    </a>
+                    </button>
                 </div>
-                <div class="div-11">
-                    <div class="div-12">
-                        <div class="title">
-                            <div class="div-5">
-                                <div class="profile">
-                                    <img src="/payment/img/profile.png" alt=""/>
-                                </div>
-                                <div class="textarea">
-                                    <div class="text-wrapper-15">김원아</div>
-                                    <div class="text-discount"><div class="text-wrapper-16">2024 여름방학 선등록 이벤트</div></div>
-                                </div>
+                <div class="div-11" id="discountList">
+                    <th:block th:if="${discountList == null}">
+                        <div class="noList">
+                            <div class="icon">
+                                <img src="/images/common/!.jpg" alt=""/>
                             </div>
-                            <a class="button-x" href="">
-                                <img src="/payment/img/x.png" alt=""/>
-                            </a>
+                            <div class="detail">'할인'을 눌러 할인 대상을 추가해주세요.</div>
                         </div>
-                        <div class="charge">
-                            <div class="div-13">
-                                <div class="text-wrapper-17">청구 금액</div>
-                                <div class="div-14">
-                                    <div class="text-wrapper-16">300,000</div>
-                                    <div class="text-wrapper-16">원</div>
+                    </th:block>
+                    <th:block th:if="${discountList != null}">
+
+                        <th:block th:if="${discountList.size() == 0}">
+
+                        </th:block>
+
+                        <th:block th:if="${discountList != null}">
+                            <div class="div-12 discountElement" th:each="discountElement : ${discountList}" th:object="${discountElement}"
+                                 th:data-discount-rate="*{discountRate}" th:data-kid-no="*{kidNo}" >
+                                <div class="title">
+                                    <div class="div-5">
+                                        <div class="profile">
+                                            <img src="/images/common/default-yellow.png" alt=""/>
+                                        </div>
+                                        <div class="textarea">
+                                            <div class="text-wrapper-15" id="discount_kid"
+                                                 th:data-kid-no="*{kidNo}" th:data-member-id="*{id}" th:text="*{kidName}">원아명</div>
+                                        </div>
+                                    </div>
+                                    <a class="button-x">
+                                        <img src="/images/common/x.png" alt=""/>
+                                    </a>
+                                </div>
+                                <div class="charge">
+                                    <div class="div-13">
+                                        <div class="text-wrapper-17">청구 금액</div>
+                                        <div class="div-14">
+                                            <div class="text-wrapper-16 originalPrice"></div>
+                                            <div class="text-wrapper-16">원</div>
+                                        </div>
+                                    </div>
+                                    <img class="img-2" src="/images/common/minus.png" />
+                                    <div class="div-13">
+                                        <div class="text-wrapper-17">할인</div>
+                                        <div class="div-14">
+                                            <div class="text-wrapper-16" id="discounted_rate" th:text="*{discountRate} + '%'">할인율</div>
+                                        </div>
+                                    </div>
+                                    <img class="icon-equal" src="/images/common/equal.png" />
+                                    <div class="text-finalcharge">
+                                        <div class="text-wrapper-18">총 청구 금액</div>
+                                        <div class="div-14">
+                                            <div class="text-wrapper-19 discountedPrice"></div>
+                                            <div class="text-wrapper-19">원</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <img class="img-2" src="/payment/img/minus.png" />
-                            <div class="div-13">
-                                <div class="text-wrapper-17">할인</div>
-                                <div class="div-14">
-                                    <div class="text-wrapper-16">-&nbsp;&nbsp;60,000</div>
-                                    <div class="text-wrapper-16">원</div>
-                                </div>
-                            </div>
-                            <img class="icon-equal" src="/payment/img/equal.png" />
-                            <div class="text-finalcharge">
-                                <div class="text-wrapper-18">총 청구 금액</div>
-                                <div class="div-14">
-                                    <div class="text-wrapper-19">240,000</div>
-                                    <div class="text-wrapper-19">원</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="div-12">
-                        <div class="title">
-                            <div class="div-5">
-                                <div class="profile">
-                                    <img src="/payment/img/profile.png" alt=""/>
-                                </div>
-                                <div class="textarea">
-                                    <div class="text-wrapper-15">박원아</div>
-                                    <div class="text-discount"><div class="text-wrapper-16">2024 재원 할인 이벤트</div></div>
-                                </div>
-                            </div>
-                            <a class="button-x" href="">
-                                <img src="/payment/img/x.png" alt=""/>
-                            </a>
-                        </div>
-                        <div class="charge">
-                            <div class="div-13">
-                                <div class="text-wrapper-17">청구 금액</div>
-                                <div class="div-14">
-                                    <div class="text-wrapper-16">300,000</div>
-                                    <div class="text-wrapper-16">원</div>
-                                </div>
-                            </div>
-                            <img class="img-2" src="/payment/img/minus.png" />
-                            <div class="div-13">
-                                <div class="text-wrapper-17">할인</div>
-                                <div class="div-14">
-                                    <div class="text-wrapper-16">-&nbsp;&nbsp;40,000</div>
-                                    <div class="text-wrapper-16">원</div>
-                                </div>
-                            </div>
-                            <img class="icon-equal" src="/payment/img/equal.png" />
-                            <div class="text-finalcharge">
-                                <div class="text-wrapper-18">총 청구 금액</div>
-                                <div class="div-14">
-                                    <div class="text-wrapper-19">260,000</div>
-                                    <div class="text-wrapper-19">원</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                        </th:block>
+
+                    </th:block>
+
                 </div>
             </div>
         </div>
@@ -341,7 +282,7 @@
             <div class="title-4">
                 <div class="text-wrapper-8">청구 메모</div>
                 <p class="p">
-                    <span class="span">청구 대상과 항목을 모두 선택하신 후 청구 메모 작성이 가능합니다.</span>
+                    <span class="span">청구 대상과 항목을 모두 선택하신 후 메모 작성이 가능합니다.</span>
                     <span class="text-wrapper-20">다.</span>
                 </p>
             </div>
@@ -350,72 +291,93 @@
                     <div class="div-9">
                         <div class="div-6">
                             <div class="text-wrapper-11">대상</div>
-                            <select class="selectoption-child">
-                                <option class="text-wrapper-5" value="">원아 선택</option>
-                                <option class="text-wrapper-5" value="">김원아</option>
-                                <option class="text-wrapper-5" value="">나원아</option>
-                                <option class="text-wrapper-5" value="">박원아</option>
-                                <option class="text-wrapper-5" value="">이원아</option>
+                            <select class="selectoption-child memoForSelectedKids">
+                                <option class="selectedchild-2">원아 선택</option>
+                                <option class="selectedchild-2" th:each="kid: ${selectedKidList}" th:object="${kid}"
+                                        th:id="${kid.id}" th:data-kid-no="${kid.kidNo}" th:text="${kid.kidName}">김원아</option>
                             </select>
                         </div>
-                        <a class="button-cancel" href="">
-                            <div class="text-cancel">+ 메모 추가</div>
-                        </a>
+                        <button class="button-cancel" id="add_memo">+ 메모 추가</button>
                     </div>
                     <div class="input-memo">
-                        <div class="default">메모를 작성해 주세요.</div>
-                        <div class="limit">0/300</div>
+                        <textarea class="memo-textarea" id="memo-textarea"
+                                  onkeyup="autoResize(this), chkword(this, 300)" onkeydown="autoResize(this)"
+                                  placeholder="메모를 작성해 주세요."></textarea>
+                        <div class="grammar">
+                            <div class="textcnt" id="textcnt">( 0 / 300 )</div>
+                        </div>
                     </div>
-                </div>
-                <div class="div-11">
-                    <div class="div-12">
-                        <div class="title">
-                            <div class="div-5">
-                                <div class="profile">
-                                    <img src="/payment/img/profile.png" alt=""/>
+                    <div class="div-11" id="memoList">
+                        <th:block th:if="${memoList == null}">
+                            <div class="noList">
+                                <div class="icon">
+                                    <img src="/images/common/!.jpg" alt=""/>
                                 </div>
-                                <div class="text-wrapper-15">이원아</div>
+                                <div class="detail">'메모 추가'을 눌러 대상을 추가해주세요.</div>
                             </div>
-                            <img class="button-x" src="/payment/img/x.png" />
-                        </div>
-                        <p class="memo">
-                            안녕하세요, 아이바요유치원입니다.<br />동희의 하반기 등록비 안내드립니다^^ 확인 후 궁금하신 점은
-                            언제든 문의 주세요^^ 감사합니다!
-                        </p>
+                        </th:block>
+                        <th:block th:if="${memoList != null}">
+
+                            <th:block th:if="${memoList.size() == 0}">
+
+                            </th:block>
+
+                            <th:block th:if="${memoList != null}">
+                                <div class="div-12 memoElement" th:each="memoElement : ${memoList}" th:object="${memoElement}"
+                                     th:data-kid-no="*{kidNo}" th:data-payment-memo="*{paymentMemo}">
+                                    <div class="title">
+                                        <div class="div-5">
+                                            <div class="profile">
+                                                <img src="/images/common/default-yellow.png" alt=""/>
+                                            </div>
+                                            <div class="textarea">
+                                                <div class="text-wrapper-15" id="memo_kid"
+                                                     th:data-kid-no="*{kidNo}" th:data-member-id="*{id}" th:text="*{kidName}">원아명</div>
+                                            </div>
+                                        </div>
+                                        <a class="button-x">
+                                            <img src="/images/common/x.png" alt=""/>
+                                        </a>
+                                    </div>
+                                    <p class="memo" th:text="*{paymentMemo}">메모내용</p>
+                                </div>
+                            </th:block>
+
+                        </th:block>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="div-3">
-            <div class="title-4">
-                <div class="text-wrapper-8">예약 발송</div>
-                <p class="p">
-                <span class="span">예약 발송 활성화 시 만료일이 초기화되며, 예약발송 설정 후 만료일 설정이 가능합니다.</span>
-                </p>
-            </div>
-            <div class="inputarea-5">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="notepad" checked>
-                    <label class="form-check-label" for="notepad"></label>
-                </div>
-                <div class="inputarea-6">
-                    <div class="div-6">
-                        <div class="text-wrapper-11">예약일</div>
-                        <div class="calendar-pick">
-                            <img class="calendar-vector" src="/images/common/calendar_gray.png" />
-                            <input type="text" class="datepickerdiv datepicker" placeholder="날짜 선택" readonly>
-                        </div>
-                    </div>
-                    <div class="div-6">
-                        <div class="text-wrapper-11">예약시간</div>
-                        <div class="calendar-pick">
-                            <img class="img-6" src="/images/common/clock.png" />
-                            <input type="text" class="datepickerdiv datepicker" placeholder="시간 선택" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        <div class="div-3">-->
+<!--            <div class="title-4">-->
+<!--                <div class="text-wrapper-8">예약 발송</div>-->
+<!--                <p class="p">-->
+<!--                <span class="span">예약 발송 활성화 시 만료일이 초기화되며, 예약발송 설정 후 만료일 설정이 가능합니다.</span>-->
+<!--                </p>-->
+<!--            </div>-->
+<!--            <div class="inputarea-5">-->
+<!--                <div class="form-check form-switch">-->
+<!--                    <input class="form-check-input" type="checkbox" role="switch" id="notepad" checked>-->
+<!--                    <label class="form-check-label" for="notepad"></label>-->
+<!--                </div>-->
+<!--                <div class="inputarea-6">-->
+<!--                    <div class="div-6">-->
+<!--                        <div class="text-wrapper-11">예약일</div>-->
+<!--                        <div class="calendar-pick">-->
+<!--                            <img class="calendar-vector" src="/images/common/calendar_gray.png" />-->
+<!--                            <input type="text" class="datepickerdiv datepicker" placeholder="날짜 선택" readonly>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="div-6">-->
+<!--                        <div class="text-wrapper-11">예약시간</div>-->
+<!--                        <div class="calendar-pick">-->
+<!--                            <img class="img-6" src="/images/common/clock.png" />-->
+<!--                            <input type="text" class="datepickerdiv datepicker" placeholder="시간 선택" readonly>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="div-3">
             <div class="title-5">
                 <div class="text-wrapper-8">청구서 만료일</div>
@@ -439,7 +401,7 @@
                     <div class="text-wrapper-11">시간</div>
                     <div class="calendar-pick">
                         <img class="img-6" src="/images/common/clock.png" />
-                        <input type="text" class="datepickerdiv datepicker" placeholder="시간 선택" readonly>
+                        <input type="text" class="datepickerdiv timepicker" placeholder="시간 선택" readonly>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
+
+<title layout:fragment="title">scheduleModify</title>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/globals.css}" />
+    <link rel="stylesheet" th:href="@{/css/schedule/scheduleWrite.css}" />
+    <link rel="stylesheet" th:href="@{/css/schedule/scheduleModal.css}" />
+    <link rel="stylesheet" th:href="@{/css/CommonContainerPlus.css}" />
+    <link rel="stylesheet" th:href="@{/css/CommonHoverPlus.css}" />
+</th:block>
+
+<th:block layout:fragment="javascript">
+    <script src="/js/schedule/adminPage/scheduleWrite.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=57a173f89d865b272a5903af669bf1de&libraries=services"></script>
+    <th:block th:replace="~{/common/datepicker :: js}"/>
+    <th:block th:replace="~{/common/datepicker :: css}"/>
+</th:block>
+
+<div class="container main_container" layout:fragment="content">
+    <div class="schedule-form" >
+
+        <div class="title"><div class="text-wrapper-4">일정 수정</div></div>
+
+        <div class="buttons">
+            <a class="button-cancel" th:href="@{/schedule/admin/scheduleMain}">
+                <div class="text-cancel">취소</div>
+            </a>
+            <input type="button" class="button-submit" value="수정하기">
+        </div>
+
+        <div class="calendar">
+
+            <div class="div_hidden" id="board_no_div" th:data-value="${schedule.boardNo}"></div>
+            <div class="div_hidden" id="schedule_no_div" th:data-value="${schedule.scheduleNo}"></div>
+
+            <div class="input-name">
+                <div class="text-date"><div class="text-wrapper-7">날짜</div></div>
+                <div class="div-4">
+                    <div class="calendar-pick">
+                        <img class="calendar-vector start_date_div" th:id="${schedule.scheduleStartDate}" src="/images/common/calendar_gray.png" />
+                        <input type="text" class="datepickerdiv datepicker startDate" placeholder="날짜 선택" readonly
+                               th:value="${#temporals.format(schedule.scheduleStartDate, 'yyyy.MM.dd')}">
+                    </div>
+                    <div class="text-wrapper-8">-</div>
+                    <div class="calendar-pick">
+                        <img class="calendar-vector end_date_div" th:id="${schedule.scheduleEndDate}" src="/images/common/calendar_gray.png" />
+                        <input type="text" class="datepickerdiv datepicker endDate" placeholder="날짜 선택"
+                               th:value="${#temporals.format(schedule.scheduleEndDate, 'yyyy.MM.dd')}"readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="input-name-2">
+                <div class="title-class">
+                    <div class="text-wrapper-7">반 선택</div>
+                    <div class="text-wrapper-10" id="checkboxCnt">(0개)</div>
+                </div>
+                <div class="class-selection">
+
+                    <div class="text-addable">
+                        <div class="modal-div-2">
+                            <input type="checkbox" class="form-check-input" id="checkAll">
+                            <div class="text-wrapper-2" for="checkAll">반 전체 선택</div>
+                        </div>
+                    </div>
+                    <div class="carouselDiv">
+                        <div class="carousel">
+                            <label class="class-selected classList" th:each="class:${classList}" th:object="${classList}" th:for="${class.classNo}" th:id="${class.classNo}">
+                                <div class="text-wrapper-3" th:text="${class.className}">반이름</div>
+                                <input class="form-check-input" type="checkbox" th:name="${class.classNo}" th:value="${class.className}" th:id="${class.classNo}" autocomplete="off" >
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="div_hidden" id="checked_class_div">
+                        <div class="origin_class" th:each="class:${schedule.classList}" th:id="${class.classNo}"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="input-name-2">
+                <div class="text-date"><div class="text-wrapper-7">제목</div></div>
+                <input type="text" class="default-wrapper" placeholder="제목을 작성해주세요." th:value="${schedule.boardTitle}">
+            </div>
+            <div class="input-name-2">
+                <div class="text-date"><div class="text-wrapper-7">내용</div></div>
+                <div class="inputarea-2">
+                    <textarea class="calendar-textarea" id="calendar-textarea"
+                              onkeyup="autoResize(this), chkword(this, 500)" onkeydown="autoResize(this)"
+                              placeholder="일정표는 알림을 보내지 않습니다." th:text="${schedule.boardContents}"></textarea>
+                    <div class="grammar">
+                        <div class="textcnt" id="textcnt">( 0 / 500 )</div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-name-2">
+                <div class="text-date"><div class="text-wrapper-7">위치</div></div>
+                <div class="inputarea-3">
+                    <div class="input-loc" th:data-map-lat="*{schedule.mapLat}" th:data-map-lng="*{schedule.mapLng}">
+                        <a class="set-loc">
+                            <div class="button-x">
+                                <img src="/images/common/plus.png"></img>
+                            </div>
+                            <div class="default">위치 첨부하기</div>
+                        </a>
+                        <div class="map_wrap">
+                            <div class="button-x cancel-loc">
+                                <img src="/images/common/x.png">
+                            </div>
+                            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

@@ -306,13 +306,14 @@
     -webkit-box-orient: vertical;
 }
 
-.container .view {
+.container .inputReset {
     display: flex;
     width: 72px;
     align-items: center;
     justify-content: center;
     gap: 10px;
     position: relative;
+    cursor: pointer;
 }
 
 .container .reset {
@@ -367,7 +368,7 @@
 
 .container .payment-content {
     align-items: flex-start;
-    gap: 30px;
+    gap: 20px;
     padding: 20px 40px 40px;
     background-color: #f5f5f5;
     border-radius: 20px;
@@ -450,6 +451,7 @@
     border-radius: 8px;
     border: 1px solid;
     border-color: #e0e0e0;
+    color: #828282;
 }
 
 .dropdown-class:focus {
@@ -697,6 +699,11 @@ button .current {
     overflow: hidden;
 }
 
+.tuple:hover{
+    border-radius: 10px;
+    background-color: #f5f5f5;
+}
+
 .container .text-wrapper-23 {
     width: 74px;
     text-align: center;
@@ -905,6 +912,14 @@ button .current {
     font-size: 25px;
     letter-spacing: 0;
     line-height: normal;
+}
+
+.datepickerdiv{
+    width: 112px !important;
+}
+
+.text-wrapper-5{
+    color: #828282;
 }
 
 :root {

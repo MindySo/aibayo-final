@@ -138,7 +138,7 @@ public class SecurityConfig {
 
         // 경로별 인가 설정
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/member/**", "/", "/login", "/users/login", "/logout", "/css/**", "/images/**", "/js/**").permitAll()
+                .requestMatchers("/member/**", "/", "/login", "/users/login", "/logout", "/css/**", "/images/**", "/js/**", "/setting/**").permitAll()
                 .requestMatchers("/chat/**", "/inc/**", "/layout/**", "/vendor/**").permitAll()
                 .requestMatchers("/main/admin").hasAnyRole("ADMIN", "PRINCIPAL", "TEACHER")
                 .requestMatchers("/main/user").hasRole("USER")

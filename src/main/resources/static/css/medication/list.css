@@ -35,7 +35,7 @@
 
 .list .text-wrapper {
     color: #000000;
-    font-family: "Noto Sans-Bold", Helvetica;
+    /*font-family: "Noto Sans-Bold", Helvetica;*/
     font-size: 25px;
     font-weight: 700;
     letter-spacing: 0;
@@ -141,7 +141,7 @@
     background-color: #ffe668;
     border-radius: 8px;
     box-shadow: var(--button-shadow);
-    height: 59px;
+    height: 50px;
     position: relative;
     width: 150px;
     border: none ;
@@ -149,6 +149,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration-line : none;
+    color: black;
+    margin-left: 20px;
 }
 
 .list .text-wrapper-2 {
@@ -258,19 +261,19 @@
 .list .avatar {
     background-color: #f7f7f7;
     border-radius: 1000px;
-    height: 40px;
+    height: 200px;
     overflow: hidden;
     position: relative;
-    width: 40px;
+    width: 200px;
 }
 
 .list .rectangle {
-    height: 40px;
+    height: 200px;
     left: 0;
     object-fit: cover;
     position: absolute;
     top: 0;
-    width: 40px;
+    width: 200px;
 }
 
 .list .frame-7 {
@@ -434,13 +437,13 @@
 }
 
 .list .frame-15 {
-        align-items: center;
-        background-color: #ffffff;
-        display: flex;
-        flex: 0 0 auto;
-        justify-content: center;
-        position: relative;
-    }
+    align-items: center;
+    background-color: #ffffff;
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: center;
+    position: relative;
+}
 .list .frame-16 {
     align-items: center;
     background-color: #ffffff;
@@ -640,35 +643,39 @@
 .medication:hover{
     background-color: #f0f0f0;
 }
-.date-picker{
+.date-picker {
     text-align: center;
     display: flex;
-    height:50px;
-    width: 200px;
-}
-.pick{
-    display: flex;
-}
-.custom-svg {
-    width: 34px;
-    height: 34px;
-}
+    height: 50px;
+    width: 327px;
 
-svg.bi-calendar3 {
-    width: 59px;
-    height: 59px;
-    display: flex;
-    padding: 0px;
-    margin: 0px;
-    color: #ffe668;
-}
-.datepicker{
-    text-align: center;
-    border-radius: 8px;
-}
-.datepicker-dropdown{
-    top: 302px;
-    left: 977.58px;
-    z-index: 10;
-    display: block;
+    .pick {
+        display: flex;
+    }
+
+    .custom-svg {
+        width: 34px;
+        height: 34px;
+    }
+
+    svg.bi-calendar3 {
+        width: 59px;
+        height: 59px;
+        display: flex;
+        padding: 0px;
+        margin: 0px;
+        color: #ffe668;
+    }
+
+    .datepicker {
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .datepicker-dropdown {
+        top: 302px;
+        left: 977.58px;
+        z-index: 10;
+        display: block;
+    }
 }

@@ -199,4 +199,10 @@ public class KidServiceImpl implements KidService {
 
         return null;
     }
+
+    @Override
+    public List<KidDto> getAllByParent(Long id) {
+        return kidRepository.findAllByParent(id);
+    }
+
 }

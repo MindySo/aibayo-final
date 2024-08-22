@@ -3,6 +3,7 @@ package com.aico.aibayo.control;
 import com.aico.aibayo.dto.meal.MealDto;
 import com.aico.aibayo.dto.meal.MealSearchCondition;
 import com.aico.aibayo.service.meal.MealService;
+import com.amazonaws.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -69,5 +70,15 @@ public class ApiMealController {
         return modified == null ? ResponseEntity.badRequest().build() :
                                   ResponseEntity.ok(modified);
 //        return null;
+    }
+
+    @DeleteMapping("/deleteOk")
+    public ResponseEntity<MealDto> deleteOk(@RequestBody MealDto mealDto) {
+        log.info("delete: {}", mealDto);
+
+        MealDto deleted = mealService.deleteMeal(mealDto);
+
+        return deleted == null ? ResponseEntity.badRequest().build() :
+                                 ResponseEntity.ok(deleted);
     }
 }

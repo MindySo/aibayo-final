@@ -1,4 +1,4 @@
-package com.aico.aibayo.repository;
+package com.aico.aibayo.repository.notepad;
 
 import com.aico.aibayo.entity.NotepadReceiverEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -9,4 +9,5 @@ public interface KidRepositoryCustom {
     List<KidDto> findAllByClassNoAndAcceptStatus(KidSearchCondition condition);
     List<KidDto> findAllWithParentByClassNoAndAcceptStatus(KidSearchCondition condition);
     List<KidDto> findAllWithInviteByClassNoAndAcceptStatus(KidSearchCondition condition);
+    List<KidDto> findAllByParent(Long id);
 }

@@ -262,94 +262,56 @@ $(document).ready(function(){
     ];
 
     // 시도 선택 박스 초기화
-    function initializesidoSelect() {
-        const sidoSelect = $('#sidoSelect');
-        // 중복 제거를 위해 Set 객체 사용
-        const uniqueCities = Array.from(new Set(data.map(item => item.시도명)));
-
-        // 기존 옵션 제거
-        sidoSelect.empty();
-
-        // 기본 옵션 추가
-        sidoSelect.append('<option value="">선택하세요</option>');
-
-        uniqueCities.forEach(city => {
-            const cityCode = data.find(item => item.시도명 === city).시도코드; // 시도코드 그대로 사용
-            const option = $('<option></option>').val(cityCode).text(city);
-            sidoSelect.append(option);
-        });
-    }
-
-    // 시도 선택 시 시군구 선택 박스 업데이트
-    function updatesggSelect() {
-        const sidoSelect = $('#sidoSelect');
-        const sggSelect = $('#sggSelect');
-
-        // 기존 이벤트 핸들러 제거
-        sidoSelect.off('change');
-        sggSelect.off('change');
-
-        sidoSelect.change(function() {
-            const sidoCode = $(this).val(); // 시도코드 그대로 사용
-            const filteredData = data.filter(item => item.시도코드 === sidoCode);
-
-            // 시군구 선택 박스 초기화
-            sggSelect.empty().append('<option value="">시군구를 선택하세요</option>'); // 기본 옵션
-
-            filteredData.forEach(item => {
-                const option = $('<option></option>').val(item.시군구코드).text(item.시군구명); // 시군구코드 그대로 사용
-                sggSelect.append(option);
-            });
-
-            // 시도 선택 시 콘솔에 선택된 값 찍기
-            console.log('sidoCode : ', sidoCode);
-        });
-
-        sggSelect.change(function() {
-            const sggCode = $(this).val(); // 시군구코드 그대로 사용
-            console.log('sggCode : ', sggCode);
-        });
-    }
-
-    // 페이지 로드 시 초기화
-    initializesidoSelect();
-    updatesggSelect();
-});
-
-var url = "https://e-childschoolinfo.moe.go.kr/api/notice/basicInfo.do?";
-var apiKey = "key=APIKEY";
-var param = "&sidoCode=11&sggCode=1140";
-var resultTable;
-$(function(){
-    $.ajax({
-        url : url + apiKey + param,
-        async: true,
-        crossDomain: true,
-        type: "post",
-        dataType: "json",
-        success : function(result){
-            resultTable = "<table style='border:1px solid #5b5b5b; padding:1px; margin:1px;'>";
-            resultTable += "<tr>";
-            $.each(result.kinderInfo[0],function(key,row){
-                resultTable += "<td style='border:1px solid; color:black;background-color:white;'>";
-                resultTable += key;
-                resultTable += "</td>";
-            });
-            resultTable += "</tr>";
-            $.each(result.kinderInfo,function(key,row){
-                resultTable += "<tr>";
-                $.each(result.kinderInfo[0],function(key,value){
-                    resultTable += "<td style='border:1px solid; color:black;background-color:white;'>";
-                    resultTable += row[value];
-                    resultTable += "</td>";
-                });
-                resultTable += "</tr>";
-            });
-            resultTable += "</table>";
-            $("body").append(resultTable);
-        },
-        error : function(request, status){
-            alert(status);
-        }
-    });
+    // function initializesidoSelect() {
+    //     const sidoSelect = $('#sidoSelect');
+    //     // 중복 제거를 위해 Set 객체 사용
+    //     const uniqueCities = Array.from(new Set(data.map(item => item.시도명)));
+    //
+    //     // 기존 옵션 제거
+    //     sidoSelect.empty();
+    //
+    //     // 기본 옵션 추가
+    //     sidoSelect.append('<option value="">선택하세요</option>');
+    //
+    //     uniqueCities.forEach(city => {
+    //         const cityCode = data.find(item => item.시도명 === city).시도코드; // 시도코드 그대로 사용
+    //         const option = $('<option></option>').val(cityCode).text(city);
+    //         sidoSelect.append(option);
+    //     });
+    // }
+    //
+    // // 시도 선택 시 시군구 선택 박스 업데이트
+    // function updatesggSelect() {
+    //     const sidoSelect = $('#sidoSelect');
+    //     const sggSelect = $('#sggSelect');
+    //
+    //     // 기존 이벤트 핸들러 제거
+    //     sidoSelect.off('change');
+    //     sggSelect.off('change');
+    //
+    //     sidoSelect.change(function() {
+    //         const sidoCode = $(this).val(); // 시도코드 그대로 사용
+    //         const filteredData = data.filter(item => item.시도코드 === sidoCode);
+    //
+    //         // 시군구 선택 박스 초기화
+    //         sggSelect.empty().append('<option value="">시군구를 선택하세요</option>'); // 기본 옵션
+    //
+    //         filteredData.forEach(item => {
+    //             const option = $('<option></option>').val(item.시군구코드).text(item.시군구명); // 시군구코드 그대로 사용
+    //             sggSelect.append(option);
+    //         });
+    //
+    //         // 시도 선택 시 콘솔에 선택된 값 찍기
+    //         console.log('sidoCode : ', sidoCode);
+    //     });
+    //
+    //     sggSelect.change(function() {
+    //         const sggCode = $(this).val(); // 시군구코드 그대로 사용
+    //         console.log('sggCode : ', sggCode);
+    //     });
+    // }
+    //
+    // // 페이지 로드 시 초기화
+    // initializesidoSelect();
+    // updatesggSelect();
 });

@@ -9,4 +9,6 @@ public class MealSearchCondition {
     private LocalDate startDate;
     private LocalDate endDate;
     private Long kinderNo;
+    private LocalDate mealDate;
+    private String mealDeleteFlag;
 }

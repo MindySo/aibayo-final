@@ -184,7 +184,7 @@
     justify-content: flex-start;
     position: relative;
     padding-bottom: 20px;
-    min-height: 1280px;
+    /*min-height: 910px;*/
 }
 
 .list .card {
@@ -261,19 +261,19 @@
 .list .avatar {
     background-color: #f7f7f7;
     border-radius: 1000px;
-    height: 200px;
+    height: 100px;
     overflow: hidden;
     position: relative;
-    width: 200px;
+    width: 100px;
 }
 
 .list .rectangle {
-    height: 200px;
+    height: 100px;
     left: 0;
     object-fit: cover;
     position: absolute;
     top: 0;
-    width: 200px;
+    width: 100px;
 }
 
 .list .frame-7 {
@@ -666,7 +666,12 @@
         margin: 0px;
         color: #ffe668;
     }
-
+    .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        justify-content: center;
+    }
     .datepicker {
         text-align: center;
         border-radius: 8px;
@@ -677,5 +682,12 @@
         left: 977.58px;
         z-index: 10;
         display: block;
+    }
+
+    .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        justify-content: center;
     }
 }

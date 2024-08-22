@@ -1,6 +1,11 @@
 $(document).ready(function() {
+    showCalendar();
 
-    // 선택한 날짜가 유지되도록
+});
+
+function showCalendar(){
+    // 변수가 유지되도록
+    var initialSelectedValue;
     var selectedValue;
 
     var calendarEl = document.getElementById('calendar');
@@ -25,7 +30,6 @@ $(document).ready(function() {
             // center: 'title today',
             center: 'title',
             right: 'next'
-            // right: 'dayGridMonth'
         },
         dayMaxEvents: true,
         buttonText: {
@@ -40,23 +44,17 @@ $(document).ready(function() {
         dateClick: function(dateInfo) {
             //날짜 선택
             selectedValue = dateInfo.dateStr;
-
-            // 모든 상태 div 숨기기
-            $('.single-schedule').hide();
-
-            // 선택된 값에 따라 해당 div 보이기
-            $('.' + selectedValue).show();
-            var selectedValueStr = selectedValue.replace('-','년 ').replace('-','월 ').concat('일');
-            document.getElementById("selectedDate").innerHTML = selectedValueStr;
+            // console.log("selectedValue" + selectedValue);
+            showDaySchedule(selectedValue);
         },
 
-        // 날짜별 일정 출력
+        // 날짜 출력
         datesSet: function (dateInfo) {
             // 처음 calendar 로드 시 모든 div 숨기고
             $('.single-schedule').hide();
 
             // 오늘 날짜 설정
-            var initialSelectedValue = calendar.getDate().toISOString().substring(0, 10);
+            initialSelectedValue = calendar.getDate().toISOString().substring(0, 10);
             var initialSelectedValueStr = initialSelectedValue.replace('-','년 ').replace('-','월 ').concat('일');
 
             if (selectedValue) {    // 선택한 날짜가 있는 경우
@@ -71,8 +69,8 @@ $(document).ready(function() {
             // 달력에 표시 중인 달 확인
             var currentDate = dateInfo.view.currentStart;
             var currentMonth = currentDate.getMonth() + 1;
-            console.log("현재 표시중인 일: " + currentDate);
-            console.log("현재 표시중인 달: " + currentMonth);
+            // console.log("현재 표시중인 일: " + currentDate);
+            // console.log("현재 표시중인 달: " + currentMonth);
 
             // datesRender 이벤트가 발생할 때 버튼 스타일을 변경하고 보이도록 설정
             $('.fc-toolbar button').each(function() {
@@ -86,54 +84,92 @@ $(document).ready(function() {
                 dayGridMonthButton.classList.add('disabled');
             }
         },
-
-
         events: eventsData
-        // events: [
-        //     {
-        //         title: '학부모 심폐소생술 교육',
-        //         start: '2024-07-15',
-        //         classNo: 0,
-        //         contents: '유치원 3층 대강당에서 학부모 심폐소생술 교육을 실시합니다.',
-        //         location: ''
-        //     },
-        //     {
-        //         title: '여름 피크닉',
-        //         start: '2024-07-15',
-        //         classNo: 0,
-        //         contents: '종로 3가 탑골공원으로 현장학습 진행 예정입니다.',
-        //         location: ''
-        //     },
-        //     {
-        //         title: '화채 만들기',
-        //         start: '2024-07-16',
-        //         end: '2024-07-19',
-        //         classNo: 0,
-        //         contents: '각 반마다 화채 만들기 실습이 있을 예정입니다.',
-        //         location: ''
-        //     }
-        // ]
+
+    });
+
+    $(document).on('click', '.fc-day', function () {
+        $('.fc-day').css({
+            'background-color': 'rgba(0,0,0,0)'
+        });
+
+        $(this).css({
+            'border-radius': '15px',
+            'background-color': 'rgba(55,55,55,0.15)'
+        });
     });
 
     calendar.render();
-
-});
+    showDaySchedule(initialSelectedValue);
+}
 
 function getEvents() {
     const scheduleElements = document.querySelectorAll('.schedule_values');
     const events = [];
 
+
     scheduleElements.forEach(element => {
+        let endDate = element.getAttribute('data-schedule-end-date');
+        const dataClassList = element.getAttribute('data-class-list');
+
+        // classNo가 0인지를 확인하기 위해 정규식을 사용하여 추출
+        const classNoMatch = dataClassList.match(/classNo=0/);
+
         const event = {
             title: element.getAttribute('data-board-title'),
             start: element.getAttribute('data-schedule-start-date').split('T')[0], // 날짜만 추출
-            end: element.getAttribute('data-schedule-end-date') ? element.getAttribute('data-schedule-end-date').split('T')[0] : null, // 종료 날짜가 있을 경우에만 추가
-            classNo: parseInt(element.getAttribute('data-class-no'), 10),
+            end: endDate ? addOneDayAndFormat(endDate) : null,
+            classNo: parseInt(element.getAttribute('data-class-no'), 10),   // 10진수
             contents: element.getAttribute('data-board-contents'),
+            backgroundColor: classNoMatch !== null ? '#3788d8' : '#ff85aa',
+            borderColor : classNoMatch !== null ? '#3788d8' : '#ff85aa',
             location: '' // location 값이 없으므로 빈 문자열로 설정
         };
+
         events.push(event);
     });
 
     return events;
+}
+
+function addOneDayAndFormat(dateString) {
+    // T를 기준으로 분리하여 날짜 부분만 가져옴
+    var datePart = dateString.split('T')[0];
+
+    // Date 객체로 변환
+    var date = new Date(datePart);
+
+    // 하루를 추가
+    date.setDate(date.getDate() + 1);
+
+    // 날짜를 'yyyy-mm-dd' 형식으로 변환
+    var year = date.getFullYear();
+    var month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+    var day = String(date.getDate()).padStart(2, '0');
+
+    return year + '-' + month + '-' + day;
+}
+
+
+function showDaySchedule(selectedValue){
+    // 선택된 값에 따라 해당 div 보이기
+    var selectedValueStr = selectedValue.replace('-','년 ').replace('-','월 ').concat('일');
+    document.getElementById("selectedDate").innerHTML = selectedValueStr;
+
+    let url = "/schedule/user/scheduleMainByDay"
+
+    let param = {
+        selectedDate : selectedValue + 'T00:00:00',
+    }
+    console.log("param : " + JSON.stringify(param));
+
+    commonAjax(url, 'POST', param);
+}
+
+function afterSuccess(response, method) {
+    $('.schedule-2').replaceWith($(response).find('.schedule-2'));
+    $('.schedules_data').replaceWith($(response).find('.schedules_data'));
+
+    var count = document.querySelectorAll('.single-schedule').length;
+    $('.text-wrapper-16').text("일정 " + count + "개");
 }

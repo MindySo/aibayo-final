@@ -1,6 +1,7 @@
 package com.aico.aibayo.config;
 
 import com.aico.aibayo.dto.member.MemberDto;
+import com.aico.aibayo.dto.member.MemberSearchCondition;
 import com.aico.aibayo.jwt.JWTUtil;
 import com.aico.aibayo.service.member.MemberService;
 import jakarta.servlet.http.Cookie;
@@ -32,12 +33,21 @@ public class GlobalControllerAdvice {
         }
 
         MemberDto memberDto = (MemberDto) session.getAttribute("loginInfo");
+        log.info("session loginInfo: {}", memberDto);
 
         if (memberDto == null) {
             String token = getTokenFromCookies(request.getCookies());
             String username = jwtUtil.getUsername(token);
             log.info("loginUser: {}", username);
             memberDto = memberService.findByUsername(username);
+            if (memberDto.getRoleNo() > 2) {
+                MemberSearchCondition condition = new MemberSearchCondition();
+                condition.setUsername(memberDto.getUsername());
+                condition.setKidNo(memberDto.getKidNo());
+                memberDto = memberService.getByUsernameWithParentKid(condition);
+            }
+
+            session.setAttribute("loginInfo", memberDto);
         }
 
         model.addAttribute("loginInfo", memberDto);

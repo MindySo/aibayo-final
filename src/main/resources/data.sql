@@ -58,14 +58,8 @@ INSERT INTO member(role_no, status, kinder_no, role, reg_date, username, name, p
 
 
 #등록 유치원 추가
-INSERT INTO register_kinder
-(kinder_open_time, kinder_close_time, kinder_reg_date, announce_status, notepad_status, meal_status, medication_status, return_home_status, attendance_status, schedule_status, pick_drop_status, life_record_status, chat_status,sido_list,sgg_list)
-VALUES('09:00','16:00','2020-01-01',1, 1, 1, 1, 1, 1, 1, 1, 1, 1,'27','27140');
-
-
-INSERT INTO register_kinder
-(kinder_open_time, kinder_close_time, kinder_reg_date, announce_status, notepad_status, meal_status, medication_status, return_home_status, attendance_status, schedule_status, pick_drop_status, life_record_status, chat_status,sido_list,sgg_list)
-VALUES('10:00','18:00','2021-01-01',1, 1, 1, 1, 1, 1, 1, 1, 1, 1,'27','27140');
+INSERT INTO register_kinder (kinder_open_time, kinder_close_time, kinder_reg_date, announce_status, notepad_status, meal_status, medication_status, return_home_status, attendance_status, schedule_status, pick_drop_status, life_record_status, chat_status, sido_list, sgg_list, kinder_name) VALUES('09:00','16:00','2020-01-01',1, 1, 1, 1, 1, 1, 1, 1, 1, 1,27,27140,'호수유치원');
+INSERT INTO register_kinder (kinder_open_time, kinder_close_time, kinder_reg_date, announce_status, notepad_status, meal_status, medication_status, return_home_status, attendance_status, schedule_status, pick_drop_status, life_record_status, chat_status, sido_list, sgg_list, kinder_name) VALUES('10:00','18:00','2021-01-01',1, 1, 1, 1, 1, 1, 1, 1, 1, 1,11,11680,'서울신구유치원');
 
 
 # 원생 추가
@@ -320,6 +314,7 @@ INSERT INTO parent_kid (accept_no, id, kid_no, is_main_parent, parent_relationsh
 INSERT INTO parent_kid (accept_no, id, kid_no, is_main_parent, parent_relationship) VALUES(273,17,4,0,'');
 INSERT INTO parent_kid (accept_no, id, kid_no, is_main_parent, parent_relationship) VALUES(274,18,5,0,'');
 INSERT INTO parent_kid (accept_no, id, kid_no, is_main_parent, parent_relationship) VALUES(275,19,6,0,'');
+INSERT INTO parent_kid (accept_no, id, kid_no, is_main_parent, parent_relationship) VALUES(279,14,84,0,'');
 
 
 # 승인이력 추가
@@ -609,6 +604,8 @@ INSERT INTO accept_log(accept_type, accept_status, accept_date, accept_reg_date)
 INSERT INTO accept_log(accept_type, accept_status, accept_date, accept_reg_date) VALUES(4,1,'2022-03-02 06:00:00',NULL);
 INSERT INTO accept_log(accept_type, accept_status, accept_date, accept_reg_date) VALUES(4,1,'2022-03-02 06:00:00',NULL);
 INSERT INTO accept_log(accept_type, accept_status, accept_date, accept_reg_date) VALUES(4,1,'2022-03-02 06:00:00',NULL);
+
+INSERT INTO accept_log(accept_type, accept_status, accept_date, accept_reg_date) VALUES(1,1,'2022-03-02 06:00:00',NULL);
 
 
 # 게시글 추가
@@ -2723,27 +2720,27 @@ VALUES
 
 INSERT INTO medication_order (order_no, symptoms)
 VALUES
-  (1, '감기'),
-(2, '복통'),
-(3, '설사'),
-(4, '구토'),
-(5, '복통, 구토'),
-(6, '구토'),
-(7, '고열, 감기'),
-(8, '감기'),
-(9, '복통'),
-(10, '구토, 설사'),
-(11, '감기'),
-(12, '설사'),
-(13, '구토'),
-(14, '아토피'),
-(15, '구토'),
-(16, '설사'),
-(17, '구토'),
-(18, '아토피'),
-(19, '복통, 구토'),
-(20, '설사'),
-(21, '구토'),
-(22, '감기'),
-(23, '설사');
+    (1, '감기'),
+    (2, '복통'),
+    (3, '설사'),
+    (4, '구토'),
+    (5, '복통, 구토'),
+    (6, '구토'),
+    (7, '고열, 감기'),
+    (8, '감기'),
+    (9, '복통'),
+    (10, '구토, 설사'),
+    (11, '감기'),
+    (12, '설사'),
+    (13, '구토'),
+    (14, '아토피'),
+    (15, '구토'),
+    (16, '설사'),
+    (17, '구토'),
+    (18, '아토피'),
+    (19, '복통, 구토'),
+    (20, '설사'),
+    (21, '구토'),
+    (22, '감기'),
+    (23, '설사');
 

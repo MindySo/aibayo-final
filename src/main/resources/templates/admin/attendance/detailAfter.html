@@ -7,23 +7,18 @@
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/attendance/main.css}">
-    <!-- FullCalendar and related modules -->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />-->
 </th:block>
 
 <th:block layout:fragment="javascript">
-    <!-- FullCalendar and related modules -->
-<!--    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.11/index.global.min.js"></script>-->
     <script src="/js/attendance/main.js"></script>
 </th:block>
 
 <div class="container" layout:fragment="content">
-<!--    <h1>일별 출석부</h1>-->
-<!--    <h3>출석부를 생성할 수 없습니다</h3>-->
-    <h3>출석부는 현재 날짜에만 생성할 수 있습니다. </h3>
-    <h3>다른 날짜로 출석부를 생성하려면 해당 날짜에 접속해 주십시오.</h3>
-    <h4>오늘날짜 - [[${date}]]</h4>
+
+    <h3>출석부가 현재 생성되지 않았습니다. </h3>
+
+    <h4>오늘날짜 - [[${todayDate}]]</h4>
+    <h4>선택날짜 - [[${selectedDate}]]</h4>
 
     <div>
         <a th:href="@{/attendance/admin/main}" class="btn btn-warning">홈으로</a>

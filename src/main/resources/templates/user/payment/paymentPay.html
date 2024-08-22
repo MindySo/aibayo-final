@@ -10,17 +10,19 @@
     <link rel="stylesheet" th:href="@{/css/CommonHoverPlus.css}" />
     <link rel="stylesheet" th:href="@{/css/globals.css}" />
     <link rel="stylesheet" th:href="@{/css/payment/paymentConfirm.css}" />
-
+    <link rel="stylesheet" th:href="@{/css/payment/tossPay.css}" />
 </th:block>
 
 <th:block layout:fragment="javascript">
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script th:src="@{/js/payment/userPaymentPay.js}"></script>
 </th:block>
 
 <div class="container main_container" layout:fragment="content">
 
     <div class="title">
         <a class="icon-back" th:href="@{/user/paymentMain}">
-            <img src="/payment/img/back.png" alt=""/>
+            <img src="/images/common/back.png" alt=""/>
         </a>
         <div class="div-wrapper"><div class="text-wrapper-title">납부하기</div></div>
     </div>
@@ -32,93 +34,60 @@
     </div>
     <div class="payment-content">
         <div class="selected-main">
-            <div class="payment-title">
-                <div class="text-wrapper-5">총 청구 항목</div>
-                <div class="n">
-                    <div class="text-wrapper-6">3건</div>
-                </div>
-            </div>
+<!--            <div class="payment-title">-->
+<!--                <div class="text-wrapper-5">총 청구 항목</div>-->
+<!--                <div class="n">-->
+<!--                    <div class="text-wrapper-6">3건</div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="div-5">
-                <div class="title-2"><div class="text-wrapper-11">청구 내역 (1)</div></div>
+                <div class="title-2"><div class="text-wrapper-11 paymentContent" th:value="${payment.billNo}">청구 내역</div></div>
                 <div class="div-3">
                     <div class="div-2">
                         <div class="text-wrapper-7">청구 항목</div>
                         <div class="div-4">
-                            <div class="text-wrapper-8">2024 교구비 (6개월)</div>
+                            <div class="text-wrapper-8 paymentTitle" th:text="${payment.paymentTitle}">청구 내용</div>
                         </div>
                     </div>
                     <div class="div-2">
                         <div class="text-wrapper-7">원아명</div>
                         <div class="div-4">
-                            <div class="text-wrapper-8">김원아</div>
+                            <div class="text-wrapper-8" th:text="${payment.kidName}">원아명</div>
                         </div>
                     </div>
                     <div class="div-2">
                         <div class="text-wrapper-7">청구서 만료일</div>
                         <div class="div-4">
-                            <div class="text-wrapper-8">2024.7.24.14시</div>
+                            <div class="text-wrapper-8 endDate" th:text="${payment.paymentEndDate}">만료일자</div>
                         </div>
                     </div>
                     <div class="div-2">
                         <div class="text-wrapper-7">청구 금액</div>
                         <div class="div-4">
-                            <div class="text-wrapper-10">240,000원</div>
+                            <div class="text-wrapper-10 paymentPrice" th:text="${payment.paymentPrice}">청구금액</div>
+                            <div class="text-wrapper-10" >원</div>
                         </div>
                     </div>
                     <div class="div-2">
-                        <div class="div-4">
-                            <div class="text-wrapper-12">ㄴ 할인</div>
-                            <div class="item">(2024 여름방학 선등록 이벤트)</div>
-                        </div>
-                        <div class="div-4">
-                            <div class="text-wrapper-12">-60,000원</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="line"></div>
-            <div class="div-5">
-                <div class="title-2"><div class="text-wrapper-11">청구 내역 (2)</div></div>
-                <div class="div-3">
-                    <div class="div-2">
-                        <div class="text-wrapper-7">청구 항목</div>
-                        <div class="div-4">
-                            <div class="text-wrapper-8">2024 상반기 교습비 (월 1회)</div>
-                        </div>
-                    </div>
-                    <div class="div-2">
-                        <div class="text-wrapper-7">원아명</div>
-                        <div class="div-4">
-                            <div class="text-wrapper-8">김원아</div>
-                        </div>
-                    </div>
-                    <div class="div-2">
-                        <div class="text-wrapper-7">청구서 만료일</div>
-                        <div class="div-4">
-                            <div class="text-wrapper-8">2024.7.24.14시</div>
-                        </div>
-                    </div>
-                    <div class="div-2">
-                        <div class="text-wrapper-7">청구 금액</div>
-                        <div class="div-4">
-                            <div class="text-wrapper-10">260,000원</div>
-                        </div>
-                    </div>
-                    <div class="div-2">
-                        <div class="div-4">
-                            <div class="text-wrapper-12">ㄴ 할인</div>
-                            <div class="item">(2024 재원할인 이벤트)</div>
-                        </div>
-                        <div class="div-4">
-                            <div class="text-wrapper-12">-40,000원</div>
-                        </div>
+                        <th:block th:if="${payment.discountRate} != 0">
+                            <div class="div-4">
+                                <div class="text-wrapper-12">ㄴ 할인</div>
+                            </div>
+                            <div class="div-4">
+                                <div class="text-wrapper-12" th:text="${payment.discountRate}">할인율</div>
+                                <div class="text-wrapper-12">%</div>
+                            </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
             <div class="payment-final">
                 <div class="text-wrapper-5">총 청구 금액</div>
                 <div class="n">
-                    <div class="text-wrapper-finalprice">500,000원</div>
+                    <div class="text-wrapper-finalprice finalPrice"
+                         th:text="${payment.paymentPrice * (100 - payment.discountRate) * 0.01} ">
+                        최종금액</div>
+                    <div class="text-wrapper-finalprice">원</div>
                 </div>
             </div>
         </div>
@@ -128,12 +97,41 @@
                 <a class="button-cancel" th:href="@{/user/paymentMain}">
                     <div class="text-cancel">취소</div>
                 </a>
-                <a class="button-submit" th:href="@{/user/paymentDone}">
+                <button class="button-submit" id="openModalButton">
                     <div class="text-submit">결제하기</div>
-                </a>
+                </button>
             </div>
         </div>
     </div>
 
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <!-- 주문서 영역 -->
+            <div class="wrapper">
+                <div
+                        class="box_section"
+                        style="
+              padding: 40px 30px 50px 30px;
+              margin-top: 30px;
+              margin-bottom: 50px;
+            "
+                >
+                    <!-- 결제 UI -->
+                    <div id="payment-method"></div>
+                    <!-- 이용약관 UI -->
+                    <div id="agreement"></div>
+
+                    <!-- 결제하기 버튼 -->
+                    <div class="result wrapper">
+                        <button class="button" id="payment-button" style="margin-top: 30px">
+                            결제하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 </html>

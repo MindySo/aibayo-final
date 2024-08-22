@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/layout}">
 
-<title layout:fragment="title">귀가 동의서 메인</title>
+<title layout:fragment="title">귀가동의서 메인</title>
 
 <th:block layout:fragment="css">
     <th:block th:replace="~{/common/datepicker :: css}"/>
@@ -14,34 +14,18 @@
     <th:block th:replace="~{/common/datepicker :: js}"/>
 </th:block>
 
-
-
-
 <div class="container main_container" layout:fragment="content">
     <form action="#">
         <div class="list">
-
             <div class="frame">
                 <div class="view">
                     <div class="text-wrapper">귀가 동의서</div>
                 </div>
             </div>
-            <div class="div">
-                <div class="frame-2">
-                    <div class="element-dropdown-wrapper">
-                        <div class="element-dropdown">
-                            <select class="label">
-                                <option value="all">내 자녀 보기</option>
-                                <option value="class1">신짱구</option>
-                                <option value="class2">신짱아</option>
-                                <option value="class3">흰둥이</option>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
-                                </svg>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+            <div class="div"
+                 th:data-login-id="${loginInfo.getId()}"
+                 th:data-kid-no="${loginInfo.kidNo}"
+            >
                 <div class="pick">
                     <div class="date-picker">
                         <div>
@@ -50,10 +34,11 @@
                             </svg>
                         </div>
                         <input type="text" class="form-control datepicker" placeholder="년/월/일" readonly>
-                        <a href="/returnhome/user/writeform" class="button-new">작성</a>
+                        <a href="/user/home/writeForm" class="button-new">작성</a>
                     </div>
                 </div>
             </div>
+
             <div class="frame-a">
                 <div>
                     <a href="/returnhome/user/card" class="cardver">
@@ -72,57 +57,89 @@
                     </a>
                 </div>
             </div>
-            <div class="card-list">
-                <table class="table" id="table">
-                    <tr>
-                        <th>귀가 방법</th>
-                        <th>반</th>
-                        <th>원생</th>
-                        <th>제목</th>
-                        <th>의뢰자</th>
-                        <th>의뢰일</th>
-                    </tr>
-                    <tr class="returnHome" onclick="location.href='/returnhome/user/detail';">
-                        <td>1</td>
-                        <td>해바라기반</td>
-                        <td>신짱구</td>
-                        <td>신짱구의 귀가 동의서</td>
-                        <td>봉미선 엄마</td>
-                        <td>2024.07.11.</td>
-                    </tr>
-                    <tr class="returnHome" onclick="location.href='/returnhome/user/detail';">
-                        <td>2</td>
-                        <td>해바라기반</td>
-                        <td>김철수</td>
-                        <td>김철수의 귀가동의서</td>
-                        <td>철수맘</td>
-                        <td>2024.07.11.</td>
-                    </tr>
-                </table>
+
+            <div class="card-list" >
+                <a href="/returnhome/user/detail" class="card" th:each="home : ${homeList}">
+                    <div class="tb">
+                        <table class="table">
+<!--                            <tr>-->
+<!--                                <th>의뢰번호</th>-->
+<!--                                <td th:text="${home.orderNo}">자녀이름</td>-->
+<!--                            </tr>-->
+                            <tr>
+                                <th>이름</th>
+                                <td th:text="${home.kidName}">자녀이름</td>
+                            </tr>
+                            <tr>
+                                <th>귀가 방법</th>
+                                <td th:switch="${home.rhType}">
+                                    <span th:case="'0'">도보</span>
+                                    <span th:case="'1'">자가용</span>
+                                    <span th:case="'2'">기타</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>귀가 날짜</th>
+                                <td th:text="${#temporals.format(home.runDate, 'MM월 dd일')}"></td>
+                            </tr>
+                            <tr>
+                                <th>귀가 시간</th>
+                                <td th:text="${home.rhTime}"></td>
+                            </tr>
+                            <tr>
+                                <th>의뢰자</th>
+                                <td th:text="${home.orderRequester}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="frame-15">
+                        <div class="frame-16">
+                            <div class="text-wrapper-7">귀가 요청일</div>
+                        </div>
+                        <div class="frame-16">
+                            <div class="text-wrapper-7"
+                                 th:text="${#temporals.format(home.orderRequestDate, 'yyyy년 MM월 dd일')}">
+                                2024년 07월 05일
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </div>
-        <div class="frame-19">
-            <ul class="pagination class_2">
-                <li class="page-item class_3">
-                    <a class="page-link page-link-ab page-text-ab" href="#">
+            <ul class="pagination class_2" style="justify-content: center">
+                <li class="page-item class_3"
+                    th:classappend="${currentPage - 5 < 0 ? 'disabled' : ''}">
+                    <a class="page-link page-link-ab page-text-ab"
+                       th:href="@{|/returnhome/user/card?page=${currentPage - 5 + 1}|}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
                             <path d="M19.6771 24.7674L34.9896 40.0799C35.5104 40.6008 35.7625 41.2084 35.7458 41.9029C35.7292 42.5973 35.4597 43.2049 34.9375 43.7258C34.4153 44.2466 33.8076 44.507 33.1146 44.507C32.4215 44.507 31.8139 44.2466 31.2917 43.7258L15.25 27.7362C14.8333 27.3195 14.5208 26.8508 14.3125 26.3299C14.1042 25.8091 14 25.2883 14 24.7674C14 24.2466 14.1042 23.7258 14.3125 23.2049C14.5208 22.6841 14.8333 22.2154 15.25 21.7987L31.2917 5.75702C31.8125 5.23619 32.4292 4.98411 33.1417 5.00078C33.8542 5.01744 34.4701 5.28689 34.9896 5.80911C35.509 6.33133 35.7694 6.93897 35.7708 7.63203C35.7722 8.32508 35.5118 8.93272 34.9896 9.45494L19.6771 24.7674Z" fill="black"/>
                         </svg>
                     </a>
                 </li>
-                <li class="page-item class_3"><a class="page-link page-link-ab page-text-ab" href="#">1</a></li>
-                <li class="page-item class_3"><a class="page-link page-link-ab page-text-ab" href="#">2</a></li>
-                <li class="page-item class_3"><a class="page-link page-link-ab page-text-ab" href="#">3</a></li>
-                <li class="page-item class_3"><a class="page-link page-link-ab page-text-ab" href="#">4</a></li>
-                <li class="page-item class_3"><a class="page-link page-link-ab page-text-ab" href="#">5</a></li>
-                <li class="page-item class_3">
-                    <a class="page-link page-link-ab page-text-ab" href="#">
+
+
+                <th:block th:each="i : ${#numbers.sequence(startPage + 1, endPage + 1)}">
+                    <li class="page-item class_3" th:classappend="${currentPage + 1 == i ? 'active disabled' : ''}">
+                        <a class="page-link page-link-ab page-text-ab"
+                           th:text="${i}"
+                           th:href="@{|/returnhome/user/card?page=${i}|}">Page</a>
+                    </li>
+                </th:block>
+
+
+                <li class="page-item class_3"
+                    th:classappend="${homeList.totalPages < currentPage + 5 ? 'disabled' : ''}">
+                    <a class="page-link page-link-ab page-text-ab"
+                       th:href="@{|/returnhome/user/card?page=${currentPage + 5 + 1}|}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
                             <path d="M30.1563 24.9997L14.8438 9.68718C14.3229 9.16635 14.0708 8.54968 14.0875 7.83718C14.1042 7.12468 14.3736 6.50871 14.8958 5.98926C15.4181 5.46982 16.0347 5.2094 16.7458 5.20801C17.457 5.20662 18.0729 5.46704 18.5938 5.98926L34.5833 22.0309C35 22.4476 35.3125 22.9163 35.5208 23.4372C35.7292 23.958 35.8333 24.4788 35.8333 24.9997C35.8333 25.5205 35.7292 26.0413 35.5208 26.5622C35.3125 27.083 35 27.5518 34.5833 27.9684L18.5417 44.0101C18.0208 44.5309 17.4132 44.783 16.7188 44.7663C16.0243 44.7497 15.4167 44.4802 14.8958 43.958C14.375 43.4358 14.1146 42.8191 14.1146 42.108C14.1146 41.3969 14.375 40.7809 14.8958 40.2601L30.1563 24.9997Z" fill="black"/>
                         </svg>
                     </a>
                 </li>
             </ul>
+
+
+
         </div>
     </form>
 </div>
+</html>

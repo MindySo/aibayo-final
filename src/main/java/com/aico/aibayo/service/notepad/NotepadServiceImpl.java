@@ -10,7 +10,7 @@ import com.aico.aibayo.entity.NotepadEntity;
 import com.aico.aibayo.entity.NotepadReceiverEntity;
 import com.aico.aibayo.repository.BoardRepository;
 import com.aico.aibayo.repository.LifeRecordRepository;
-import com.aico.aibayo.repository.NotepadReceiverRepository;
+import com.aico.aibayo.repository.notepad.NotepadReceiverRepository;
 import com.aico.aibayo.repository.notepad.NotepadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

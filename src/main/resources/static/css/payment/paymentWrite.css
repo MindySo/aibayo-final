@@ -34,21 +34,49 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 10px;
     position: relative;
     flex: 0 0 auto;
+    width: 100%;
 }
 
-/*.container .text-wrapper-4 {*/
-/*    position: relative;*/
-/*    width: fit-content;*/
-/*    font-weight: var(--font-selected-menu-font-weight);*/
-/*    color: #000000;*/
-/*    font-size: var(--font-selected-menu-font-size);*/
-/*    letter-spacing: var(--font-selected-menu-letter-spacing);*/
-/*    line-height: var(--font-selected-menu-line-height);*/
-/*    font-style: var(--font-selected-menu-font-style);*/
-/*}*/
+.div-classname{
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    width: 100%;
+}
+.container .icon {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 70%;
+    background-size: cover;
+    background-position: 50% 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.icon img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+}
+
+.add_discount .add_memo{
+    cursor: pointer !important;
+}
+
+.noList{
+    display: flex;
+    width: 100%;
+    align-self: center;
+    justify-content: center;
+}
 
 .container .button-send {
     display: flex;
@@ -201,6 +229,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    align-content: flex-start;
 }
 
 .container .n {
@@ -477,7 +506,7 @@
 
 .container .text-wrapper-13 {
     position: relative;
-    width: fit-content;
+    width: 17px;
     font-weight: 400;
     color: #828282;
     font-size: 16px;
@@ -777,7 +806,6 @@
 .container .input-memo {
     display: flex;
     flex-direction: column;
-    height: 113px;
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
@@ -788,6 +816,58 @@
     border-radius: 8px;
     border: 1px solid;
     border-color: #e0e0e0;
+}
+
+.memo-textarea {
+    padding: 10px 0px;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    flex: 0 0 auto;
+    border: none;
+    width: 100%;
+    min-height: 65px;
+    font-size: 16px;
+    resize: none;
+    padding-bottom: 15px;
+    line-height: 23px;
+}
+
+.memo-textarea:focus {
+    outline: none;
+}
+
+.memo-textarea::-webkit-scrollbar{
+    display:none;
+}
+
+.container .grammar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 0px 0px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    border-top-width: 0.5px;
+    border-top-style: solid;
+    border-color: #cbcbcb;
+}
+
+.container .textcnt {
+    position: relative;
+    width: fit-content;
+    color: #b3b3b3;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 
 .container .default {
@@ -991,4 +1071,35 @@
 
 .form-switch:focus {
     background: white;
+}
+
+.container .defaulttext {
+    width: fit-content;
+    color: #828282;
+    font-size: 16px;
+    text-align: center;
+    line-height: 23.8px;
+    white-space: nowrap;
+    -webkit-line-clamp: 1;
+    position: relative;
+    font-weight: 500;
+    letter-spacing: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+.ui-menu-item{
+    font-size: 14px !important;
+    color: #828282 !important;
+}
+
+.ui-timepicker-standard{
+    border-radius: 10px !important;
+    border-color: #828282;
+}
+
+#noClass{
+    padding: 10px;
 }

@@ -14,18 +14,6 @@
   flex: 0 0 auto;
 }
 
-/*.container .text-wrapper-4 {*/
-/*  position: relative;*/
-/*  width: 268px;*/
-/*  height: 58px;*/
-/*  !* font-family: var(--font-selected-menu-font-family); *!*/
-/*  font-weight: var(--font-selected-menu-font-weight);*/
-/*  color: #000000;*/
-/*  font-size: var(--font-selected-menu-font-size);*/
-/*  letter-spacing: var(--font-selected-menu-letter-spacing);*/
-/*  line-height: var(--font-selected-menu-line-height);*/
-/*  font-style: var(--font-selected-menu-font-style);*/
-/*}*/
 .container .buttons{
   width: auto !important;
 }
@@ -142,7 +130,6 @@
 .container .text-wrapper-10 {
   position: relative;
   width: fit-content;
-  /*font-family: "Inter-Medium", Helvetica;*/
   font-weight: 600;
   color: #61a3f1;
   font-size: 16px;
@@ -160,7 +147,6 @@
 .container .text-wrapper-7 {
   position: relative;
   width: fit-content;
-  /*font-family: "Inter-Medium", Helvetica;*/
   font-weight: 600;
   color: #000000;
   font-size: 20px;
@@ -183,15 +169,18 @@
 }
 
 .container .class-selection {
-  width: 100%;
-  padding: 20px 20px;
-  position: relative;
-  background-color: #ffffff;
-  border-radius: 10px;
-  /* justify-content: end; */
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
+  gap: 50px;
+  padding: 40px 44px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  background-color: #ffffff;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .container .selectedclass {
@@ -199,7 +188,7 @@
 }
 
 .container .default-wrapper {
-  height: 65px;
+  height: 65px !important;
   align-items: center;
   gap: 10px;
   align-self: stretch;
@@ -244,9 +233,6 @@
   border: none;
   width: 100%;
   min-height: 145px;
-  /*font-family: "Inter-Medium", Helvetica;*/
-  /*font-weight: 500;*/
-  color: #828282;
   font-size: 16px;
   resize: none;
   -ms-overflow-style: none;
@@ -280,7 +266,7 @@
   display: flex;
   height: 66px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 10px 0px 0px;
   position: relative;
   align-self: stretch;
@@ -308,8 +294,6 @@
 .container .text-wrapper-12 {
   position: relative;
   width: fit-content;
-  /*font-family: "Inter-Medium", Helvetica;*/
-  /*font-weight: 500;*/
   color: #b3b3b3;
   font-size: 16px;
   text-align: center;
@@ -328,8 +312,6 @@
 .container .textcnt {
   position: relative;
   width: fit-content;
-  /*font-family: "Inter-Medium", Helvetica;*/
-  /*font-weight: 500;*/
   color: #b3b3b3;
   font-size: 16px;
   text-align: center;
@@ -344,7 +326,7 @@
 }
 
 .container .inputarea-3 {
-  height: 80px;
+  /*height: 80px;*/
   align-items: center;
   justify-content: center;
   padding: 10px 16px;
@@ -358,30 +340,197 @@
 }
 
 .container .input-loc {
-  height: fit-content;
   align-items: center;
   justify-content: center;
   gap: 7px;
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
 }
+
+.text-addable {
+  display: flex;
+  padding: 0px 0px 15px;
+  align-self: stretch;
+  width: 100%;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-color: #b3b3b3;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.modal-div-2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.text-wrapper-2 {
+  font-size: 18px;
+  text-align: center;
+  line-height: 33.6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  position: relative;
+  width: fit-content;
+  font-weight: 500;
+  color: #000000;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.carouselDiv{
+  display: flex;
+  justify-content: center;
+}
+
+.carousel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px 22px;
+  position: relative;
+  align-self: stretch;
+  width: 91%;
+  flex: 0 0 auto;
+}
+
+.class-selected {
+  border: 0.5px solid #f2f2f2;
+  background-color: #ffffff;
+  display: flex;
+  width: 211px;
+  height: 50px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 25px;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px #0000001a;
+}
+
+.text-wrapper-3 {
+  font-size: 16px;
+  text-align: center;
+  line-height: 28px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  position: relative;
+  width: fit-content;
+  font-weight: 500;
+  color: #000000;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.form-check-input {
+  width: 1.5em;
+  height: 1.5em;
+  margin-top: 0em;
+}
+
+.form-check-input[type=checkbox] {
+  border-radius: .800em;
+}
+
+.form-check-input:checked {
+  background-color: #fdda21;
+  border-color: #fdda21;
+}
+
+.set-loc{
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+/*지도 api*/
+.map_wrap {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.title {font-weight:bold;display:block;}
+/*.hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}*/
+#centerAddr {display:block;margin-top:2px;font-weight: normal;}
+/*.bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}*/
+#map {
+  width: 100%;
+  height: 400px; /* 원하는 높이로 설정하세요 */
+  border-radius: 10px;
+}
+.iwcontent_div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  border-radius: 5px;
+  border: 0.5px solid lightgray;
+  padding: 6px 15px;
+  background-color: white;
+  width: max-content;
+  align-self: center;
+  position: relative;
+  top: 2px;
+}
+
+.iwcontent_adiv{
+  width: fit-content;
+  display: flex;
+  gap: 5px;
+}
+
+.iwcontent_adiv a{
+  color: blue;
+  font-size: 13px;
+}
+
+.bAddr{
+  font-size: 13px;
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+}
+
+.addrtitle{
+  color: grey;
+}
+
+
+
+
 
 :root {
   --x-1: rgba(133, 199, 233, 1);
   --x-2: rgba(13, 17, 83, 1);
   --x-3: rgba(255, 255, 255, 1);
-  /*---font-family: "Noto Sans", Helvetica;*/
   ---font-weight: 500;
   ---font-size: 100px;
   ---letter-spacing: -5px;
   ---line-height: 89.99999761581421%;
   ---font-style: normal;
-  /*--font-selected-menu-font-family: "Inter", Helvetica;*/
   --font-selected-menu-font-weight: 600;
   --font-selected-menu-font-size: 48px;
   --font-selected-menu-letter-spacing: 0px;
   --font-selected-menu-line-height: normal;
   --font-selected-menu-font-style: normal;
-  /*--small-text-font-family: "Inter", Helvetica;*/
   --small-text-font-weight: 500;
   --small-text-font-size: 16px;
   --small-text-letter-spacing: 0px;

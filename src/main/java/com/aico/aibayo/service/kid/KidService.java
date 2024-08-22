@@ -18,4 +18,5 @@ public interface KidService {
     void updateClassKid(KidDto kidDto);
     KidDto updateParentKid(KidDto kidDto);
     KidDto deleteKid(KidDto kidDto);
+    List<KidDto> getAllByParent(Long id);
 }

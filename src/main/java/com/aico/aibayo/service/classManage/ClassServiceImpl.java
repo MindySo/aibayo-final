@@ -62,7 +62,6 @@ public class ClassServiceImpl implements ClassService{
         return classRepository.findAllByKinderNoAndClassDeleteFlagEquals(kinderNo, BooleanEnum.FALSE.getBool());
     }
 
-
     @Override
     public List<ClassKidDto> getClassKid(Long classNo) {
         return classKidRepository.findAllByClassNo(classNo);

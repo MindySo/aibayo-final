@@ -35,17 +35,17 @@
             <div class="div-2">
                 <div class="text-wrapper-5">총 청구 대상</div>
                 <div class="n">
-                    <div class="text-wrapper-6">3명</div>
+                    <div class="text-wrapper-6" th:text="${billList != null ? billList.size() : 0} + '명'">n명</div>
                 </div>
             </div>
             <div class="div-3">
                 <div class="div-2">
                     <div class="text-wrapper-7">청구반</div>
-                    <div class="text-wrapper-8">영어반</div>
+<!--                    <div class="text-wrapper-8" th:text="${billList.get(0).className}">반이름</div>-->
                 </div>
                 <div class="div-2">
                     <div class="text-wrapper-7">청구 항목</div>
-                    <div class="text-wrapper-8">2024 교구비 (6개월)</div>
+<!--                    <div class="text-wrapper-8" th:text="${billList.get(0).paymentTitle}">2024 교구비 (6개월)</div>-->
                 </div>
                 <div class="div-2">
                     <div class="div-4">
@@ -53,12 +53,12 @@
                         <div class="text-wrapper-9">(인당)</div>
                     </div>
                     <div class="div-4">
-                        <div class="text-wrapper-10">300,000원</div>
+<!--                        <div class="text-wrapper-10" th:text="${billList.get(0).paymentPrice} + '원'">금액</div>-->
                     </div>
                 </div>
                 <div class="div-2">
                     <div class="text-wrapper-7">청구서 만료일</div>
-                    <div class="text-wrapper-8">2024. 7. 14. 14시</div>
+<!--                    <div class="text-wrapper-8 paymentEndDate" th:value="${billList.get(0).paymentEndDate}">만료일자</div>-->
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
                     <div class="div-2">
                         <div class="text-wrapper-7">청구 인원</div>
                         <div class="div-4">
-                            <div class="text-wrapper-8">2명</div>
+                            <div class="text-wrapper-8 originBillList">n명</div>
                         </div>
                     </div>
                     <div class="div-2">
@@ -78,23 +78,22 @@
                             <div class="text-wrapper-9">(인당)</div>
                         </div>
                         <div class="div-4">
-                            <div class="text-wrapper-10">300,000원</div>
+<!--                            <div class="text-wrapper-10" th:text="*{bill[0].paymentPrice} + '원'">원가</div>-->
                         </div>
                     </div>
                 </div>
             </div>
             <div class="line-black"></div>
-            <div class="div-5">
+<!--            <div class="div-5" th:each="bill, iterStat : ${groupByDiscountRate}" th:object="${bill}">-->
                 <div class="title-2">
                     <div class="text-wrapper-11">할인 청구</div>
-                    <div class="text-wrapper-11">(1)</div>
+<!--                    <div class="text-wrapper-11" th:text="'(' + ${iterStat} + ')'">(n)</div>-->
                 </div>
                 <div class="div-3">
                     <div class="div-2">
                         <div class="text-wrapper-7">청구 인원</div>
                         <div class="div-4">
-                            <div class="text-wrapper-8">1</div>
-                            <div class="text-wrapper-8">명</div>
+<!--                            <div class="text-wrapper-8" th:text="${bill.size()} + '명'">n</div>-->
                         </div>
                     </div>
                     <div class="div-2">
@@ -103,57 +102,19 @@
                             <div class="text-wrapper-9">(인당)</div>
                         </div>
                         <div class="div-4">
-                            <div class="text-wrapper-10">240,000</div>
-                            <div class="text-wrapper-10">원</div>
+<!--                            <div class="text-wrapper-10 discountedPrice" th:value="*{bill.get(0).paymentPrice} + '원'">할인가</div>-->
                         </div>
                     </div>
                     <div class="div-2">
                         <div class="div-4">
-                            <div class="text-wrapper-12">ㄴ 할인</div>
-                            <div class="item">(2024 여름방학 선등록 이벤트)</div>
+                            <div class="text-wrapper-12">ㄴ 할인율</div>
                         </div>
                         <div class="div-4">
-                            <div class="text-wrapper-12">-60,000</div>
-                            <div class="text-wrapper-12">원</div>
+<!--                            <div class="text-wrapper-12" th:text="*{bill.get(0).paymentPrice} + '%'">할인율</div>-->
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="line-black"></div>
-            <div class="div-5">
-                <div class="title-2">
-                    <div class="text-wrapper-11">할인 청구</div>
-                    <div class="text-wrapper-11">(2)</div>
-                </div>
-                <div class="div-3">
-                    <div class="div-2">
-                        <div class="text-wrapper-7">청구 인원</div>
-                        <div class="div-4">
-                            <div class="text-wrapper-8">1</div>
-                            <div class="text-wrapper-8">명</div>
-                        </div>
-                    </div>
-                    <div class="div-2">
-                        <div class="div-4">
-                            <div class="text-wrapper-7">청구 금액</div>
-                            <div class="text-wrapper-9">(인당)</div>
-                        </div>
-                        <div class="div-4">
-                            <div class="text-wrapper-10">260,000</div>
-                            <div class="text-wrapper-10">원</div>
-                        </div>
-                    </div>
-                    <div class="div-2">
-                        <div class="div-4">
-                            <div class="text-wrapper-12">ㄴ 할인</div>
-                            <div class="item">(2024 재원 할인 이벤트)</div>
-                        </div>
-                        <div class="div-4">
-                            <div class="text-wrapper-12">-40,000</div>
-                            <div class="text-wrapper-12">원</div>
-                        </div>
-                    </div>
-                </div>
+                <div class="line-black"></div>
             </div>
         </div>
         <div class="buttonarea">

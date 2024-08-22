@@ -15,7 +15,6 @@
     <script th:src="@{/js/attendance/detailWrite.js}" src="/js/attendance/detailToday.js"></script>
 </th:block>
 
-
 <div class="container" layout:fragment="content">
     <h1>출석부 작성</h1>
 
@@ -23,95 +22,52 @@
         <h4>[[${date}]]</h4>
     </div>
 
-    <form action="attendance.do" method="post" id="attendanceForm">
-        <input type="hidden" name="cmd" value="updateAttendanceDone" />
-        <input type="hidden" name="date" value="${dateDetail}" />
-        <input type="hidden" name="classNo" value="${classNo}" />
+    <form th:action="@{/attendance/write/{classNo}(classNo=${classNo})}" method="post" id="attendanceForm">
+        <input type="hidden" id="kinderNo" th:value="${kinderNo}" />
+        <input type="hidden" id="classNo" th:value="${classNo}" />
 
         <table class="table table-bordered" id="attendanceTable" style="width: 100%">
             <thead>
             <tr>
                 <th>이름</th>
                 <th>출결 상태</th>
-                <th>결석 이유</th>
                 <th>등원 시간</th>
                 <th>하원 시간</th>
-                <th>비고</th>
+                <th>비고(결석이유)</th>
             </tr>
             </thead>
+
             <tbody>
-            <!-- Assuming you will replace the below with dynamic content -->
-            <tr>
-                <td>학생 1</td>
-                <td>
-                    <input type="hidden" name="kidNo" value="1" />
-                    <select name="attendanceStatus_1" class="form-select" id="attendanceStatus_1">
-                        <option value=" ">-</option>
-                        <option value="출석">출석</option>
-                        <option value="결석">결석</option>
-                        <option value="지각">지각</option>
-                    </select>
-                </td>
-                <td>
-                    <select name="excusedAbsence_1" id="excusedAbsence_1" class="form-select">
-                        <option value=" ">-</option>
-                        <option value="질병,부상">질병,부상</option>
-                        <option value="부모의 출산">부모의 출산</option>
-                        <option value="미세먼지">미세먼지</option>
-                        <option value="자연재해">자연재해</option>
-                        <option value="경조사">경조사</option>
-                        <option value="기타">기타</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="time" name="dropTime_1" class="form-control" id="kidDrop_1">
-                    <input type="hidden" name="dropTimeStamp_1" />
-                </td>
-                <td>
-                    <input type="time" name="pickupTime_1" class="form-control" id="kidPickup_1">
-                    <input type="hidden" name="pickupTimeStamp_1" />
-                </td>
-                <td>
-                    <input type="text" name="note_1" class="form-control">
-                </td>
-            </tr>
-            <tr>
-                <td>학생 2</td>
-                <td>
-                    <input type="hidden" name="kidNo" value="2" />
-                    <select name="attendanceStatus_2" class="form-select" id="attendanceStatus_2">
-                        <option value=" ">-</option>
-                        <option value="출석">출석</option>
-                        <option value="결석">결석</option>
-                        <option value="지각">지각</option>
-                    </select>
-                </td>
-                <td>
-                    <select name="excusedAbsence_2" id="excusedAbsence_2" class="form-select">
-                        <option value=" ">-</option>
-                        <option value="질병,부상">질병,부상</option>
-                        <option value="부모의 출산">부모의 출산</option>
-                        <option value="미세먼지">미세먼지</option>
-                        <option value="자연재해">자연재해</option>
-                        <option value="경조사">경조사</option>
-                        <option value="기타">기타</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="time" name="dropTime_2" class="form-control" id="kidDrop_2">
-                    <input type="hidden" name="dropTimeStamp_2" />
-                </td>
-                <td>
-                    <input type="time" name="pickupTime_2" class="form-control" id="kidPickup_2">
-                    <input type="hidden" name="pickupTimeStamp_2" />
-                </td>
-                <td>
-                    <input type="text" name="note_2" class="form-control">
-                </td>
-            </tr>
+            <th:block th:each="kid, iterStat : ${classKid}">
+                <tr>
+                    <td th:text="${kid.kidName}">학생 이름</td>
+                    <td>
+                        <input type="hidden" th:id="'kidNo_' + ${iterStat.index}" th:value="${kid.kidNo}" />
+                        <input type="hidden" th:id="'kidName_' + ${iterStat.index}" th:value="${kid.kidName}" />
+                        <input type="hidden" th:id="date" th:value="${date}" />
+
+                        <select th:id="'attendanceStatus_' + ${iterStat.index}" class="form-select">
+                            <option value=" ">-</option>
+                            <option value="출석">출석</option>
+                            <option value="결석">결석</option>
+                            <option value="지각">지각</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="time" th:id="'kidDrop_' + ${iterStat.index}" class="form-control">
+                    </td>
+                    <td>
+                        <input type="time" th:id="'kidPickup_' + ${iterStat.index}" class="form-control">
+                    </td>
+                    <td>
+                        <input type="text" th:id="'note_' + ${iterStat.index}" class="form-control">
+                    </td>
+                </tr>
+            </th:block>
+
             </tbody>
         </table>
-        <button type="submit" class="btn btn-secondary" id="writeBtn">작성 완료</button>
+        <button type="submit" class="btn btn-outline-ab" id="writeBtn">작성 완료</button>
     </form>
 </div>
 

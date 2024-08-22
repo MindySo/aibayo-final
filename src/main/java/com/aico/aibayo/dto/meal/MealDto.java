@@ -1,6 +1,7 @@
 package com.aico.aibayo.dto.meal;
 
 import com.aico.aibayo.entity.MealEntity;
+import java.util.Comparator;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -53,6 +54,7 @@ public class MealDto {
         if (entity.getMealDetails() != null && !entity.getMealDetails().isEmpty()) {
             List<MealDetailDto> mealDetailDtos = entity.getMealDetails().stream()
                     .map(MealDetailDto::toDto)  // MealDetailEntity -> MealDetailDto 변환
+                    .sorted(Comparator.comparing(MealDetailDto::getMealType)) // mealType 오름차순 정렬
                     .collect(Collectors.toList());
             mealDto.setMealDetails(mealDetailDtos);
             mealDto.setDetail(true);

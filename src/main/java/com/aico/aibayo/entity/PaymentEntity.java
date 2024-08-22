@@ -16,22 +16,22 @@ import java.time.LocalDateTime;
 public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "request_no")
-    private Long requestNo;
+    @Column(name = "bill_no")
+    private Long billNo;
+    @Column(name = "id")
+    private Long id;
     @Column(name = "kid_no")
     private Long kidNo;
-    @Column(name = "discount_no")
-    private Long discountNo;
-    @Column(name = "category_no")
-    private Integer categoryNo;
+    @Column(name = "class_no")
+    private Long classNo;
+    @Column(name = "kinder_no")
+    private Long kinderNo;
+    @Column(name = "discount_rate")
+    private Long discountRate;
+    @Column(name = "payment_title")
+    private String paymentTitle;
     @Column(name = "payment_price")
-    private Integer paymentPrice;
-    @Column(name = "category_type")
-    private Integer categoryType;
-    @Column(name = "payment_status")
-    private Integer paymentStatus;
-    @Column(name = "payment_pay_date")
-    private LocalDateTime paymentPayDate;
+    private Long paymentPrice;
     @Column(name = "payment_start_date")
     private LocalDateTime paymentStartDate;
     @Column(name = "payment_end_date")

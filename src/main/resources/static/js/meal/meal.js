@@ -1,30 +1,41 @@
-function afterSuccess(response) {
+function afterSuccess(response, method) {
     // console.log(`response: ${response}`);
     // console.log(`response: ${JSON.stringify(response)}`);
 
     // 전체조회일 경우
-    if (response.detail == null) {
+    if (response.detail == null && method === 'POST') {
         // console.log(`response: ${JSON.stringify(response)}`);
-        calendar.removeAllEvents();
+        let events = calendar.getEvents();
+        events.forEach(function(event) {
+            if (event.classNames.includes('meal-event')) {
+                event.remove();
+            }
+        });
+        // console.log(`events: ${JSON.stringify(events)}`);
 
-        let events = [];
+        // calendar.removeAllEvents();
+
+        let newEvents = [];
         let title = "식단 조회하기";
 
 
         $.each(response, function (index, meal) {
-            events.push({
+            newEvents.push({
                 title: title,
                 start: meal.mealDate,
-                mealNo: meal.mealNo
+                mealNo: meal.mealNo,
+                className: 'meal-event'
             });
 
         });
 
-        // console.log(`events: ${JSON.stringify(events)}`);
-        calendar.addEventSource(events);
+        // 새로운 이벤트 추가
+        newEvents.forEach(function(eventData) {
+            calendar.addEvent(eventData);
+        });
     }
 
-    if (response.detail) {
+    if (response.detail && method === 'POST') {
         // console.log(`상세조회 모달 세팅..`);
         // console.log(`response: ${JSON.stringify(response)}`);
 
@@ -99,7 +110,10 @@ function afterSuccess(response) {
 
 
                         <div class="btn btn-danger modal_btn_box">
-                            <div class="modal_btn_text">삭제</div>
+                            <div class="modal_btn_text" id="deleteMealBtn"
+                                 data-meal-no="${response.mealNo}">
+                                삭제
+                            </div>
                         </div>
 
 `
@@ -129,5 +143,51 @@ function afterSuccess(response) {
             // console.log("이미지 못읽음");
             $(this).attr('src', 'http://via.placeholder.com/330x300');
         });
+    }
+
+    if (method === 'DELETE') {
+        Swal.fire({
+            title: "삭제 완료",
+            text: "식단표가 삭제되었습니다.",
+            icon: "success",
+            customClass: {
+                confirmButton: 'btn-ab btn-ab-swal'
+            }
+        }).then((result) => {
+            $('#mealDetail').find('.btn-close').click();
+            // console.dir($('#mealDetail').find('.btn-close'));
+
+            // 식단표 정보 다시 불러오기
+            // console.dir(`mealDate: ${response.mealDate}`);
+            let date = moment(response.mealDate);
+            let startOfMonth = date.clone().startOf('month');
+            let endOfMonth = date.clone().endOf('month');
+            // console.log(`startOfMonth: ${startOfMonth}`);
+            // console.log(`endOfMonth: ${endOfMonth}`);
+
+            // 캘린더 시작일 구하기 (해당 주의 일요일)
+            let startDate = startOfMonth.startOf('week').format('YYYY-MM-DD');
+
+            // 캘린더 마지막일 구하기 (해당 주의 토요일)
+            let endDate = endOfMonth.endOf('week');
+
+            // 마지막 날 이후 추가적으로 한 주를 포함하도록 설정
+            if (endDate.date() - endOfMonth.date() < 7) {
+                endDate = endDate.add(1, 'week');
+            }
+
+            endDate = moment(endDate).format('YYYY-MM-DD');
+
+            let url = "/meal/getByMonth";
+
+            let param = {
+                startDate : startDate,
+                endDate : endDate,
+                kinderNo: $('#calendar').data('kinder-no')
+            }
+            // console.log(`param: ${JSON.stringify(param)}`);
+
+            commonAjax(url, 'POST', param);
+        })
     }
 }
