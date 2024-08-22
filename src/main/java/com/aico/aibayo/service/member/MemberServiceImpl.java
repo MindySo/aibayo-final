@@ -130,12 +130,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private KidEntity findOrCreateKid(MemberDto memberDto) {
-        return kidRepository.findByKinderNoAndKidNameAndKidBirthAndKidGenderAndDischargeFlag(
-                memberDto.getKinderNo(), memberDto.getKidName(), memberDto.getKidBirth(),
-                Integer.valueOf(memberDto.getKidGender()), BooleanEnum.FALSE.getBool()
+        return kidRepository.findByKinderNoAndKidNoAndDischargeFlag(
+                memberDto.getKinderNo(), memberDto.getKidNo(), BooleanEnum.FALSE.getBool()
         ).orElseGet(() -> {
             KidEntity kidEntity = new KidEntity();
             kidEntity.setKinderNo(memberDto.getKinderNo());
+            kidEntity.setKidNo(memberDto.getKidNo());
             kidEntity.setKidName(memberDto.getKidName());
             kidEntity.setKidBirth(memberDto.getKidBirth());
             kidEntity.setKidGender(Integer.valueOf(memberDto.getKidGender()));

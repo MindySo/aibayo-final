@@ -126,7 +126,7 @@ public class KidRepositoryCustomImpl implements KidRepositoryCustom {
                 .leftJoin(parentKid).on(kid.kidNo.eq(parentKid.kidNo))
                 .leftJoin(member).on(
                         member.id.eq(parentKid.id)
-                        .and(member.status.eq(MemberStatusEnum.ACTIVE.getStatus()))
+                        .and(member.status.gt(MemberStatusEnum.INACTIVE.getStatus()))
                 )
                 .leftJoin(acceptLog1).on(acceptLog1.acceptNo.eq(parentKid.acceptNo))
 
