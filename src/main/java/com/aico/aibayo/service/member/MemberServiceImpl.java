@@ -115,17 +115,18 @@ public class MemberServiceImpl implements MemberService {
             parentKidEntity.setParentRelationship(memberDto.getRelationship());
             parentKidRepository.save(parentKidEntity);
             log.info("parentKid 정보 저장 완료: memberId = {}, kidNo = {}", newMemberEntity.getId(), checkKid.getKidNo());
+        } else {
+            Long memberAcceptNo = createAcceptLogForParent(memberDto);
+            ParentKidEntity parentKidEntity = new ParentKidEntity();
+            parentKidEntity.setId(newMemberEntity.getId());
+            parentKidEntity.setKidNo(checkKid.getKidNo());
+            parentKidEntity.setAcceptNo(memberAcceptNo);
+            parentKidEntity.setIsMainParent(BooleanEnum.TRUE.getBool());
+            parentKidEntity.setParentRelationship(memberDto.getRelationship());
+            parentKidRepository.save(parentKidEntity);
+            log.info("parentKid 정보 저장 완료: memberId = {}, kidNo = {}", newMemberEntity.getId(), checkKid.getKidNo());
         }
 
-        Long memberAcceptNo = createAcceptLogForParent(memberDto);
-        ParentKidEntity parentKidEntity = new ParentKidEntity();
-        parentKidEntity.setId(newMemberEntity.getId());
-        parentKidEntity.setKidNo(checkKid.getKidNo());
-        parentKidEntity.setAcceptNo(memberAcceptNo);
-        parentKidEntity.setIsMainParent(BooleanEnum.TRUE.getBool());
-        parentKidEntity.setParentRelationship(memberDto.getRelationship());
-        parentKidRepository.save(parentKidEntity);
-        log.info("parentKid 정보 저장 완료: memberId = {}, kidNo = {}", newMemberEntity.getId(), checkKid.getKidNo());
 
     }
 
