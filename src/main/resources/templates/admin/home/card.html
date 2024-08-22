@@ -94,8 +94,11 @@
 
 
             <div class="card-list">
-                <a href="/returnhome/admin/detail" class="card"  th:each="home : ${homeList}" th:object="${home}" th:id="${home.orderNo}">
-                    <div class="tb">
+<!--                <a href="/returnhome/admin/detail" class="card"  th:each="home : ${homeList}" th:object="${home}" th:id="${home.orderNo}">-->
+                <a th:each="home : ${homeList}"
+                   th:href="@{|/returnhome/admin/${home.rhAgreeNo}|}"
+                   class="card">
+                <div class="tb">
                         <table class="table">
     <!--                        <tr>-->
     <!--                            <th>의뢰번호</th>-->

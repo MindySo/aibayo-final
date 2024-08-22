@@ -41,6 +41,10 @@ public class PaymentServiceImpl implements PaymentService {
 
 //        for(PaymentDto payment : paymentList) {
         for (Map<String, Object> paymentMap : paymentList) {
+
+            String discountRate = paymentMap.get("discountRate") == null ? "" : paymentMap.get("discountRate").toString();
+            String paymentMemo = paymentMap.get("paymentMemo") == null ? "" : paymentMap.get("paymentMemo").toString();
+
             PaymentDto payment =
 //                    convertMapToPaymentDto(paymentMap);
 
@@ -48,12 +52,12 @@ public class PaymentServiceImpl implements PaymentService {
                     .id(Long.valueOf(paymentMap.get("id").toString()))
                     .kidNo(Long.valueOf(paymentMap.get("kidNo").toString()))
                     .classNo(Long.valueOf(paymentMap.get("classNo").toString()))
-                    .discountRate(Long.valueOf(paymentMap.get("discountRate").toString()))
+                    .discountRate(Long.valueOf(discountRate))
                     .kinderNo(Long.valueOf(paymentMap.get("kinderNo").toString()))
                     .paymentTitle(paymentMap.get("paymentTitle").toString())
                     .paymentPrice(Long.valueOf(paymentMap.get("paymentPrice").toString()))
                     .paymentEndDate(LocalDateTime.parse(paymentMap.get("paymentEndDate").toString()))
-                    .paymentMemo(paymentMap.get("paymentMemo").toString())
+                    .paymentMemo(paymentMemo)
                     .build();
 
 

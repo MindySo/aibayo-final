@@ -262,7 +262,7 @@ public class MemberController {
     }
 
     @PostMapping("/myPageUpdate")
-    public String myPageUpdate(@ModelAttribute MemberDto memberDto) {
+    public String myPageUpdate(@ModelAttribute MemberDto memberDto, Model model) {
         String name = memberDto.getName();
         String phone = memberDto.getPhone();
         String username = memberDto.getUsername();
@@ -276,9 +276,9 @@ public class MemberController {
         }
 
         if (role.equals("ROLE_USER")) {
-            return "user/main/main";
+            return "redirect:/main/user";
         } else {
-            return "admin/main/main";
+            return "redirect:/main/admin";
         }
     }
 

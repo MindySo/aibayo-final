@@ -59,10 +59,12 @@ public class ApiMealController {
 
     @PutMapping("/modifyOk")
     public ResponseEntity<MealDto> modifyOk(@RequestPart(value = "mealDto") MealDto mealDto,
-                                            @RequestPart(value = "files") List<MultipartFile> files) {
+                                            @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         log.info("modify mealDto: {}", mealDto);
-        for (MultipartFile file : files) {
-            log.info("file: {}", file.getOriginalFilename());
+        if (files != null) {
+            for (MultipartFile file : files) {
+                log.info("file: {}", file.getOriginalFilename());
+            }
         }
 
         MealDto modified = mealService.updateMeal(mealDto, files);

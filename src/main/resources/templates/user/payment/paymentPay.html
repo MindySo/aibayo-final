@@ -71,7 +71,7 @@
                     <div class="div-2">
                         <th:block th:if="${payment.discountRate} != 0">
                             <div class="div-4">
-                                <div class="text-wrapper-12">ㄴ 할인</div>
+                                <div class="text-wrapper-12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ㄴ 할인</div>
                             </div>
                             <div class="div-4">
                                 <div class="text-wrapper-12" th:text="${payment.discountRate}">할인율</div>
@@ -79,6 +79,19 @@
                             </div>
                         </th:block>
                     </div>
+                    <th:block th:if="${payment.discountRate} != ''">
+                        <div><br><br></div>
+                        <div class="div-2">
+                            <div class="text-wrapper-7">청구 메모</div>
+                        </div>
+                        <div class="div-2">
+                            <div class="text-wrapper-7"></div>
+                            <div class="div-4">
+                                <div class="text-wrapper-8 paymentMemo" th:text="${payment.paymentMemo}">청구메모</div>
+                            </div>
+                        </div>
+                    </th:block>
+
                 </div>
             </div>
             <div class="payment-final">

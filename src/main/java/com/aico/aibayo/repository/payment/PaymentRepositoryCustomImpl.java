@@ -68,7 +68,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
                         paymentLog.paymentStatus,
                         paymentLog.paymentLogRegDate,
                         kid.kidName,
-                        clazz.className))
+                        clazz.className)).distinct()
                 .from(payment)
                 .join(paymentLog).on(payment.billNo.eq(paymentLog.billNo))
                 .join(kid).on(payment.kidNo.eq(kid.kidNo))

@@ -41,13 +41,13 @@
                 <div class="text-date"><div class="text-wrapper-7">날짜</div></div>
                 <div class="div-4">
                     <div class="calendar-pick">
-                        <img class="calendar-vector start_date_div" th:id="${schedule.scheduleStartDate}" src="images/common/calendar_gray.png" />
+                        <img class="calendar-vector start_date_div" th:id="${schedule.scheduleStartDate}" src="/images/common/calendar_gray.png" />
                         <input type="text" class="datepickerdiv datepicker startDate" placeholder="날짜 선택" readonly
                                th:value="${#temporals.format(schedule.scheduleStartDate, 'yyyy.MM.dd')}">
                     </div>
                     <div class="text-wrapper-8">-</div>
                     <div class="calendar-pick">
-                        <img class="calendar-vector end_date_div" th:id="${schedule.scheduleEndDate}" src="images/common/calendar_gray.png" />
+                        <img class="calendar-vector end_date_div" th:id="${schedule.scheduleEndDate}" src="/images/common/calendar_gray.png" />
                         <input type="text" class="datepickerdiv datepicker endDate" placeholder="날짜 선택"
                                th:value="${#temporals.format(schedule.scheduleEndDate, 'yyyy.MM.dd')}"readonly>
                     </div>

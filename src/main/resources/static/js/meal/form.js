@@ -200,6 +200,15 @@ $(document).ready(function(){
         }).then((result) => {
             if (result.isConfirmed) {
 
+                Swal.fire({
+                    title: '수정 중...',
+                    text: '식단표를 수정하고 있습니다.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 $.ajax({
                     url: "/meal/modifyOk",
                     type: "PUT",
@@ -210,6 +219,8 @@ $(document).ready(function(){
                     success: function (response) {
                         // 서버로부터의 응답 처리
                         console.log(response);
+                        Swal.close();
+
                         Swal.fire({
                             title: "수정 완료",
                             text: "창을 닫으면 상세 화면으로 돌아갑니다.",

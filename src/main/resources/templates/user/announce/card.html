@@ -77,7 +77,7 @@
                             <span class="edu" th:if="${announce.announceType == 4}">교육</span>
                             <span class="pay" th:if="${announce.announceType == 5}">보육료</span>
                             <span style="font-weight:bold;">]</span>
-                            <p class="p text-compact" th:title="*{boardTitle}" th:text="*{boardTitle}"></p>
+                            <p class="p text-compact" th:title="*{boardTitle}" th:utext="*{boardTitle}"></p>
                         </div>
                         <div class="frame-wrapper">
                             <div class="frame-4">
@@ -106,7 +106,7 @@
                             <div class="text-wrapper-5" th:text="*{#temporals.format(boardRegDate, 'yyyy년 MM월 dd일')}"></div>
                         </div>
                         <div class="frame-10">
-                            <p class="text-wrapper-6" th:text="*{boardContents}"></p>
+                            <p class="" th:utext="*{boardContents}"></p>
                         </div>
                     </a>
                 </div>

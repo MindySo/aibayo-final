@@ -65,25 +65,25 @@
                                                 th:value="${class.classNo}" th:text="${class.className}">반이름</option>
                                     </select>
 
-                                        <div class="noList" id="noClass">
-                                            <div class="icon">
-                                                <img src="/images/common/!.jpg" alt=""/>
-                                            </div>
-                                            <div class="defaulttext">반을 선택해주세요.</div>
+                                    <div class="noList" id="noClass">
+                                        <div class="icon">
+                                            <img src="/images/common/!.jpg" alt=""/>
                                         </div>
-                                        <div class="text-addable" id="selectAllClass">
-<!--                                            <div class="noList">-->
-<!--                                                <div class="icon">-->
-<!--                                                    <img src="/images/common/!.jpg" alt=""/>-->
-<!--                                                </div>-->
-<!--                                                <div class="defaulttext">해당 반에 학생이 없습니다.</div>-->
+                                        <div class="defaulttext">반을 선택해주세요.</div>
+                                    </div>
+                                    <div class="text-addable" id="selectAllClass">
+<!--                                        <div class="noList">-->
+<!--                                            <div class="icon">-->
+<!--                                                <img src="/images/common/!.jpg" alt=""/>-->
 <!--                                            </div>-->
+<!--                                            <div class="defaulttext">해당 반에 학생이 없습니다.</div>-->
+<!--                                        </div>-->
 
-                                            <div class="modal-div-2">
-                                                <input type="checkbox" class="form-check-input class_checkbox" id="checkAll">
-                                                <div class="text-wrapper-2" for="checkAll">반 전체 선택</div>
-                                            </div>
+                                        <div class="modal-div-2">
+                                            <input type="checkbox" class="form-check-input class_checkbox" id="checkAll">
+                                            <div class="text-wrapper-2" for="checkAll">반 전체 선택</div>
                                         </div>
+                                    </div>
 
                                     <div class="form-check carousel">
 
@@ -97,72 +97,6 @@
                                             <div class="textarea">
                                                 <div class="text-wrapper-10" th:text="*{kidName}">원아명</div>
                                                 <div class="text-wrapper-10-1" th:text="'(보호자 : ' + *{name} + ')'">보호자명</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_2">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_2" id="child_2">
-                                            <div class="profile">
-                                                <img src="payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_3">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_3" id="child_3">
-                                            <div class="profile">
-                                                <img src="payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_4">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_4" id="child_4">
-                                            <div class="profile">
-                                                <img src="payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_5">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_5" id="child_5">
-                                            <div class="profile">
-                                                <img src="payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_6">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_6" id="child_6">
-                                            <div class="profile">
-                                                <img src="payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
-                                            </div>
-                                        </label>
-
-                                        <label class="modal-child" for="child_7">
-                                            <input class="form-check-input" type="checkbox" name="classCheckedCb" value="child_7" id="child_7">
-                                            <div class="profile">
-                                                <img src="payment/img/profile.png" alt=""/>
-                                            </div>
-                                            <div class="textarea">
-                                                <div class="text-wrapper-10">김원아</div>
-                                                <div class="text-wrapper-10-1">(부모 : 김부모)</div>
                                             </div>
                                         </label>
 
@@ -458,7 +392,7 @@
                 <div class="div-6">
                     <div class="text-wrapper-11">날짜</div>
                     <div class="calendar-pick">
-                        <img class="calendar-vector" src="images/common/calendar_gray.png" />
+                        <img class="calendar-vector" src="/images/common/calendar_gray.png" />
                         <input type="text" class="datepickerdiv datepicker" placeholder="날짜 선택" readonly>
                     </div>
                 </div>

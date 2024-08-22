@@ -448,6 +448,10 @@
     -webkit-box-orient: vertical;
 }
 
+.paymentMemo{
+    font-weight: 500 !important;
+}
+
 :root {
     --x-1: rgba(133, 199, 233, 1);
     --x-2: rgba(13, 17, 83, 1);

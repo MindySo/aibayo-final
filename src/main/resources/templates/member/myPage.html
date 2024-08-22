@@ -24,7 +24,7 @@
 <!--            <input type="hidden" name="username" th:value="${username}" id="username">-->
 
             <div class="form-group">
-                <label for="name">Email</label>
+                <label for="username">Email</label>
                 <input type="text" id="username" name="username" th:value="${username}" readonly>
             </div>
 
@@ -46,13 +46,13 @@
             </div>
 
             <!-- 저장 버튼 -->
-            <button type="button" class="btn btn-save" id="saveBtn">저장</button>
+            <button type="button" class="btn btn-outline-secondary" id="saveBtn">저장</button>
 
             <!-- 계정 삭제 버튼 -->
-            <a href="#" class="btn btn-remove" id="deleteBtn">계정 삭제</a>
+            <a href="#" class="btn btn-outline-danger" id="deleteBtn">계정 삭제</a>
 
             <!-- 서명 등록 버튼 -->
-            <a th:href="@{/member/signature}" class="btn btn-ab">서명 등록</a>
+<!--            <a th:href="@{/member/signature}" class="btn btn-ab">서명 등록</a>-->
         </form>
     </div>
 

@@ -4,8 +4,11 @@ $(document).ready(function() {
     let formattedDateTime = endDate.replace('T', ' ');
     $('.endDate').text(formattedDateTime);
 
+    let paymentPrice = parseInt($('.paymentPrice').text().trim(), 10);
+    $('.paymentPrice').text(formatPrice(paymentPrice));
+
     let finalPrice = parseInt($('.finalPrice').text().trim(), 10);
-    $('.finalPrice').text(finalPrice);
+    $('.finalPrice').text(formatPrice(finalPrice));
 
 
     const generateRandomString = () =>
@@ -58,3 +61,7 @@ $(document).ready(function() {
         });
     });
 });
+
+function formatPrice(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
