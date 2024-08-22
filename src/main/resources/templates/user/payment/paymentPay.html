@@ -21,7 +21,7 @@
 <div class="container main_container" layout:fragment="content">
 
     <div class="title">
-        <a class="icon-back" th:href="@{/user/paymentMain}">
+        <a class="icon-back" th:href="@{/payment/user/paymentMain}">
             <img src="/images/common/back.png" alt=""/>
         </a>
         <div class="div-wrapper"><div class="text-wrapper-title">납부하기</div></div>
@@ -108,7 +108,7 @@
 
         <div class="buttonarea">
             <div class="buttons">
-                <a class="button-cancel" th:href="@{/user/paymentMain}">
+                <a class="button-cancel" th:href="@{/payment/user/paymentMain}">
                     <div class="text-cancel">취소</div>
                 </a>
                 <button class="button-submit" id="openModalButton">
@@ -123,14 +123,7 @@
             <span class="close">&times;</span>
             <!-- 주문서 영역 -->
             <div class="wrapper">
-                <div
-                        class="box_section"
-                        style="
-              padding: 40px 30px 50px 30px;
-              margin-top: 30px;
-              margin-bottom: 50px;
-            "
-                >
+                <div class="box_section">
                     <!-- 결제 UI -->
                     <div id="payment-method"></div>
                     <!-- 이용약관 UI -->

@@ -142,6 +142,19 @@ public class PaymentController {
         return "user/payment/paymentMain";
     }
 
+    @PostMapping("/user/paymentDetail")
+    public String userPaymentDetail(@ModelAttribute("loginInfo") MemberDto loginInfo,
+                                    @RequestBody Map<String, Object> requestBody, Model model){
+        PaymentSearchCondition condition = new PaymentSearchCondition();
+        condition.setBillNo(Long.parseLong(requestBody.get("billNo").toString()));
+        condition.setMemberId(loginInfo.getId());
+
+        List<PaymentDto> billDetail = paymentService.getAllByBillNo(condition);
+        model.addAttribute("billDetail", billDetail);
+        log.info("billDetail {}", billDetail);
+        return "user/payment/paymentMain";
+    }
+
 
     @GetMapping("/user/paymentPay")
     public String userPaymentPay(@ModelAttribute("loginInfo") MemberDto loginInfo,
