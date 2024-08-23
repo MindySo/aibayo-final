@@ -33,6 +33,7 @@ public class ParentKidRepositoryCustomImpl implements ParentKidRepositoryCustom 
                         parentKid.kidNo.eq(kidNo),
                         parentKid.isMainParent.eq(BooleanEnum.TRUE.getBool())
                 )
+                .limit(1)
                 .fetchOne();
     }
 }

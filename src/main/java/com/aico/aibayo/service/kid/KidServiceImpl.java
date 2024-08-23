@@ -3,13 +3,13 @@ package com.aico.aibayo.service.kid;
 import com.aico.aibayo.common.AcceptStatusEnum;
 import com.aico.aibayo.common.AcceptTypeEnum;
 import com.aico.aibayo.common.BooleanEnum;
+import com.aico.aibayo.common.MemberStatusEnum;
 import com.aico.aibayo.dto.ParentKidDto;
 import com.aico.aibayo.dto.kid.KidDto;
 import com.aico.aibayo.dto.kid.KidSearchCondition;
-import com.aico.aibayo.entity.AcceptLogEntity;
-import com.aico.aibayo.entity.ClassKidEntity;
-import com.aico.aibayo.entity.KidEntity;
-import com.aico.aibayo.entity.ParentKidId;
+import com.aico.aibayo.dto.member.MemberDto;
+import com.aico.aibayo.entity.*;
+import com.aico.aibayo.repository.member.MemberRepository;
 import com.aico.aibayo.repository.parentKid.ParentKidRepository;
 import com.aico.aibayo.repository.AcceptLogRepository;
 import com.aico.aibayo.repository.classKid.ClassKidRepository;
@@ -30,6 +30,7 @@ public class KidServiceImpl implements KidService {
     private final ClassKidRepository classKidRepository;
     private final AcceptLogRepository acceptLogRepository;
     private final ParentKidRepository parentKidRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public List<KidDto> getByKinderNo(Long kinderNo) {
@@ -173,6 +174,12 @@ public class KidServiceImpl implements KidService {
                     parentKidRepository.save(target);
                 });
             }
+
+            // 학부모 상태 변경
+            memberRepository.findById(kidDto.getId()).ifPresent(target -> {
+                target.setStatus(MemberStatusEnum.ACTIVE.getStatus());
+                memberRepository.save(target);
+            });
 
             return kidDto;
         }
