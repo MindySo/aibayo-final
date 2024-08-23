@@ -142,6 +142,19 @@ public class PaymentController {
         return "user/payment/paymentMain";
     }
 
+    @PostMapping("/user/paymentDetail")
+    public String userPaymentDetail(@ModelAttribute("loginInfo") MemberDto loginInfo,
+                                    @RequestBody Map<String, Object> requestBody, Model model){
+        PaymentSearchCondition condition = new PaymentSearchCondition();
+        condition.setBillNo(Long.parseLong(requestBody.get("billNo").toString()));
+        condition.setMemberId(loginInfo.getId());
+
+        List<PaymentDto> billDetail = paymentService.getAllByBillNo(condition);
+        model.addAttribute("billDetail", billDetail);
+        log.info("billDetail {}", billDetail);
+        return "user/payment/paymentMain";
+    }
+
 
     @GetMapping("/user/paymentPay")
     public String userPaymentPay(@ModelAttribute("loginInfo") MemberDto loginInfo,
@@ -157,14 +170,8 @@ public class PaymentController {
         return "user/payment/paymentPay";
     }
 
-    @GetMapping("/user/success")
-    public void paySuccess(@ModelAttribute("loginInfo") MemberDto loginInfo,
-                                  @RequestParam("billNo") Long billNo, Model model){
-        log.info("billNo {}", billNo);
-        PaymentSearchCondition condition = new PaymentSearchCondition();
-        condition.setBillNo(billNo);
-        condition.setMemberId(loginInfo.getId());
 
-        paymentService.insertPaymentSuccess(condition);
-    }
+
+
+
 }

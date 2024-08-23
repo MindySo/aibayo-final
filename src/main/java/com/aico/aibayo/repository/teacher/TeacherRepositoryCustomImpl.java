@@ -1,5 +1,8 @@
 package com.aico.aibayo.repository.teacher;
 
+import com.aico.aibayo.common.AcceptStatusEnum;
+import com.aico.aibayo.common.AcceptTypeEnum;
+import com.aico.aibayo.common.InviteTypeEnum;
 import com.aico.aibayo.dto.teacher.TeacherSearchCondition;
 import com.aico.aibayo.dto.teacher.TeacherDto;
 import com.aico.aibayo.entity.*;
@@ -38,8 +41,8 @@ public class TeacherRepositoryCustomImpl implements TeacherRepositoryCustom{
                 .join(kinderAcceptLog).on(teacherKinder.acceptNo.eq(kinderAcceptLog.acceptNo))
                 .join(classTeacher).on(member.id.eq(classTeacher.classTeacherId))
                 .join(classAcceptLog).on(classTeacher.acceptNo.eq(classAcceptLog.acceptNo))
-                .where(kinderAcceptLog.acceptStatus.eq(1),
-                        classAcceptLog.acceptStatus.eq(1),
+                .where(kinderAcceptLog.acceptStatus.eq(AcceptStatusEnum.ACCEPT.getStatus()),
+                        classAcceptLog.acceptStatus.eq(AcceptStatusEnum.ACCEPT.getStatus()),
                         teacherKinder.kinderNo.eq(condition.getKinderNo()),
                         getClassNoEq(condition.getClassNo())
                 )
@@ -79,8 +82,9 @@ public class TeacherRepositoryCustomImpl implements TeacherRepositoryCustom{
                 .from(kinderAcceptLog)
                 .join(inviteCode).on(kinderAcceptLog.acceptNo.eq(inviteCode.acceptNo))
                 .where(
-                        kinderAcceptLog.acceptType.eq(4),
-                        inviteCode.kinderNo.eq(condition.getKinderNo())
+                        kinderAcceptLog.acceptType.eq(AcceptTypeEnum.INVITE_CODE.getType()),
+                        inviteCode.kinderNo.eq(condition.getKinderNo()),
+                        inviteCode.inviteType.eq(InviteTypeEnum.TEACHER.getType())
                 )
                 .fetch();
         System.out.println(teachers.toString());
