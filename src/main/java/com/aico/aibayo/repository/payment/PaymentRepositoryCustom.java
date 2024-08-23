@@ -10,4 +10,5 @@ public interface PaymentRepositoryCustom {
     List<PaymentDto> findAllBySearchCondition(PaymentSearchCondition condition);
     List<PaymentDto> findAllByMemberId(PaymentSearchCondition condition);
     PaymentDto findByBillNo(PaymentSearchCondition condition);
+    List<PaymentDto> findAllByBillNo(PaymentSearchCondition condition);
 }

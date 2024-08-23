@@ -52,6 +52,50 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
         return paymentDtoList;
     }
 
+
+//    @Override
+//    public List<PaymentDto> findAllByKinderNo(PaymentSearchCondition condition) {
+//        List<PaymentDto> paymentDtoList = jpaQueryFactory
+//                .select(Projections.constructor(PaymentDto.class,
+//                        payment.billNo,
+//                        payment.kidNo,
+//                        payment.classNo,
+//                        payment.discountRate,
+//                        payment.paymentTitle,
+//                        payment.paymentPrice,
+//                        payment.paymentStartDate,
+//                        payment.paymentEndDate,
+//                        payment.paymentMemo,
+//                        paymentLog.paymentStatus,
+//                        paymentLog.paymentLogRegDate.max(),
+//                        kid.kidName,
+//                        parentKid.id,
+//                        clazz.className)).distinct()
+//                .from(payment)
+//                .join(paymentLog).on(payment.billNo.eq(paymentLog.billNo))
+//                .join(kid).on(payment.kidNo.eq(kid.kidNo))
+//                .join(clazz).on(payment.classNo.eq(clazz.classNo))
+//                .join(parentKid).on(payment.kidNo.eq(parentKid.kidNo))
+//                .groupBy(payment.billNo,
+//                        payment.kidNo,
+//                        payment.classNo,
+//                        payment.discountRate,
+//                        payment.paymentTitle,
+//                        payment.paymentPrice,
+//                        payment.paymentStartDate,
+//                        payment.paymentEndDate,
+//                        payment.paymentMemo,
+//                        kid.kidName,
+//                        parentKid.id,
+//                        clazz.className)
+//                .where(payment.kinderNo.eq(condition.getKinderNo()))
+//                .fetch();
+//
+//        return paymentDtoList;
+//    }
+
+
+
     @Override
     public List<PaymentDto> findAllBySearchCondition(PaymentSearchCondition condition) {
         List<PaymentDto> paymentDtoList = jpaQueryFactory
@@ -84,6 +128,38 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
         return paymentDtoList;
     }
 
+//    @Override
+//    public List<PaymentDto> findAllByMemberId(PaymentSearchCondition condition) {
+//        List<PaymentDto> paymentDtoList = jpaQueryFactory
+//                .select(Projections.constructor(PaymentDto.class,
+//                        payment.billNo,
+//                        payment.kidNo,
+//                        payment.classNo,
+//                        payment.discountRate,
+//                        payment.paymentTitle,
+//                        payment.paymentPrice,
+//                        payment.paymentStartDate,
+//                        payment.paymentEndDate,
+//                        payment.paymentMemo,
+//                        paymentLog.paymentStatus,
+//                        paymentLog.paymentLogRegDate,
+//                        kid.kidName,
+//                        parentKid.id,
+//                        clazz.className))
+//                .from(payment)
+//                .join(paymentLog).on(payment.billNo.eq(paymentLog.billNo))
+//                .join(kid).on(payment.kidNo.eq(kid.kidNo))
+//                .join(clazz).on(payment.classNo.eq(clazz.classNo))
+//                .join(parentKid).on(payment.kidNo.eq(parentKid.kidNo))
+//                .where(parentKid.id.eq(condition.getMemberId()))
+//                .fetch();
+//
+//        return paymentDtoList;
+//    }
+
+
+
+
     @Override
     public List<PaymentDto> findAllByMemberId(PaymentSearchCondition condition) {
         List<PaymentDto> paymentDtoList = jpaQueryFactory
@@ -98,7 +174,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
                         payment.paymentEndDate,
                         payment.paymentMemo,
                         paymentLog.paymentStatus,
-                        paymentLog.paymentLogRegDate,
+                        paymentLog.paymentLogRegDate.max(),
                         kid.kidName,
                         parentKid.id,
                         clazz.className))
@@ -107,11 +183,26 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
                 .join(kid).on(payment.kidNo.eq(kid.kidNo))
                 .join(clazz).on(payment.classNo.eq(clazz.classNo))
                 .join(parentKid).on(payment.kidNo.eq(parentKid.kidNo))
-                .where(parentKid.id.eq(condition.getMemberId()))
+                .groupBy(payment.billNo,
+                        payment.kidNo,
+                        payment.classNo,
+                        payment.discountRate,
+                        payment.paymentTitle,
+                        payment.paymentPrice,
+                        payment.paymentStartDate,
+                        payment.paymentEndDate,
+                        payment.paymentMemo,
+                        kid.kidName,
+                        parentKid.id,
+                        clazz.className)
+                .having(parentKid.id.eq(condition.getMemberId()))
                 .fetch();
 
         return paymentDtoList;
     }
+
+
+
 
     @Override
     public PaymentDto findByBillNo(PaymentSearchCondition condition) {
@@ -138,6 +229,36 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
                 .where(payment.billNo.eq(condition.getBillNo()),
                         paymentLog.paymentStatus.eq(PaymentStatusEnum.BILLED.getStatus()))
                 .fetchOne();
+
+
+        return paymentDto;
+    }
+
+    @Override
+    public List<PaymentDto> findAllByBillNo(PaymentSearchCondition condition) {
+        List<PaymentDto> paymentDto = jpaQueryFactory
+                .select(Projections.constructor(PaymentDto.class,
+                        payment.billNo,
+                        payment.kidNo,
+                        payment.classNo,
+                        payment.discountRate,
+                        payment.paymentTitle,
+                        payment.paymentPrice,
+                        payment.paymentStartDate,
+                        payment.paymentEndDate,
+                        payment.paymentMemo,
+                        paymentLog.paymentStatus,
+                        paymentLog.paymentLogRegDate,
+                        kid.kidName,
+                        clazz.className)).distinct()
+                .from(payment)
+                .join(paymentLog).on(payment.billNo.eq(paymentLog.billNo))
+                .join(kid).on(payment.kidNo.eq(kid.kidNo))
+                .join(clazz).on(payment.classNo.eq(clazz.classNo))
+                .join(parentKid).on(payment.kidNo.eq(parentKid.kidNo))
+                .where(payment.billNo.eq(condition.getBillNo()))
+                .orderBy(paymentLog.paymentLogRegDate.desc())
+                .fetch();
 
 
         return paymentDto;

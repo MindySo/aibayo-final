@@ -16,7 +16,7 @@ import lombok.*;
 @IdClass(ScheduleClassId.class)
 public class ScheduleClassEntity {
     @Id
-    @Column(name = "scheduleNo")
+    @Column(name = "schedule_no")
     private Long scheduleNo;
     @Id
     @Column(name = "class_no")

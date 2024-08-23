@@ -18,7 +18,7 @@
 
 <th:block layout:fragment="javascript">
     <script th:src="@{/js/payment/paymentMain.js}"></script>
-    <script th:src="@{/js/payment/userPaymentMain.js}"></script>
+    <script th:src="@{/js/payment/userPaymentDetail.js}"></script>
 
     <!--datatable-->
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
@@ -137,7 +137,7 @@
                     <th class="text-wrapper-21">최종금액</th>
                 </tr>
                 </thead>
-                <tbody class="tuples" th:data-tuple-cnt="${paymentDtoList.size()}">
+                <tbody class="tuples" th:data-tuple-cnt="${paymentDtoList != null ? paymentDtoList.size() : 0}">
                 <tr class="tuple" th:each="payment: ${paymentDtoList}" th:object="${payment}" th:value="*{billNo}">
                     <td><input class="form-check-input" type="checkbox" th:data-bill-no="*{billNo}"></td>
                     <td class="text-wrapper-23 tuple_payment_status" th:data-payment-status="*{paymentStatus}">수납상태</td>
@@ -152,24 +152,56 @@
                     <td class="text-wrapper-29 tuple_final_price" th:data-payment-price="*{paymentPrice}" th:data-discount-rate="*{discountRate}">최종금액</td>
                 </tr>
                 </tbody>
-
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Select all rows within the tbody with the class 'tuple'
-                        const rows = document.querySelectorAll('.tuples .tuple');
-
-                        rows.forEach(row => {
-                            row.addEventListener('click', function() {
-                                // Extract the billNo from the row's value attribute
-                                const billNo = row.getAttribute('value');
-                                // Navigate to /user/paymentPay with the billNo as a parameter
-                                window.location.href = '/payment/user/paymentPay?billNo=' + billNo;
-                            });
-                        });
-                    });
-                </script>
             </table>
         </div>
+
+
+<!--        <div class="modal fade" id="staticBackdrop"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+        <div class="detailView" id="detailView">
+            <div class="modal-content">
+
+                <div class="modal-title">
+                    <div class="modal-title-text">
+                        <div class="text-wrapper">수납 내역</div>
+                    </div>
+                    <div class="button-x">
+                        <img src="/images/common/x.png" id="xButton" alt=""/>
+                    </div>
+                </div>
+
+<!--                <th:block th:if="${billDetail[0] != null}">-->
+<!--                    <div>-->
+<!--                        <td class="detail_kid_name" th:text="${billDetail[0].kidName}">원아명</td>-->
+<!--                        <td class="detail_class_name" th:text="${billDetail[0].className}">반정보</td>-->
+<!--                        <td class="detail_payment_title" th:text="${billDetail[0].paymentTitle}">청구항목</td>-->
+<!--                        <td class="detail_payment_price" th:data-payment-price="${billDetail[0].paymentPrice}">청구금액</td>-->
+<!--                        <td class="detail_discount_rate" th:text="${billDetail[0].discountRate} == 0 ? '-' : ${singleBill.discountRate} + '%'">할인</td>-->
+<!--                        <td class="detail_final_price" th:data-payment-price="${billDetail[0].paymentPrice}" th:data-discount-rate="${singleBill.discountRate}">최종금액</td>-->
+<!--                        <td class="detail_payment_start_date" th:data-start-date="${billDetail[0].paymentStartDate}">발송일</td>-->
+<!--                        <td class="detail_payment_end_date" th:data-end-date="${billDetail[0].paymentEndDate}">만료일</td>-->
+<!--                    </div>-->
+<!--                </th:block>-->
+
+                <table class="detailTable">
+                    <thead>
+                        <tr class="column detailCol">
+                            <th class="">수납상태</th>
+                            <th class="">변경일</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tuples">
+                        <tr class="tuple detailTuple" th:each="singleBill : ${billDetail}" th:object="${singleBill}" th:value="*{billNo}">
+                            <td class="text-wrapper-23 detail_payment_status" th:data-payment-status="*{paymentStatus}">수납상태</td>
+                            <td class="text-wrapper-24 detail_payment_log_reg_date" th:data-reg-date="*{paymentLogRegDate}">수납일</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button type="submit" class="button-submit" id="payBill">납부하기</button>
+
+            </div>
+        </div>
+
 
     </div>
 

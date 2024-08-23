@@ -113,4 +113,9 @@ public class PaymentServiceImpl implements PaymentService {
 
         paymentLogRepository.save(paymentLogEntity);
     }
+
+    @Override
+    public List<PaymentDto> getAllByBillNo(PaymentSearchCondition condition) {
+        return paymentRepository.findAllByBillNo(condition);
+    }
 }

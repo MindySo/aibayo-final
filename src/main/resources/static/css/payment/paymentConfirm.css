@@ -452,6 +452,12 @@
     font-weight: 500 !important;
 }
 
+.box_section{
+    padding: 40px 30px 50px 30px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
 :root {
     --x-1: rgba(133, 199, 233, 1);
     --x-2: rgba(13, 17, 83, 1);
