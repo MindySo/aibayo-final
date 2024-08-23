@@ -277,7 +277,7 @@
   align-items: flex-start;
   align-self: stretch;
   background-color: #ffffff;
-  display: flex;
+  /*display: flex;*/
   gap: 10px;
   height: fit-content;
   padding: 20px;

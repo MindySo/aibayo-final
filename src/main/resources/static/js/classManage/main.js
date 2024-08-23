@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     $('.class-item').on('click', function () {
         console.log('Class item clicked');
         const classNo = $(this).data('classno');
+        const className = $(this).find('.title-2').text(); // 클릭한 반의 이름 가져오기
         console.log("classNo: " + classNo);
 
         // Fetch data using classNo from the backend (replace with actual data retrieval logic)
@@ -12,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (classData) {
             // $('#classModalLabel').text(classData.className + ' 정보');
-            $('#className').text(classData.className);
+            // $('#className').text(classData.className);
+            $('#className').text(className);
 
             // Populate teacher list
             const teacherList = $('#teacherList');
@@ -184,11 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
             contentType: "application/json",
             success: function (data) {
                 console.log("Class Data:", data);
-                // data.classKid와 data.classTeacher를 사용하여 모달을 업데이트
-                // $('#classModalLabel').text(data.className + ' 정보');
-                // $('#classModalLabel').text('반 정보');
-                // $('#className').text(data.className);
-                // data.classTeacher에서 className을 가져와서 설정
+
                 if (data.classTeacher.length > 0) {
                     $('#className').text(data.classTeacher[0].className);
                     $('#editClassNameBtn').data('classNo', classNo);
