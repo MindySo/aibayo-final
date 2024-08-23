@@ -441,6 +441,7 @@
   text-align: center;
   white-space: nowrap;
   width: 158px;
+  overflow: hidden;
 }
 
 .ann-list .frame-10 {

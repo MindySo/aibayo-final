@@ -20,19 +20,33 @@
 
     <div class="frame-2"></div>
     <div class="img-2">
-        <div class="component-wrapper">
-            <div class="component"><img class="image" src="/images/common/!.jpg" /></div>
+        <div class="failImage">
+            <img src="/images/common/!.jpg" alt=""/>
         </div>
         <div class="text-wrapper-40">결제 실패</div>
+
+        <div class="text-wrapper-8"></div>
+
+        <div class="text-wrapper-8" id="code">에러코드</div>
+        <div class="text-wrapper-8" id="message">실패사유</div>
     </div>
     <div class="buttonarea">
-        <a class="button-home" th:href="@{/user/main}">
+        <a class="button-home" th:href="@{/main/user}">
             <div class="text-wrapper-5">홈으로 이동</div>
         </a>
-        <a class="button-status" th:href="@{/user/paymentMain}">
+        <a class="button-status" th:href="@{/payment/user/paymentMain}">
             <div class="text-wrapper-6">청구 현황 보기</div>
         </a>
     </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const codeElement = document.getElementById("code");
+        const messageElement = document.getElementById("message");
+
+        codeElement.textContent = "에러코드: " + urlParams.get("code");
+        messageElement.textContent = "실패 사유: " + urlParams.get("message");
+    </script>
 
 </div>
 </html>

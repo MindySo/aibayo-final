@@ -112,6 +112,27 @@
     font-style: var(--small-text-font-style);
 }
 
+.failImage {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 70%;
+    background-size: cover;
+    background-position: 50% 50%;
+    overflow: hidden;
+}
+
+.failImage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+}
+
 :root {
     --x-1: rgba(133, 199, 233, 1);
     --x-2: rgba(13, 17, 83, 1);

@@ -1,3 +1,5 @@
+let command = null;
+
 $(document).ready(function() {
 
     // 테이블 출력 형식
@@ -40,6 +42,7 @@ $(document).ready(function() {
 
         let url = "/payment/admin/paymentBillingMainSearch";
 
+        command = 'search';
         commonAjax(url, 'POST', param);
     });
 
@@ -164,12 +167,14 @@ function formatDateTime(input) {
         var dateTimeParts = input.split('T');
         var datePart = dateTimeParts[0]; // '2024-06-02'
         var timePart = dateTimeParts[1]; // '06:00:00.000000'
+        var timePartTrim = timePart.split('.');
+        var time = timePartTrim[0]; // '06:00:00'
 
         // 날짜 형식을 'YYYY.MM.DD'로 변경
         var formattedDate = datePart.replace(/-/g, '.'); // '2024.06.02'
 
         // 줄바꿈 추가하여 최종 결과 반환
-        return formattedDate + '<br/>' + timePart;
+        return formattedDate + '<br/>' + time;
     }
 }
 
@@ -203,11 +208,12 @@ function tupleCnt() {
 
 function afterSuccess(response, method) {
     $('.tableDiv').replaceWith($(response).find('.tableDiv'));
-    formitize();
-    dataTableInit();
-    tupleCnt();
 
-    checkAll();
+    if(command === 'search'){
+        formitize();
+        dataTableInit();
+        tupleCnt();
 
-
+        checkAll();
+    }
 }

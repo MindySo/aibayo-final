@@ -15,4 +15,5 @@ public interface PaymentService {
     List<PaymentDto> getAllByMemberId(PaymentSearchCondition condition);
     PaymentDto getByBillNo(PaymentSearchCondition condition);
     void insertPaymentSuccess(PaymentSearchCondition condition);
+    List<PaymentDto> getAllByBillNo(PaymentSearchCondition condition);
 }

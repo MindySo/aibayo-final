@@ -51,13 +51,12 @@ $(document).ready(function() {
 
     // '결제하기' 버튼 누르면 결제창 띄우기
     const button = document.getElementById("payment-button");
-    let billNo = $('.paymentContent').val();
     button.addEventListener("click", function () {
         paymentWidget.requestPayment({
             orderId: generateRandomString(),
             orderName: $('.paymentTitle').text().trim(),
-            successUrl: window.location.origin + "/payment/user/success/?billNo=" + billNo,
-            failUrl: window.location.origin + "/payment/user/fail",
+            successUrl: window.location.origin + "/success?billNo=" + $('.paymentContent').val(),
+            failUrl: window.location.origin + "/fail",
         });
     });
 });
