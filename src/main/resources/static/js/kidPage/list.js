@@ -37,9 +37,10 @@ $(document).ready(function() {
 
                 let param = {
                     parentKidAcceptNo : target.data('parent-kid-accept-no'),
+                    id : target.data('id'),
                     kidNo : target.data('kid-no')
                 }
-                // console.log(`param : ${JSON.stringify(param)}`);
+                console.log(`param : ${JSON.stringify(param)}`);
 
                 target.closest('.kid_item_parent').remove();
 
