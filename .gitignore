@@ -32,11 +32,11 @@ out/
 !**/src/test/**/out/
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+**/nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
 ### VS Code ###
 .vscode/
@@ -60,5 +60,7 @@ docker-compose.yml
 
 ## 환경 변수 파일 ##
 .env
-
+.env*
+.env.*
+*.env
 application-secret.properties
