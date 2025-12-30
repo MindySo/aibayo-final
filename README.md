@@ -2,20 +2,23 @@
   <img src="assets/Aibayo.svg" alt="Aibayo" height="80">
 </p>
 
+---
+
+<h3 align="center" style="margin: 0;">
+<br>원장, 교사, 학부모 모두가 원하는 유치원 B2B 서비스
+</h3>
+
+<p align="center">
+<br>유치원을 효율적으로 관리하기 위한 ERP 시스템을 제공하며,<br>
+학부모 입장에서도 원생 정보를 쉽게 열람하고 유치원과 소통할 수 있도록 지원합니다.
+<br><br></p>
+
 <p align="center">
 📅 <b>2024.07.05 ~ 2024.08.23</b> | 👥 <b>Full-Stack 4인</b>
 </p>
 
-> <h3 align="center" style="margin: 0;"><br>원장, 교사, 학부모 모두가 원하는 유치원 B2B 서비스</h3>
->
-> <p align="center">
-> <br>유치원을 효율적으로 관리하기 위한 ERP 시스템을 제공하며,<br>
-> 학부모 입장에서도 원생 정보를 쉽게 열람하고 유치원과 소통할 수 있도록 지원합니다.
-> <br><br></p>
 
-
-
-## 🛠 기술 스택
+## <br>🛠 기술 스택
 
 ### Backend
 ![Java](https://img.shields.io/badge/Java%2017-007396?style=flat-square&logo=java&logoColor=white)
@@ -39,15 +42,15 @@
 ![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=flat-square&logo=jenkins&logoColor=white)
 
 
-## 🏗 System Architecture
+## <br>🏗 System Architecture
 
 ![System Architecture](assets/aibayo_systemarchitecture.png)
 
-## 📊 ERD
+## <br>📊 ERD
 
 ![ERD](assets/aibayo_erd.png)
 
-## 💡 기술적 경험
+## <br>💡 기술적 경험
 
 ### DB 접근 방식에서 SQL Mapper와 ORM을 모두 경험
 
@@ -58,7 +61,7 @@
 
 - 외부 API를 연동하여 필요한 곳에 효율적으로 추가 기능 구현
 
-## 🎯 담당 개발 기능
+## <br>🎯 담당 개발 기능
 
 ### 1. 교사 조회 및 승인 상태 변경 기능
 
@@ -81,7 +84,7 @@
 - **메일 전송 기능**: Google SMTP를 사용하여 메일 전송을 통한 초대 기능 구현
 
 
-### 2. 외부 캘린더 API 연동을 통한 일정표 CRUD 기능
+### <br>2. 외부 캘린더 API 연동을 통한 일정표 CRUD 기능
 
 **Fullcalendar API**를 사용하여 캘린더 표시 및 **Google Calendar API** 연동으로 공휴일 자동 설정
 
@@ -101,7 +104,7 @@
 - **AJAX 비동기 처리**: 날짜별, 반별 일정 상세 조회는 AJAX를 통해 비동기 처리하여 페이지 전환 없이 빠른 조회 가능
 - **지도 API 연동**: **Kakao Map API**를 사용하여 일정에 위치 정보를 추가할 수 있는 기능 구현
 
-### 3. 외부 결제 API 연동을 통한 결제 기능
+### <br>3. 외부 결제 API 연동을 통한 결제 기능
 
 **Datatables API**를 사용해 청구 및 수납 내역 목록 조회 및 페이징 처리
 
